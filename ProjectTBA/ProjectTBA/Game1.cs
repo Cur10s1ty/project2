@@ -17,8 +17,19 @@ namespace ProjectTBA
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public GraphicsDeviceManager graphics;
+        public SpriteBatch spriteBatch;
+
+        private static Game1 instance;
+
+        public static Game1 GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new Game1();
+            }
+            return instance;
+        }
 
         public Game1()
         {
