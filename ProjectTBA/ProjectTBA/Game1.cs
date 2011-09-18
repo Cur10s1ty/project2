@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+using ProjectTBA.Misc;
+using ProjectTBA.Controls;
 
 namespace ProjectTBA
 {
@@ -19,6 +21,8 @@ namespace ProjectTBA
     {
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
+
+        public Controller controller;
 
         private static Game1 instance;
 
@@ -38,9 +42,16 @@ namespace ProjectTBA
 
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
+            Console.Out.WriteLine(graphics.PreferredBackBufferFormat);
 
             // Extend battery life under lock.
             InactiveSleepTime = TimeSpan.FromSeconds(1);
+
+            // Set default orientation to landscape
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 480;
+
+            instance = this;
         }
 
         /// <summary>
@@ -66,6 +77,8 @@ namespace ProjectTBA
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //Commit that is very important
             // TODO: use this.Content to load your game content here
+            TBAContentManager.Initialize();
+            controller = new Controller();
         }
 
         /// <summary>
@@ -89,6 +102,7 @@ namespace ProjectTBA
                 this.Exit();
 
             // TODO: Add your update logic here
+            controller.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -102,7 +116,11 @@ namespace ProjectTBA
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null);
 
+            controller.Draw(gameTime, spriteBatch);
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
