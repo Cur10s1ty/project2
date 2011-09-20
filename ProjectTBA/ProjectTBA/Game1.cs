@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using ProjectTBA.Misc;
 using ProjectTBA.Controls;
-using System.Diagnostics;
+using ProjectTBA.Units;
 
 namespace ProjectTBA
 {
@@ -24,9 +24,13 @@ namespace ProjectTBA
         public SpriteBatch spriteBatch;
 
         public Controller controller;
+        public LinkedList<Unit> units;
+        /// <summary>
+        /// De demon =D
+        /// </summary>
+        public Unit player;
 
         private static Game1 instance;
-
         public static Game1 GetInstance()
         {
             if (instance == null)
@@ -64,7 +68,8 @@ namespace ProjectTBA
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            units = new LinkedList<Unit>();
+            
             base.Initialize();
         }
 
@@ -103,9 +108,14 @@ namespace ProjectTBA
                 this.Exit();
 
             // TODO: Add your update logic here
-            controller.Update(gameTime);
+            // controller.Update(gameTime);
 
-            Debug.WriteLine(ControllerState.IsButtonPressed(ControllerState.Buttons.UP));
+
+
+            foreach (Unit unit in units)
+            {
+                unit.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -121,10 +131,36 @@ namespace ProjectTBA
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
 
+            foreach (Unit unit in units)
+            {
+                unit.Draw(gameTime, spriteBatch);
+            }
+
             controller.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Adds a unit to the list of units
+        /// </summary>
+        /// <param name="unitToAdd">The unit to add to the baddieslist</param>
+        public void AddUnitToUnits(Unit unitToAdd)
+        {
+            this.units.AddLast(unitToAdd);
+        }
+
+        /// <summary>
+        /// Removes the unit from the list of units
+        /// </summary>
+        /// <param name="unitToRemove">The baddie that needs to be removed</param>
+        public void RemoveUnitFromUnits(Unit unitToRemove)
+        {
+            if(units.Contains(unitToRemove)) 
+            {
+                units.Remove(unitToRemove);
+            }
         }
     }
 }
