@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using ProjectTBA.Misc;
 using ProjectTBA.Controls;
+using System.Diagnostics;
 
 namespace ProjectTBA
 {
@@ -103,6 +104,8 @@ namespace ProjectTBA
 
             // TODO: Add your update logic here
             controller.Update(gameTime);
+
+            Debug.WriteLine(ControllerState.IsButtonPressed(ControllerState.Buttons.UP));
 
             base.Update(gameTime);
         }

@@ -17,22 +17,18 @@ namespace ProjectTBA.Controls
         public Texture2D dPadTex { get; set; }
         public Texture2D buttonTex { get; set; }
 
-        public SpriteFont testFont { get; set; }
-        public String text { get; set; }
-
         public Controller()
         {
+            ControllerState.Initialize();
+
             this.game = Game1.GetInstance();
             this.dPadTex = TBAContentManager.dPadTex;
             this.buttonTex = TBAContentManager.buttonTex;
-
-            this.testFont = TBAContentManager.testFont;
-            this.text = "No Input Detected\r\n";
         }
 
         public void Update(GameTime gt)
         {
-            text = "";
+            ControllerState.Update(gt);
             TouchCollection touchCollection = TouchPanel.GetState();
             if (touchCollection.Count > 0)
             {
@@ -40,37 +36,29 @@ namespace ProjectTBA.Controls
                 {
                     if (GetButtonUpRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
                     {
-                        text += "Detected: UP\r\n";
+                        ControllerState.pressedButtons.AddLast(ControllerState.Buttons.UP);
                     }
                     if (GetButtonDownRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
                     {
-                        text += "Detected: DOWN\r\n";
+                        ControllerState.pressedButtons.AddLast(ControllerState.Buttons.DOWN);
                     }
                     if (GetButtonLeftRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
                     {
-                        text += "Detected: LEFT\r\n";
+                        ControllerState.pressedButtons.AddLast(ControllerState.Buttons.LEFT);
                     }
                     if (GetButtonRightRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
                     {
-                        text += "Detected: RIGHT\r\n";
+                        ControllerState.pressedButtons.AddLast(ControllerState.Buttons.RIGHT);
                     }
-                    if (GetButtonARectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && tl.State == TouchLocationState.Pressed)
+                    if (GetButtonARectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
                     {
-                        text += "Detected: A\r\n";
+                        ControllerState.pressedButtons.AddLast(ControllerState.Buttons.A);
                     }
-                    if (GetButtonBRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && tl.State == TouchLocationState.Pressed)
+                    if (GetButtonBRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
                     {
-                        text += "Detected: B\r\n";
-                    }
-                    if (text == "")
-                    {
-                        text += "No Input Detected\r\n";
+                        ControllerState.pressedButtons.AddLast(ControllerState.Buttons.B);
                     }
                 }
-            }
-            else
-            {
-                text += "No Input Detected\r\n";
             }
         }
 
@@ -78,17 +66,6 @@ namespace ProjectTBA.Controls
         {
             sb.Draw(dPadTex, GetDPadRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
             sb.Draw(buttonTex, GetActionButtonRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-
-            //sb.Draw(TBAContentManager.solidTex, GetButtonUpRectangle(), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
-            //sb.Draw(TBAContentManager.solidTex, GetButtonDownRectangle(), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
-            //sb.Draw(TBAContentManager.solidTex, GetButtonLeftRectangle(), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
-            //sb.Draw(TBAContentManager.solidTex, GetButtonRightRectangle(), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
-
-            //sb.Draw(TBAContentManager.solidTex, GetButtonARectangle(), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
-            //sb.Draw(TBAContentManager.solidTex, GetButtonBRectangle(), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
-
-            Vector2 size = testFont.MeasureString(text);
-            sb.DrawString(testFont, text, new Vector2((game.graphics.PreferredBackBufferWidth / 2) - (size.X / 2), (game.graphics.PreferredBackBufferHeight / 2) - (size.Y / 2)), Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
         public Rectangle GetDPadRectangle()
