@@ -105,13 +105,13 @@ namespace ProjectTBA.Controls
         public Rectangle GetButtonARectangle()
         {
             Rectangle buttons = GetActionButtonRectangle();
-            return new Rectangle(buttons.X + 13, buttons.Y + 74, 40, 40);
+            return new Rectangle(buttons.X + 106, buttons.Y + 36, 40, 40);
         }
 
         public Rectangle GetButtonBRectangle()
         {
             Rectangle buttons = GetActionButtonRectangle();
-            return new Rectangle(buttons.X + 106, buttons.Y + 36, 40, 40);
+            return new Rectangle(buttons.X + 13, buttons.Y + 74, 40, 40);
         }
     }
 }

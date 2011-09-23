@@ -43,5 +43,23 @@ namespace ProjectTBA.Controls
 
             return false;
         }
+
+        public static Boolean IsButtonReleased(Buttons button)
+        {
+            foreach (Buttons type in pressedButtons)
+            {
+                if (button == type)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static LinkedList<Buttons> GetPressedButtons()
+        {
+            return pressedButtons;
+        }
     }
 }

@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Media;
 using ProjectTBA.Misc;
 using ProjectTBA.Controls;
 using ProjectTBA.Units;
+using ProjectTBA.Tests;
+using ProjectTBA.Obstacles;
 
 namespace ProjectTBA
 {
@@ -29,6 +31,10 @@ namespace ProjectTBA
         /// De demon =D
         /// </summary>
         public Unit player;
+
+        // Test Player
+        public TestPlayer testPlayer;
+        public LinkedList<Obstacle> obstacles;
 
         private static Game1 instance;
         public static Game1 GetInstance()
@@ -69,6 +75,8 @@ namespace ProjectTBA
         {
             // TODO: Add your initialization logic here
             units = new LinkedList<Unit>();
+
+            obstacles = new LinkedList<Obstacle>();
             
             base.Initialize();
         }
@@ -83,7 +91,13 @@ namespace ProjectTBA
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //Commit that is very important
             // TODO: use this.Content to load your game content here
-            TBAContentManager.Initialize();
+            TBAContentManager.LoadContent();
+
+            // Test Player
+            testPlayer = new TestPlayer(370, 340);
+
+            obstacles.AddLast(new Platform(360, 240, TBAContentManager.testPlatfromTex, false));
+
             controller = new Controller();
         }
 
@@ -108,13 +122,19 @@ namespace ProjectTBA
                 this.Exit();
 
             // TODO: Add your update logic here
-            // controller.Update(gameTime);
-
-
+            controller.Update(gameTime);
 
             foreach (Unit unit in units)
             {
                 unit.Update(gameTime);
+            }
+
+            // Test Player
+            testPlayer.Update(gameTime);
+
+            foreach (Obstacle o in obstacles)
+            {
+                o.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -137,6 +157,14 @@ namespace ProjectTBA
             }
 
             controller.Draw(gameTime, spriteBatch);
+
+            // Test Player
+            testPlayer.Draw(gameTime, spriteBatch);
+
+            foreach (Obstacle o in obstacles)
+            {
+                o.Draw(gameTime, spriteBatch);
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);

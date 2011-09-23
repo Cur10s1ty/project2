@@ -18,7 +18,16 @@ namespace ProjectTBA.Misc
         public static Texture2D dPadTex { get; set; }
         public static Texture2D buttonTex { get; set; }
 
-        public static void Initialize()
+        // Backgrounds
+        public static Texture2D forestBGFrontTex { get; set; }
+        public static Texture2D forestBGMiddleTex { get; set; }
+        public static Texture2D forestBGBackTex { get; set; }
+
+        // Test
+        public static Texture2D testPlayerTex { get; set; }
+        public static Texture2D testPlatfromTex { get; set; }
+
+        public static void LoadContent()
         {
             ContentManager content = Game1.GetInstance().Content;
 
@@ -29,6 +38,15 @@ namespace ProjectTBA.Misc
             // Controls
             dPadTex = content.Load<Texture2D>("Controls/DPad");
             buttonTex = content.Load<Texture2D>("Controls/ActionButtons");
+
+            // Backgrounds
+            forestBGFrontTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_1");
+            forestBGMiddleTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_2");
+            forestBGBackTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_3");
+
+            // Test
+            testPlayerTex = content.Load<Texture2D>("Test/TestPlayer");
+            testPlatfromTex = content.Load<Texture2D>("Test/TestPlatform");
         }
     }
 }
