@@ -26,7 +26,7 @@ namespace ProjectTBA.Obstacles
 
         internal override void Draw(GameTime gt, SpriteBatch sb)
         {
-            sb.Draw(texture, bounds, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.2f);
+            sb.Draw(texture, GetRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.2f);
         }
 
         /// <summary>
@@ -45,6 +45,7 @@ namespace ProjectTBA.Obstacles
         /// <returns>
         /// An integer
         /// </returns>
+        // TODO: GetPositionRelativeToUnit(Unit unit)
         public int GetPositionRelativeToPlayer()
         {
             TestPlayer player = Game1.GetInstance().testPlayer;
@@ -73,7 +74,7 @@ namespace ProjectTBA.Obstacles
                 {
                     return 4;
                 }
-                else if (player.location.Y < bounds.Y + bounds.Height)
+                else if (player.location.Y > bounds.Y + bounds.Height)
                 {
                     return 5;
                 }
@@ -89,7 +90,7 @@ namespace ProjectTBA.Obstacles
                 {
                     return 7;
                 }
-                else if (player.location.Y < bounds.Y + bounds.Height)
+                else if (player.location.Y > bounds.Y + bounds.Height)
                 {
                     return 8;
                 }

@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 using ProjectTBA.Misc;
 using ProjectTBA.Controls;
 using ProjectTBA.Obstacles;
+using ProjectTBA.Views;
+using System.Diagnostics;
 
 namespace ProjectTBA.Tests
 {
@@ -22,6 +24,8 @@ namespace ProjectTBA.Tests
         public int maxJumpHeight;
         public int stopJumpOn;
         public int floorHeight;
+
+        public Boolean falling;
 
         public TestPlayer(float x, float y)
         {
@@ -42,22 +46,41 @@ namespace ProjectTBA.Tests
 
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
             {
-                location.X += movementSpeed;
+                if (location.X + texture.Width < 1600)
+                {
+                    location.X += movementSpeed;
+                }
+
+                if (location.X - Game1.GetInstance().offset.X > 600 && Game1.GetInstance().offset.X < 800)
+                {
+                    Game1.GetInstance().offset.X += movementSpeed;
+                }
             }
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.LEFT))
             {
-                location.X -= movementSpeed;
-            }
-
-            if (!jumping)
-            {
-                if (ControllerState.IsButtonPressed(ControllerState.Buttons.A))
+                if (location.X - movementSpeed > 0)
                 {
-                    jumping = true;
-                    jumpUp = true;
+                    location.X -= movementSpeed;
+                }
+                else
+                {
+                    location.X = 0;
+                }
+
+                if (Game1.GetInstance().offset.X - movementSpeed > 0)
+                {
+                    if (location.X - Game1.GetInstance().offset.X < 200)
+                    {
+                        Game1.GetInstance().offset.X -= movementSpeed;
+                    }
+                }
+                else
+                {
+                    Game1.GetInstance().offset.X = 0;
                 }
             }
-            else if (jumping)
+
+            if (jumping)
             {
                 if (jumpUp)
                 {
@@ -76,13 +99,35 @@ namespace ProjectTBA.Tests
                     if (location.Y + movementSpeed > stopJumpOn)
                     {
                         location.Y = stopJumpOn;
-                        stopJumpOn = 340;
+                        stopJumpOn = floorHeight;
                         jumping = false;
                     }
                     else
                     {
                         location.Y += movementSpeed;
                     }
+                }
+            }
+            else if (falling)
+            {
+                if (location.Y + movementSpeed > stopJumpOn)
+                {
+                    location.Y = stopJumpOn;
+                    stopJumpOn = floorHeight;
+                    falling = false;
+                }
+                else
+                {
+                    location.Y += movementSpeed;
+                }
+            }
+
+            if (!jumping && !falling)
+            {
+                if (ControllerState.IsButtonPressed(ControllerState.Buttons.A))
+                {
+                    jumping = true;
+                    jumpUp = true;
                 }
             }
         }
@@ -94,7 +139,7 @@ namespace ProjectTBA.Tests
 
         public Rectangle GetRectangle()
         {
-            return new Rectangle((int)location.X, (int)location.Y, texture.Width, texture.Height);
+            return new Rectangle((int)location.X - (int)Game1.GetInstance().offset.X, (int)location.Y, texture.Width, texture.Height);
         }
 
         private void SetCollisionHeight()
@@ -122,8 +167,7 @@ namespace ProjectTBA.Tests
                         case 4:
                             if (!jumping)
                             {
-                                jumping = true;
-                                jumpUp = false;
+                                falling = true;
                                 stopJumpOn = floorHeight;
                             }
                             break;
@@ -132,8 +176,7 @@ namespace ProjectTBA.Tests
                         case 5:
                             if (!jumping)
                             {
-                                jumping = true;
-                                jumpUp = false;
+                                falling = true;
                                 stopJumpOn = floorHeight;
                             }
                             break;
@@ -142,8 +185,7 @@ namespace ProjectTBA.Tests
                         case 6:
                             if (!jumping)
                             {
-                                jumping = true;
-                                jumpUp = false;
+                                falling = true;
                                 stopJumpOn = floorHeight;
                             }
                             break;
@@ -152,8 +194,7 @@ namespace ProjectTBA.Tests
                         case 7:
                             if (!jumping)
                             {
-                                jumping = true;
-                                jumpUp = false;
+                                falling = true;
                                 stopJumpOn = floorHeight;
                             }
                             break;
@@ -162,8 +203,7 @@ namespace ProjectTBA.Tests
                         case 8:
                             if (!jumping)
                             {
-                                jumping = true;
-                                jumpUp = false;
+                                falling = true;
                                 stopJumpOn = floorHeight;
                             }
                             break;
@@ -172,8 +212,7 @@ namespace ProjectTBA.Tests
                         case 9:
                             if (!jumping)
                             {
-                                jumping = true;
-                                jumpUp = false;
+                                falling = true;
                                 stopJumpOn = floorHeight;
                             }
                             break;
@@ -184,6 +223,11 @@ namespace ProjectTBA.Tests
                     }
                 }
             }
+        }
+
+        private void AlignOffset()
+        {
+            
         }
     }
 }

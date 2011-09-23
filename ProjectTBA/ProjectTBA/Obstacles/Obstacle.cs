@@ -25,7 +25,7 @@ namespace ProjectTBA.Obstacles
 
         public Rectangle GetRectangle()
         {
-            return bounds;
+            return new Rectangle(bounds.X - (int)Game1.GetInstance().offset.X, bounds.Y, bounds.Width, bounds.Height);
         }
     }
 }

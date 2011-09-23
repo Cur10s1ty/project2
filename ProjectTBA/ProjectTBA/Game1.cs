@@ -14,6 +14,7 @@ using ProjectTBA.Controls;
 using ProjectTBA.Units;
 using ProjectTBA.Tests;
 using ProjectTBA.Obstacles;
+using ProjectTBA.Views;
 
 namespace ProjectTBA
 {
@@ -31,6 +32,10 @@ namespace ProjectTBA
         /// De demon =D
         /// </summary>
         public Unit player;
+
+        // Viewport + Background
+        public TBAViewport viewport;
+        public Vector2 offset;
 
         // Test Player
         public TestPlayer testPlayer;
@@ -94,7 +99,8 @@ namespace ProjectTBA
             TBAContentManager.LoadContent();
 
             // Test Player
-            testPlayer = new TestPlayer(370, 340);
+            testPlayer = new TestPlayer(370, 380);
+            viewport = new TBAViewport();
 
             obstacles.AddLast(new Platform(360, 240, TBAContentManager.testPlatfromTex, false));
 
@@ -122,6 +128,8 @@ namespace ProjectTBA
                 this.Exit();
 
             // TODO: Add your update logic here
+            viewport.Update(gameTime);
+
             controller.Update(gameTime);
 
             foreach (Unit unit in units)
@@ -150,6 +158,8 @@ namespace ProjectTBA
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
+
+            viewport.Draw(gameTime, spriteBatch);
 
             foreach (Unit unit in units)
             {

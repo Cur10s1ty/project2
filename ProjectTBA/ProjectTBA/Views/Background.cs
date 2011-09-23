@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ProjectTBA.Misc;
 
-namespace ProjectTBA.Background
+namespace ProjectTBA.Views
 {
     public class Background
     {
@@ -27,9 +27,9 @@ namespace ProjectTBA.Background
 
         internal void Draw(GameTime gt, SpriteBatch sb)
         {
-            sb.Draw(TBAContentManager.forestBGBackTex, new Rectangle(0, 0, 1600, 480), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
-            sb.Draw(TBAContentManager.forestBGMiddleTex, new Rectangle(0, 0, 1600, 480), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9999f);
-            sb.Draw(TBAContentManager.forestBGFrontTex, new Rectangle(0, 0, 1600, 480), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9998f);
+            sb.Draw(TBAContentManager.forestBGBackTex, new Rectangle(0, 0, 800, 480), GetBackDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+            sb.Draw(TBAContentManager.forestBGMiddleTex, new Rectangle(0, 0, 800, 480), GetMiddleDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9999f);
+            sb.Draw(TBAContentManager.forestBGFrontTex, new Rectangle(0, 0, 800, 480), GetFrontDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9998f);
         }
 
         public void SetBackground(BGType type)
@@ -45,6 +45,21 @@ namespace ProjectTBA.Background
                 default:
                     break;
             }
+        }
+
+        public Rectangle GetFrontDrawRectangle()
+        {
+            return new Rectangle((int)Game1.GetInstance().offset.X, 0, 800, 480);
+        }
+
+        public Rectangle GetMiddleDrawRectangle()
+        {
+            return new Rectangle((int)((Game1.GetInstance().offset.X / 800f) * 500f), 0, 1100, 480);
+        }
+
+        public Rectangle GetBackDrawRectangle()
+        {
+            return new Rectangle((int)((Game1.GetInstance().offset.X / 800f) * 200f), 0, 1400, 480);
         }
     }
 }
