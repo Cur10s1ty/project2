@@ -22,8 +22,8 @@ namespace ProjectTBA.Controls
             ControllerState.Initialize();
 
             this.game = Game1.GetInstance();
-            this.dPadTex = TBAContentManager.dPadTex;
-            this.buttonTex = TBAContentManager.buttonTex;
+            this.dPadTex = AkumaContentManager.dPadTex;
+            this.buttonTex = AkumaContentManager.buttonTex;
         }
 
         public void Update(GameTime gt)

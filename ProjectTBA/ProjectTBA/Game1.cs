@@ -34,7 +34,7 @@ namespace ProjectTBA
         public Unit player;
 
         // Viewport + Background
-        public TBAViewport viewport;
+        public AkumaViewport viewport;
         public Vector2 offset;
 
         // Test Player
@@ -96,13 +96,16 @@ namespace ProjectTBA
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //Commit that is very important
             // TODO: use this.Content to load your game content here
-            TBAContentManager.LoadContent();
+            AkumaContentManager.LoadContent();
 
             // Test Player
             testPlayer = new TestPlayer(370, 380);
-            viewport = new TBAViewport();
+            viewport = new AkumaViewport();
 
-            obstacles.AddLast(new Platform(360, 240, TBAContentManager.testPlatfromTex, false));
+            obstacles.AddLast(new Platform(360, 240, AkumaContentManager.forestPlatformTrunkTex, false));
+            obstacles.AddLast(new Platform(480, 140, AkumaContentManager.forestPlatformLeaf1Tex, false));
+            obstacles.AddLast(new Platform(1200, 300, AkumaContentManager.forestPlatformLeaf2Tex, false));
+            obstacles.AddLast(new Platform(20, 400, AkumaContentManager.forestPlatformLeaf3Tex, false));
 
             controller = new Controller();
         }

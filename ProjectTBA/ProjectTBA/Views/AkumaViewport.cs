@@ -8,14 +8,14 @@ using ProjectTBA.Tests;
 
 namespace ProjectTBA.Views
 {
-    public class TBAViewport
+    public class AkumaViewport
     {
 
         public Game1 game { get; set; }
         public Background bg { get; set; }
         public Vector2 screenSize { get; set; }
 
-        public TBAViewport()
+        public AkumaViewport()
         {
             game = Game1.GetInstance();
             bg = new Background(Background.BGType.Forest);

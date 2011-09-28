@@ -15,6 +15,7 @@ namespace ProjectTBA.Tests
     public class TestPlayer
     {
 
+        public Game1 game { get; set; }
         public Texture2D texture { get; set; }
         public Vector2 location;
         public float movementSpeed;
@@ -29,7 +30,8 @@ namespace ProjectTBA.Tests
 
         public TestPlayer(float x, float y)
         {
-            this.texture = TBAContentManager.testPlayerTex;
+            this.game = Game1.GetInstance();
+            this.texture = AkumaContentManager.playerTex;
             this.location = new Vector2(x, y);
             this.movementSpeed = 8f;
 
@@ -42,7 +44,7 @@ namespace ProjectTBA.Tests
 
         public void Update(GameTime gt)
         {
-            SetCollisionHeight();
+            CheckBottomCollision();
 
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
             {
@@ -50,10 +52,21 @@ namespace ProjectTBA.Tests
                 {
                     location.X += movementSpeed;
                 }
-
-                if (location.X - Game1.GetInstance().offset.X > 600 && Game1.GetInstance().offset.X < 800)
+                else
                 {
-                    Game1.GetInstance().offset.X += movementSpeed;
+                    location.X = 1600 - texture.Width;
+                }
+
+                if (game.offset.X + movementSpeed < 800)
+                {
+                    if (location.X + game.offset.X + texture.Width > 600)
+                    {
+                        game.offset.X += movementSpeed;
+                    }
+                }
+                else
+                {
+                    game.offset.X = 800;
                 }
             }
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.LEFT))
@@ -67,16 +80,16 @@ namespace ProjectTBA.Tests
                     location.X = 0;
                 }
 
-                if (Game1.GetInstance().offset.X - movementSpeed > 0)
+                if (game.offset.X - movementSpeed > 0)
                 {
-                    if (location.X - Game1.GetInstance().offset.X < 200)
+                    if (location.X - game.offset.X < 200)
                     {
-                        Game1.GetInstance().offset.X -= movementSpeed;
+                        game.offset.X -= movementSpeed;
                     }
                 }
                 else
                 {
-                    Game1.GetInstance().offset.X = 0;
+                    game.offset.X = 0;
                 }
             }
 
@@ -139,95 +152,52 @@ namespace ProjectTBA.Tests
 
         public Rectangle GetRectangle()
         {
-            return new Rectangle((int)location.X - (int)Game1.GetInstance().offset.X, (int)location.Y, texture.Width, texture.Height);
+            return new Rectangle((int)location.X - (int)game.offset.X, (int)location.Y, texture.Width, texture.Height);
         }
 
-        private void SetCollisionHeight()
+        public Rectangle GetFeetHitbox()
         {
-            foreach (Obstacle o in Game1.GetInstance().obstacles)
+            return new Rectangle((int)location.X + 37, (int)location.Y + 84, 48, 1);
+        }
+
+        private void CheckBottomCollision()
+        {
+            Boolean abovePlatform = false;
+
+            if (!jumpUp)
             {
-                if (o is Platform)
+                foreach (Obstacle o in game.obstacles)
                 {
-                    switch (((Platform)o).GetPositionRelativeToPlayer())
+                    if (o is Platform)
                     {
-                        // Directly above
-                        case 1:
-                            stopJumpOn = o.bounds.Y - texture.Height;
-                            break;
+                        Platform p = (Platform)o;
 
-                        // Directly below
-                        case 2:
-                            break;
-
-                        // Same X and Y
-                        case 3:
-                            break;
-
-                        // Left above
-                        case 4:
-                            if (!jumping)
+                        if (GetFeetHitbox().X + GetFeetHitbox().Width > p.bounds.X && GetFeetHitbox().X < p.bounds.X + p.bounds.Width)
+                        {
+                            if (GetFeetHitbox().Y < p.bounds.Y)
                             {
-                                falling = true;
-                                stopJumpOn = floorHeight;
-                            }
-                            break;
+                                abovePlatform = true;
 
-                        // Left below
-                        case 5:
-                            if (!jumping)
-                            {
-                                falling = true;
-                                stopJumpOn = floorHeight;
+                                if (jumping && !falling)
+                                {
+                                    stopJumpOn = p.bounds.Y - texture.Height;
+                                }
+                                else
+                                {
+                                    stopJumpOn = p.bounds.Y - texture.Height;
+                                    falling = true;
+                                }
                             }
-                            break;
-
-                        // Left, same Y
-                        case 6:
-                            if (!jumping)
-                            {
-                                falling = true;
-                                stopJumpOn = floorHeight;
-                            }
-                            break;
-
-                        // Right above
-                        case 7:
-                            if (!jumping)
-                            {
-                                falling = true;
-                                stopJumpOn = floorHeight;
-                            }
-                            break;
-
-                        // Right below
-                        case 8:
-                            if (!jumping)
-                            {
-                                falling = true;
-                                stopJumpOn = floorHeight;
-                            }
-                            break;
-
-                        // Right, same Y
-                        case 9:
-                            if (!jumping)
-                            {
-                                falling = true;
-                                stopJumpOn = floorHeight;
-                            }
-                            break;
-
-                        // Off screen
-                        case 0:
-                            break;
+                        }
                     }
                 }
             }
-        }
 
-        private void AlignOffset()
-        {
-            
+            if (!abovePlatform && location.Y != floorHeight)
+            {
+                stopJumpOn = floorHeight;
+                falling = true;
+            }
         }
     }
 }

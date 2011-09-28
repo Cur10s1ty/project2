@@ -29,6 +29,11 @@ namespace ProjectTBA.Obstacles
             sb.Draw(texture, GetRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.2f);
         }
 
+        public Rectangle GetTopHitbox()
+        {
+            return new Rectangle(bounds.X + (int)Game1.GetInstance().offset.X, bounds.Y, bounds.Width, 1);
+        }
+
         /// <summary>
         /// Get the position relative to the player
         /// 1: Directly above the obstacle
@@ -45,20 +50,20 @@ namespace ProjectTBA.Obstacles
         /// <returns>
         /// An integer
         /// </returns>
-        // TODO: GetPositionRelativeToUnit(Unit unit)
-        public int GetPositionRelativeToPlayer()
+        // TODO: TestPlayer ==> Unit (when units have locations)
+        public int GetPositionRelativeToUnit(TestPlayer unit)
         {
-            TestPlayer player = Game1.GetInstance().testPlayer;
+            Rectangle location = unit.GetFeetHitbox();
 
             // Check if player is on the same X as the obstacle
-            if (player.location.X < bounds.X + bounds.Width && player.location.X + player.texture.Width > bounds.X)
+            if (location.X < bounds.X + bounds.Width && location.X + location.Width > bounds.X)
             {
-                // Check if the player is above, below or over the obstacle
-                if (player.location.Y + player.texture.Height < bounds.Y)
+                // Check if the unit is above, below or over the obstacle
+                if (unit.location.Y + unit.texture.Height < bounds.Y)
                 {
                     return 1;
                 }
-                else if (player.location.Y < bounds.Y + bounds.Height)
+                else if (unit.location.Y < bounds.Y + bounds.Height)
                 {
                     return 2;
                 }
@@ -67,14 +72,14 @@ namespace ProjectTBA.Obstacles
                     return 3;
                 }
             }
-            else if (player.location.X + player.texture.Width < bounds.X)
+            else if (location.X + location.Width < bounds.X)
             {
-                // Check if the player is above, below or over the obstacle
-                if (player.location.Y + player.texture.Height < bounds.Y)
+                // Check if the unit is above, below or over the obstacle
+                if (unit.location.Y + unit.texture.Height < bounds.Y)
                 {
                     return 4;
                 }
-                else if (player.location.Y > bounds.Y + bounds.Height)
+                else if (unit.location.Y > bounds.Y + bounds.Height)
                 {
                     return 5;
                 }
@@ -83,14 +88,14 @@ namespace ProjectTBA.Obstacles
                     return 6;
                 }
             }
-            else if (player.location.X > bounds.X + bounds.Width)
+            else if (location.X > bounds.X + bounds.Width)
             {
-                // Check if the player is above, below or over the obstacle
-                if (player.location.Y + player.texture.Height < bounds.Y)
+                // Check if the unit is above, below or over the obstacle
+                if (unit.location.Y + unit.texture.Height < bounds.Y)
                 {
                     return 7;
                 }
-                else if (player.location.Y > bounds.Y + bounds.Height)
+                else if (unit.location.Y > bounds.Y + bounds.Height)
                 {
                     return 8;
                 }

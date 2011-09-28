@@ -27,9 +27,9 @@ namespace ProjectTBA.Views
 
         internal void Draw(GameTime gt, SpriteBatch sb)
         {
-            sb.Draw(TBAContentManager.forestBGBackTex, new Rectangle(0, 0, 800, 480), GetBackDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
-            sb.Draw(TBAContentManager.forestBGMiddleTex, new Rectangle(0, 0, 800, 480), GetMiddleDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9999f);
-            sb.Draw(TBAContentManager.forestBGFrontTex, new Rectangle(0, 0, 800, 480), GetFrontDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9998f);
+            sb.Draw(AkumaContentManager.forestBGBackTex, new Rectangle(0, 0, 800, 480), GetBackDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+            sb.Draw(AkumaContentManager.forestBGMiddleTex, new Rectangle(0, 0, 800, 480), GetMiddleDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9999f);
+            sb.Draw(AkumaContentManager.forestBGFrontTex, new Rectangle(0, 0, 800, 480), GetFrontDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9998f);
         }
 
         public void SetBackground(BGType type)
@@ -37,9 +37,9 @@ namespace ProjectTBA.Views
             switch (type)
             {
                 case BGType.Forest:
-                    front = TBAContentManager.forestBGFrontTex;
-                    middle = TBAContentManager.forestBGMiddleTex;
-                    back = TBAContentManager.forestBGBackTex;
+                    front = AkumaContentManager.forestBGFrontTex;
+                    middle = AkumaContentManager.forestBGMiddleTex;
+                    back = AkumaContentManager.forestBGBackTex;
                     break;
 
                 default:
