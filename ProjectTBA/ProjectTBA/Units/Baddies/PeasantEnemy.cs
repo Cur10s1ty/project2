@@ -9,8 +9,8 @@ namespace ProjectTBA.Units.Baddies
 {
     public class PeasantEnemy : DefaultEnemy
     {
-        public PeasantEnemy()
-            : base()
+        public PeasantEnemy(float x, float y)
+            : base(x, y, null)
         {
         }
     }

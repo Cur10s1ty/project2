@@ -15,6 +15,7 @@ using ProjectTBA.Units;
 using ProjectTBA.Tests;
 using ProjectTBA.Obstacles;
 using ProjectTBA.Views;
+using ProjectTBA.Units.Baddies;
 
 namespace ProjectTBA
 {
@@ -27,11 +28,11 @@ namespace ProjectTBA
         public SpriteBatch spriteBatch;
 
         public Controller controller;
-        public LinkedList<Unit> units;
+        public LinkedList<Unit> baddies;
         /// <summary>
         /// De demon =D
         /// </summary>
-        public Unit player;
+        public Demon player;
 
         // Viewport + Background
         public AkumaViewport viewport;
@@ -40,6 +41,8 @@ namespace ProjectTBA
         // Test Player
         public TestPlayer testPlayer;
         public LinkedList<Obstacle> obstacles;
+
+        public Random random;
 
         private static Game1 instance;
         public static Game1 GetInstance()
@@ -58,7 +61,7 @@ namespace ProjectTBA
 
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
-            Console.Out.WriteLine(graphics.PreferredBackBufferFormat);
+            //Console.Out.WriteLine(graphics.PreferredBackBufferFormat);
 
             // Extend battery life under lock.
             InactiveSleepTime = TimeSpan.FromSeconds(1);
@@ -78,10 +81,29 @@ namespace ProjectTBA
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            units = new LinkedList<Unit>();
+            AkumaContentManager.LoadContent();
 
+            // TODO: Add your initialization logic here
+            baddies = new LinkedList<Unit>();
+            player = new Demon(370, 380);
             obstacles = new LinkedList<Obstacle>();
+
+            // Test Player
+            //testPlayer = new TestPlayer(370, 380);
+            viewport = new AkumaViewport();
+
+            random = new Random();
+
+            obstacles.AddLast(new Platform(360, 240, AkumaContentManager.testPlatfromTex, false));
+            baddies.AddLast(new TestEnemy(100, 380));
+            baddies.AddLast(new TestEnemy(200, 380));
+            baddies.AddLast(new TestEnemy(150, 380));
+
+            baddies.AddLast(new TestEnemy(50, 380));
+            baddies.AddLast(new TestEnemy(25, 380));
+            baddies.AddLast(new TestEnemy(225, 380));
+
+            controller = new Controller();
             
             base.Initialize();
         }
@@ -94,20 +116,13 @@ namespace ProjectTBA
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //Commit that is very important
             // TODO: use this.Content to load your game content here
             AkumaContentManager.LoadContent();
-
-            // Test Player
-            testPlayer = new TestPlayer(370, 380);
             viewport = new AkumaViewport();
-
             obstacles.AddLast(new Platform(360, 240, AkumaContentManager.forestPlatformTrunkTex, false));
             obstacles.AddLast(new Platform(480, 140, AkumaContentManager.forestPlatformLeaf1Tex, false));
             obstacles.AddLast(new Platform(1200, 300, AkumaContentManager.forestPlatformLeaf2Tex, false));
             obstacles.AddLast(new Platform(20, 400, AkumaContentManager.forestPlatformLeaf3Tex, false));
-
-            controller = new Controller();
         }
 
         /// <summary>
@@ -134,14 +149,15 @@ namespace ProjectTBA
             viewport.Update(gameTime);
 
             controller.Update(gameTime);
+            player.Update(gameTime);
 
-            foreach (Unit unit in units)
+            foreach (Unit baddie in baddies)
             {
-                unit.Update(gameTime);
+                baddie.Update(gameTime);
             }
 
             // Test Player
-            testPlayer.Update(gameTime);
+            //testPlayer.Update(gameTime);
 
             foreach (Obstacle o in obstacles)
             {
@@ -164,20 +180,21 @@ namespace ProjectTBA
 
             viewport.Draw(gameTime, spriteBatch);
 
-            foreach (Unit unit in units)
+            foreach (Unit unit in baddies)
             {
                 unit.Draw(gameTime, spriteBatch);
             }
 
-            controller.Draw(gameTime, spriteBatch);
-
+            player.Draw(gameTime, spriteBatch);
             // Test Player
-            testPlayer.Draw(gameTime, spriteBatch);
+            //testPlayer.Draw(gameTime, spriteBatch);
 
             foreach (Obstacle o in obstacles)
             {
                 o.Draw(gameTime, spriteBatch);
             }
+
+            controller.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -187,20 +204,20 @@ namespace ProjectTBA
         /// Adds a unit to the list of units
         /// </summary>
         /// <param name="unitToAdd">The unit to add to the baddieslist</param>
-        public void AddUnitToUnits(Unit unitToAdd)
+        public void AddUnit(Unit unitToAdd)
         {
-            this.units.AddLast(unitToAdd);
+            this.baddies.AddLast(unitToAdd);
         }
 
         /// <summary>
         /// Removes the unit from the list of units
         /// </summary>
         /// <param name="unitToRemove">The baddie that needs to be removed</param>
-        public void RemoveUnitFromUnits(Unit unitToRemove)
+        public void RemoveUnit(Unit unitToRemove)
         {
-            if(units.Contains(unitToRemove)) 
+            if(baddies.Contains(unitToRemove)) 
             {
-                units.Remove(unitToRemove);
+                baddies.Remove(unitToRemove);
             }
         }
     }

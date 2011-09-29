@@ -51,7 +51,7 @@ namespace ProjectTBA.Obstacles
         /// An integer
         /// </returns>
         // TODO: TestPlayer ==> Unit (when units have locations)
-        public int GetPositionRelativeToUnit(TestPlayer unit)
+        public int GetPositionRelativeToUnit(Unit unit)
         {
             Rectangle location = unit.GetFeetHitbox();
 

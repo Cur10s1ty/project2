@@ -9,10 +9,10 @@ namespace ProjectTBA.Units
 {
     class Samurai : Unit
     {
-        public Samurai() 
-            : base()
+        public Samurai(float x, float y) 
+            : base(x, y)
         {
-            game.AddUnitToUnits(this);
+            game.AddUnit(this);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -29,7 +29,7 @@ namespace ProjectTBA.Units
 
         public override void Die()
         {
-            game.RemoveUnitFromUnits(this);
+            game.RemoveUnit(this);
         }
     }
 }
