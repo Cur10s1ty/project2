@@ -42,7 +42,7 @@ namespace ProjectTBA.Misc
             ContentManager content = Game1.GetInstance().Content;
 
             // Player
-            playerTex = content.Load<Texture2D>("Player/Hero");
+            playerTex = content.Load<Texture2D>("Player/Demon");
 
             // Misc
             solidTex = content.Load<Texture2D>("Misc/Solid");

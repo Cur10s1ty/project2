@@ -20,6 +20,10 @@ namespace ProjectTBA.Tests
         public Vector2 location;
         public float movementSpeed;
 
+        private DateTime currentDT;
+        private DateTime previousDT;
+        private long elapsedMilliseconds;
+
         public Boolean jumping;
         public Boolean jumpUp;
         public int maxJumpHeight;
@@ -44,105 +48,132 @@ namespace ProjectTBA.Tests
 
         public void Update(GameTime gt)
         {
-            CheckBottomCollision();
+            currentDT = DateTime.Now;
 
-            if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
+            if (previousDT == null)
             {
-                if (location.X + texture.Width < 1600)
-                {
-                    location.X += movementSpeed;
-                }
-                else
-                {
-                    location.X = 1600 - texture.Width;
-                }
-
-                if (game.offset.X + movementSpeed < 800)
-                {
-                    if (location.X + game.offset.X + texture.Width > 600)
-                    {
-                        game.offset.X += movementSpeed;
-                    }
-                }
-                else
-                {
-                    game.offset.X = 800;
-                }
-            }
-            if (ControllerState.IsButtonPressed(ControllerState.Buttons.LEFT))
-            {
-                if (location.X - movementSpeed > 0)
-                {
-                    location.X -= movementSpeed;
-                }
-                else
-                {
-                    location.X = 0;
-                }
-
-                if (game.offset.X - movementSpeed > 0)
-                {
-                    if (location.X - game.offset.X < 200)
-                    {
-                        game.offset.X -= movementSpeed;
-                    }
-                }
-                else
-                {
-                    game.offset.X = 0;
-                }
+                previousDT = currentDT;
             }
 
-            if (jumping)
+            long delta = 0;
+            if (previousDT.Millisecond > currentDT.Millisecond)
             {
-                if (jumpUp)
+                delta += 1000 - previousDT.Millisecond;
+                delta += currentDT.Millisecond;
+            }
+            else
+            {
+                delta += currentDT.Millisecond - previousDT.Millisecond;
+            }
+            elapsedMilliseconds += delta;
+
+            if (elapsedMilliseconds >= 40)
+            {
+
+                CheckBottomCollision();
+
+                if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
                 {
-                    if (location.Y - movementSpeed < maxJumpHeight)
+                    if (location.X + texture.Width < 1600)
                     {
-                        location.Y = maxJumpHeight;
-                        jumpUp = false;
+                        location.X += movementSpeed;
                     }
                     else
                     {
-                        location.Y -= movementSpeed;
+                        location.X = 1600 - texture.Width;
+                    }
+
+                    if (game.offset.X + movementSpeed < 800)
+                    {
+                        if (location.X + game.offset.X + texture.Width > 600)
+                        {
+                            game.offset.X += movementSpeed;
+                        }
+                    }
+                    else
+                    {
+                        game.offset.X = 800;
                     }
                 }
-                else
+                if (ControllerState.IsButtonPressed(ControllerState.Buttons.LEFT))
+                {
+                    if (location.X - movementSpeed > 0)
+                    {
+                        location.X -= movementSpeed;
+                    }
+                    else
+                    {
+                        location.X = 0;
+                    }
+
+                    if (game.offset.X - movementSpeed > 0)
+                    {
+                        if (location.X - game.offset.X < 200)
+                        {
+                            game.offset.X -= movementSpeed;
+                        }
+                    }
+                    else
+                    {
+                        game.offset.X = 0;
+                    }
+                }
+
+                if (jumping)
+                {
+                    if (jumpUp)
+                    {
+                        if (location.Y - movementSpeed < maxJumpHeight)
+                        {
+                            location.Y = maxJumpHeight;
+                            jumpUp = false;
+                        }
+                        else
+                        {
+                            location.Y -= movementSpeed;
+                        }
+                    }
+                    else
+                    {
+                        if (location.Y + movementSpeed > stopJumpOn)
+                        {
+                            location.Y = stopJumpOn;
+                            stopJumpOn = floorHeight;
+                            jumping = false;
+                        }
+                        else
+                        {
+                            location.Y += movementSpeed;
+                        }
+                    }
+                }
+                else if (falling)
                 {
                     if (location.Y + movementSpeed > stopJumpOn)
                     {
                         location.Y = stopJumpOn;
                         stopJumpOn = floorHeight;
-                        jumping = false;
+                        falling = false;
                     }
                     else
                     {
                         location.Y += movementSpeed;
                     }
                 }
-            }
-            else if (falling)
-            {
-                if (location.Y + movementSpeed > stopJumpOn)
+
+                if (!jumping && !falling)
                 {
-                    location.Y = stopJumpOn;
-                    stopJumpOn = floorHeight;
-                    falling = false;
+                    if (ControllerState.IsButtonPressed(ControllerState.Buttons.A))
+                    {
+                        jumping = true;
+                        jumpUp = true;
+                    }
                 }
-                else
-                {
-                    location.Y += movementSpeed;
-                }
+
+                elapsedMilliseconds = 0;
             }
 
-            if (!jumping && !falling)
-            {
-                if (ControllerState.IsButtonPressed(ControllerState.Buttons.A))
-                {
-                    jumping = true;
-                    jumpUp = true;
-                }
-            }
+            previousDT = currentDT;
         }
 
         internal void Draw(GameTime gt, SpriteBatch sb)
