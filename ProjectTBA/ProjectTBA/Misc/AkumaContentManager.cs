@@ -35,6 +35,7 @@ namespace ProjectTBA.Misc
         // Test
         public static Texture2D testPlayerTex { get; set; }
         public static Texture2D testPlatfromTex { get; set; }
+        public static Texture2D testEnemyTex { get; set; }
 
         public static void LoadContent()
         {
@@ -65,6 +66,7 @@ namespace ProjectTBA.Misc
             // Test
             testPlayerTex = content.Load<Texture2D>("Test/TestPlayer");
             testPlatfromTex = content.Load<Texture2D>("Test/TestPlatform");
+            testEnemyTex = content.Load<Texture2D>("Test/TestEnemy");
         }
     }
 }
