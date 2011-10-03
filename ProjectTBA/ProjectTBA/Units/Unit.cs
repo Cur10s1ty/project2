@@ -48,27 +48,7 @@ namespace ProjectTBA.Units
 
         public abstract void Die();
 
-        protected void calculateJump()
-        {
-            //y = 0.15x^2 - 1.5x + 5.5
-            int value = (int)(Math.Pow((0.15 * jumpCount), 2) - (1.5 * jumpCount) + 5.5);
-
-            if (location.Y - value > stopJumpOn)
-            {
-                location.Y = stopJumpOn;
-                jumping = false;
-                jumpCount = 0.0;
-            }
-            else
-            {
-                location.Y -= value;
-            }
-        }
-
-        public Rectangle GetFeetHitbox()
-        {
-            return new Rectangle((int)location.X + 37, (int)location.Y + 84, 48, 1);
-        }
+        public abstract Rectangle GetFeetHitbox();
 
         public void SetCollisionHeight()
         {
@@ -82,15 +62,20 @@ namespace ProjectTBA.Units
                     {
                         Platform p = (Platform)o;
 
-                        if (GetFeetHitbox().X + GetFeetHitbox().Width > p.bounds.X && GetFeetHitbox().X < p.bounds.X + p.bounds.Width)
+                        if (GetFeetHitbox().X + GetFeetHitbox().Width > p.GetTopHitbox().X && GetFeetHitbox().X < p.GetTopHitbox().X + p.GetTopHitbox().Width)
                         {
-                            if (GetFeetHitbox().Y <= p.bounds.Y)
+                            if (GetFeetHitbox().Y <= p.GetTopHitbox().Y)
                             {
                                 abovePlatform = true;
 
                                 if (jumping && !falling)
                                 {
-                                    stopJumpOn = p.bounds.Y - texture.Height;
+                                    stopJumpOn = p.GetTopHitbox().Y - texture.Height;
+                                }
+                                else if (!jumping)
+                                {
+                                    stopJumpOn = p.GetTopHitbox().Y - texture.Height;
+                                    falling = true;
                                 }
                             }
                         }
@@ -104,70 +89,5 @@ namespace ProjectTBA.Units
                 falling = true;
             }
         }
-
-        //protected void SetCollisionHeight()
-        //{
-        //    Boolean abovePlatform = false;
-
-        //    foreach (Obstacle o in Game1.GetInstance().obstacles)
-        //    {
-        //        if (o is Platform)
-        //        {
-        //            switch (((Platform)o).GetPositionRelativeToUnit(this))
-        //            {
-        //                // Directly above
-        //                case 1:
-        //                    if ((jumping && !jumpUp) || falling)
-        //                    {
-        //                        stopJumpOn = o.bounds.Y - texture.Height;
-        //                    }
-        //                    abovePlatform = true;
-        //                    break;
-
-        //                // Directly below
-        //                case 2:
-        //                    break;
-
-        //                // Same X and Y
-        //                case 3:
-        //                    break;
-
-        //                // Left above
-        //                case 4:
-        //                    break;
-
-        //                // Left below
-        //                case 5:
-        //                    break;
-
-        //                // Left, same Y
-        //                case 6:
-        //                    break;
-
-        //                // Right above
-        //                case 7:
-        //                    break;
-
-        //                // Right below
-        //                case 8:
-        //                    break;
-
-        //                // Right, same Y
-        //                case 9:
-        //                    break;
-
-        //                // Off screen
-        //                case 0:
-        //                    break;
-        //            }
-        //        }
-        //    }
-
-        //    if (!jumping && !abovePlatform && location.Y != floorHeight)
-        //    {
-        //        stopJumpOn = floorHeight;
-        //        falling = true;
-        //    }
-        //}
     }
 }

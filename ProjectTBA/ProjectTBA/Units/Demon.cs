@@ -20,8 +20,10 @@ namespace ProjectTBA.Units
         public Vector2 speed;
 
         public SpriteEffects spriteEffect = SpriteEffects.None;
+        public int jumpSpeed = 8;
         public int textureWidth = 86;
         public double walkFrames = 0;
+        public double attackFrames = 0;
 
         public int maxJumpHeight;
 
@@ -42,6 +44,7 @@ namespace ProjectTBA.Units
 
         public override void Attack()
         {
+            isAttacking = true;
         }
 
         public override void Die()
@@ -106,7 +109,7 @@ namespace ProjectTBA.Units
             if (jumping && !falling)
             {
                 CalculateJump();
-                jumpCount += 0.1;
+                jumpCount += 0.15;
             }
 
             if (falling && !jumping)
@@ -116,7 +119,6 @@ namespace ProjectTBA.Units
             }
 
             ApplySpeed();
-            speed = new Vector2(0, 0);
 
             if (!jumping && !falling)
             {
@@ -125,12 +127,16 @@ namespace ProjectTBA.Units
                     jumping = true;
                     jumpUp = true;
                 }
+                if (ControllerState.IsButtonPressed(ControllerState.Buttons.B))
+                {
+                    Attack();
+                }
             }
         }
 
         public override void Draw(GameTime gt, SpriteBatch sb)
         {
-            if (!jumping && !isWalking)
+            if (!jumping && !isWalking && !isAttacking)
             {
                 sb.Draw(texture, GetDrawLocation(), GetSourceRectangle(0), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
             }
@@ -144,31 +150,40 @@ namespace ProjectTBA.Units
                 sb.Draw(texture, GetDrawLocation(), GetSourceRectangle(1 + (int)Math.Floor(walkFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
                 walkFrames += 0.2;
             }
+            else if (!jumping && !falling && isAttacking)
+            {
+                if (attackFrames > 2)
+                {
+                    isAttacking = false;
+                    attackFrames = 0;
+                }
+
+                sb.Draw(texture, GetDrawLocation(), GetSourceRectangle(4 + (int)Math.Floor(attackFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                attackFrames += 0.2;
+            }
             else if (jumping)
             {
                 sb.Draw(texture, GetDrawLocation(), GetSourceRectangle(3), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
             }
+
+            sb.Draw(AkumaContentManager.solidTex, GetFeetHitbox(), null, Color.CornflowerBlue, 0f, Vector2.Zero, SpriteEffects.None, 0.05f);
         }
 
         public Vector2 GetDrawLocation()
         {
-            Vector2 loc = new Vector2();
-            loc.X = location.X - game.offset.X;
-            loc.Y = location.Y - game.offset.Y;
-            return loc;
+            return new Vector2(location.X - game.offset.X, location.Y - game.offset.Y);
         }
 
         public Rectangle GetSourceRectangle(int frame)
         {
-            return new Rectangle((86 * frame), 0, 86, 100);
+            return new Rectangle((textureWidth * frame), 0, textureWidth, 100);
         }
 
         public void CalculateJump()
         {
-            //y = 0.15x^2 - 1.5x + 5.5
-            int value = (int)(Math.Pow((0.15 * jumpCount), 2) - (1.5 * jumpCount) + 5.5);
+            int value = jumpSpeed - (int)Math.Floor(jumpCount * 2);
 
-            if (value == 0)
+            if (value <= 0)
             {
                 jumpUp = false;
             }
@@ -177,6 +192,7 @@ namespace ProjectTBA.Units
             {
                 speed.Y = stopJumpOn - location.Y;
                 jumping = false;
+                jumpSpeed = 8;
                 jumpCount = 0.0;
             }
             else
@@ -223,6 +239,54 @@ namespace ProjectTBA.Units
             {
                 isWalking = false;
             }
+
+            speed = new Vector2(0, 0);
+        }
+
+        public override Rectangle GetFeetHitbox()
+        {
+            switch (spriteEffect)
+            {
+                case SpriteEffects.None:
+                    if (!jumping && !isWalking && !isAttacking)
+                    {
+                        return new Rectangle((int)location.X + 37 - (int)game.offset.X, (int)location.Y + 99, 35, 1);
+                    }
+                    else if (!jumping && isWalking)
+                    {
+                        return new Rectangle((int)location.X + 28 - (int)game.offset.X, (int)location.Y + 99, 37, 1);
+                    }
+                    else if (!jumping && !falling && isAttacking)
+                    {
+                        return new Rectangle((int)location.X + 32 - (int)game.offset.X, (int)location.Y + 99, 33, 1);
+                    }
+                    else if (jumping)
+                    {
+                        return new Rectangle((int)location.X + 30 - (int)game.offset.X, (int)location.Y + 99, 29, 1);
+                    }
+                    break;
+
+                case SpriteEffects.FlipHorizontally:
+                    if (!jumping && !isWalking && !isAttacking)
+                    {
+                        return new Rectangle((int)location.X + 14 - (int)game.offset.X, (int)location.Y + 99, 35, 1);
+                    }
+                    else if (!jumping && isWalking)
+                    {
+                        return new Rectangle((int)location.X + 21 - (int)game.offset.X, (int)location.Y + 99, 37, 1);
+                    }
+                    else if (!jumping && !falling && isAttacking)
+                    {
+                        return new Rectangle((int)location.X + 21 - (int)game.offset.X, (int)location.Y + 99, 33, 1);
+                    }
+                    else if (jumping)
+                    {
+                        return new Rectangle((int)location.X + 27 - (int)game.offset.X, (int)location.Y + 99, 33, 1);
+                    }
+                    break;
+            }
+
+            return new Rectangle();
         }
     }
 }

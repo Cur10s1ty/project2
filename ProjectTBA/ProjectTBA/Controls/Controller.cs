@@ -81,37 +81,37 @@ namespace ProjectTBA.Controls
         public Rectangle GetButtonUpRectangle()
         {
             Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 60, dPad.Y + 2, 40, 40);
+            return new Rectangle(dPad.X + 85, dPad.Y + 5, 70, 70);
         }
 
         public Rectangle GetButtonDownRectangle()
         {
             Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 60, dPad.Y + 118, 40, 40);
+            return new Rectangle(dPad.X + 85, dPad.Y + 165, 70, 70);
         }
 
         public Rectangle GetButtonLeftRectangle()
         {
             Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 2, dPad.Y + 60, 40, 40);
+            return new Rectangle(dPad.X + 5, dPad.Y + 85, 70, 70);
         }
 
         public Rectangle GetButtonRightRectangle()
         {
             Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 118, dPad.Y + 60, 40, 40);
+            return new Rectangle(dPad.X + 165, dPad.Y + 85, 70, 70);
         }
 
         public Rectangle GetButtonARectangle()
         {
             Rectangle buttons = GetActionButtonRectangle();
-            return new Rectangle(buttons.X + 106, buttons.Y + 36, 40, 40);
+            return new Rectangle(buttons.X + 154, buttons.Y + 65, 70, 70);
         }
 
         public Rectangle GetButtonBRectangle()
         {
             Rectangle buttons = GetActionButtonRectangle();
-            return new Rectangle(buttons.X + 13, buttons.Y + 74, 40, 40);
+            return new Rectangle(buttons.X + 16, buttons.Y + 105, 70, 70);
         }
     }
 }

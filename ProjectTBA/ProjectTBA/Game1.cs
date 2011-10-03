@@ -80,29 +80,11 @@ namespace ProjectTBA
         /// </summary>
         protected override void Initialize()
         {
-            AkumaContentManager.LoadContent();
-
             // TODO: Add your initialization logic here
             baddies = new LinkedList<Unit>();
-            player = new Demon(370, 380);
             obstacles = new LinkedList<Obstacle>();
 
-            // Test Player
-            //testPlayer = new TestPlayer(370, 380);
-            viewport = new AkumaViewport();
-
             random = new Random();
-
-            obstacles.AddLast(new Platform(360, 240, AkumaContentManager.testPlatfromTex, false));
-            baddies.AddLast(new TestEnemy(100, 380));
-            baddies.AddLast(new TestEnemy(200, 380));
-            baddies.AddLast(new TestEnemy(150, 380));
-
-            baddies.AddLast(new TestEnemy(50, 380));
-            baddies.AddLast(new TestEnemy(25, 380));
-            baddies.AddLast(new TestEnemy(225, 380));
-
-            controller = new Controller();
             
             base.Initialize();
         }
@@ -118,10 +100,22 @@ namespace ProjectTBA
             // TODO: use this.Content to load your game content here
             AkumaContentManager.LoadContent();
             viewport = new AkumaViewport();
-            obstacles.AddLast(new Platform(360, 240, AkumaContentManager.forestPlatformTrunkTex, false));
-            obstacles.AddLast(new Platform(480, 140, AkumaContentManager.forestPlatformLeaf1Tex, false));
+
+            player = new Demon(370, 380);
+            controller = new Controller();
+
+            obstacles.AddLast(new Platform(600, 400, AkumaContentManager.forestPlatformTrunkTex, false));
+            obstacles.AddLast(new Platform(480, 300, AkumaContentManager.forestPlatformLeaf1Tex, false));
             obstacles.AddLast(new Platform(1200, 300, AkumaContentManager.forestPlatformLeaf2Tex, false));
             obstacles.AddLast(new Platform(20, 400, AkumaContentManager.forestPlatformLeaf3Tex, false));
+
+            //baddies.AddLast(new TestEnemy(100, 380));
+            //baddies.AddLast(new TestEnemy(200, 380));
+            //baddies.AddLast(new TestEnemy(150, 380));
+
+            //baddies.AddLast(new TestEnemy(50, 380));
+            //baddies.AddLast(new TestEnemy(25, 380));
+            //baddies.AddLast(new TestEnemy(225, 380));
         }
 
         /// <summary>

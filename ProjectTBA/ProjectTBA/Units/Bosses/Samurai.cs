@@ -31,5 +31,10 @@ namespace ProjectTBA.Units
         {
             game.RemoveUnit(this);
         }
+
+        public override Rectangle GetFeetHitbox()
+        {
+            return new Rectangle((int)location.X + 37 - (int)game.offset.X, (int)location.Y + 99, 36, 1);
+        }
     }
 }

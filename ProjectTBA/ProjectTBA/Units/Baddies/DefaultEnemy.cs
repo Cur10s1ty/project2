@@ -45,6 +45,11 @@ namespace ProjectTBA.Units.Baddies
                 Jump();
             }
 
+            if (falling)
+            {
+                Fall();
+            }
+
             if (moving)
             {
                 Move();
@@ -126,8 +131,48 @@ namespace ProjectTBA.Units.Baddies
 
         private void Jump()
         {
-            calculateJump();
+            CalculateJump();
             jumpCount += 0.1;
+        }
+
+        protected void CalculateJump()
+        {
+            //y = 0.15x^2 - 1.5x + 5.5
+            int value = (int)(Math.Pow((0.15 * jumpCount), 2) - (1.5 * jumpCount) + 5.5);
+
+            if (location.Y - value > stopJumpOn)
+            {
+                location.Y = stopJumpOn;
+                jumping = false;
+                jumpCount = 0.0;
+            }
+            else
+            {
+                location.Y -= value;
+            }
+        }
+
+        private void Fall()
+        {
+            CalculateFall();
+            fallCount++;
+        }
+
+        public void CalculateFall()
+        {
+            //y = 2^(0.25x)
+            int value = (int)Math.Pow(2, ((0.25 * fallCount)));
+
+            if (location.Y + value > stopJumpOn)
+            {
+                location.Y = stopJumpOn;
+                falling = false;
+                fallCount = 0.0;
+            }
+            else
+            {
+                location.Y += value;
+            }
         }
 
         public override void Attack()
@@ -138,6 +183,11 @@ namespace ProjectTBA.Units.Baddies
         public override void Die()
         {
             game.RemoveUnit(this);
+        }
+
+        public override Rectangle GetFeetHitbox()
+        {
+            return new Rectangle((int)location.X - (int)game.offset.X, (int)location.Y + 99, 25, 1);
         }
     }
 }

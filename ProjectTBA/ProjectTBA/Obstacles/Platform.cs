@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ProjectTBA.Units;
 using ProjectTBA.Tests;
+using ProjectTBA.Misc;
 
 namespace ProjectTBA.Obstacles
 {
@@ -27,11 +28,12 @@ namespace ProjectTBA.Obstacles
         internal override void Draw(GameTime gt, SpriteBatch sb)
         {
             sb.Draw(texture, GetRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.2f);
+            sb.Draw(AkumaContentManager.solidTex, GetTopHitbox(), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
         }
 
         public Rectangle GetTopHitbox()
         {
-            return new Rectangle(bounds.X + (int)Game1.GetInstance().offset.X, bounds.Y, bounds.Width, 1);
+            return new Rectangle(bounds.X - (int)Game1.GetInstance().offset.X, bounds.Y, bounds.Width, 1);
         }
 
         /// <summary>
