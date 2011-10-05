@@ -99,7 +99,7 @@ namespace ProjectTBA.Units
 
                 if (game.currentLevel.offset.X + movementSpeed < 800)
                 {
-                    if (location.X + game.currentLevel.offset.X + textureWidth > 600)
+                    if (location.X - game.currentLevel.offset.X + textureWidth > 600f)
                     {
                         game.currentLevel.offset.X += movementSpeed;
                     }
@@ -123,7 +123,7 @@ namespace ProjectTBA.Units
 
                 if (game.currentLevel.offset.X - movementSpeed > 0)
                 {
-                    if (location.X - game.currentLevel.offset.X < 200)
+                    if (location.X - game.currentLevel.offset.X < 200f)
                     {
                         game.currentLevel.offset.X -= movementSpeed;
                     }

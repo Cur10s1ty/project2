@@ -17,6 +17,7 @@ using ProjectTBA.Obstacles;
 using ProjectTBA.Views;
 using ProjectTBA.Units.Baddies;
 using Projectiles;
+using WindowsPhoneParticleEngine;
 using ProjectTBA.Levels;
 
 namespace ProjectTBA
@@ -41,9 +42,13 @@ namespace ProjectTBA
 
         public int screenWidth = 800;
         public int screenHeight = 480;
+        // Particles
+        public ParticleEmitterManager particleEmitterManager;
 
         private LinkedList<Level> levelList;
         public Level currentLevel;
+
+        public static TimeSpan TIMESTEP = TimeSpan.FromTicks(333333);
 
         private static Game1 instance;
         public static Game1 GetInstance()
@@ -94,8 +99,10 @@ namespace ProjectTBA
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
             // TODO: use this.Content to load your game content here
             AkumaContentManager.LoadContent();
+            particleEmitterManager = ParticleEmitterManager.GetInstance();
 
             player = new Demon(370, 380);
             controller = new Controller();
@@ -112,6 +119,10 @@ namespace ProjectTBA
             //baddies.AddLast(new TestEnemy(50, 380));
             //baddies.AddLast(new TestEnemy(25, 380));
             //baddies.AddLast(new TestEnemy(225, 380));
+
+            LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
+            textures.AddLast(AkumaContentManager.circleParticle);
+            particleEmitterManager.AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(400f, 240f, 0.002f), 1, 2f, Color.Red);
         }
 
         /// <summary>
@@ -138,6 +149,8 @@ namespace ProjectTBA
             controller.Update(gameTime);
             currentLevel.Update(gameTime);
 
+            particleEmitterManager.Update(gameTime, currentLevel.offset);
+
             base.Update(gameTime);
         }
 
@@ -155,6 +168,8 @@ namespace ProjectTBA
             currentLevel.Draw(gameTime, spriteBatch);
             
             controller.Draw(gameTime, spriteBatch);
+
+            particleEmitterManager.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);

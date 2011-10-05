@@ -35,6 +35,8 @@ namespace ProjectTBA.Misc
 
         // Baddies
         public static Texture2D baddieVillagerTex { get; set; }
+        // Particles
+        public static Texture2D circleParticle { get; set; }
 
         // Boss
         public static Texture2D samuraiTempTex { get; set; }
@@ -73,6 +75,8 @@ namespace ProjectTBA.Misc
 
             // Baddies
             baddieVillagerTex = content.Load<Texture2D>("Baddies/civilian");
+            // Particles
+            circleParticle = content.Load<Texture2D>("Particles/CircleParticle");
 
             // Boss
             samuraiTempTex = content.Load<Texture2D>("Baddies/ninjaWalking");
