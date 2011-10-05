@@ -14,13 +14,13 @@ namespace ProjectTBA.Units.Baddies
         private Boolean moveLeft = true;
         private Boolean attacking = false;
         private int lastTotalGameTime = 0;
+        private int health = 3;
 
         public DefaultEnemy(float x, float y, Texture2D texture)
             : base(x, y)
         {
             game.AddUnit(this);
             this.texture = texture;
-
             this.stopJumpOn = (int)y;
             this.floorHeight = (int)y;
         }
@@ -28,12 +28,28 @@ namespace ProjectTBA.Units.Baddies
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, GetRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
+            if (moveLeft)
+            {
+                spriteEffect = SpriteEffects.None;
+            }
+            else
+            {
+                spriteEffect = SpriteEffects.FlipHorizontally;
+            }
+            spriteBatch.Draw(texture, GetRectangle(), null, Color.White, 0f, Vector2.Zero, spriteEffect, 0.1f);
         }
 
         public override void Update(GameTime gameTime)
         {
-            SetCollisionHeight();
+            //SetCollisionHeight();
+
+            if (this.location.X - game.player.location.X < 50 || this.location.X - game.player.location.X > -50)
+            {
+                if (this.GetRectangle().Intersects(game.player.GetRectangle()))
+                {
+                    game.player.Hit(this);
+                }
+            }
 
             if (attacking)
             {
@@ -64,12 +80,7 @@ namespace ProjectTBA.Units.Baddies
                 lastTotalGameTime = (int)gameTime.TotalGameTime.TotalMilliseconds;
             }
 
-            int chance = game.random.Next(10);
-
-            if (this.GetRectangle().Intersects(game.player.GetRectangle()) && !jumping)
-            {
-                attacking = true;
-            }
+            int chance = game.currentLevel.random.Next(10);
 
             if (idle)
             {
@@ -88,7 +99,14 @@ namespace ProjectTBA.Units.Baddies
                 }
                 else if (chance < 4 && !jumping)
                 {
-                    moveLeft = !moveLeft;
+                    if (moveLeft)
+                    {
+                        moveLeft = false;
+                    }
+                    else
+                    {
+                        moveLeft = true;
+                    }
                 }
             }
 
@@ -182,12 +200,23 @@ namespace ProjectTBA.Units.Baddies
 
         public override void Die()
         {
-            game.RemoveUnit(this);
+            this.isDead = true;
+        }
+
+        public void Hit()
+        {
+            this.health--;
+        }
+
+        public Rectangle GetRectangle()
+        {
+            return new Rectangle((int)location.X - (int)Game1.GetInstance().currentLevel.offset.X,
+                (int)location.Y, texture.Width, texture.Height);
         }
 
         public override Rectangle GetFeetHitbox()
         {
-            return new Rectangle((int)location.X - (int)game.offset.X, (int)location.Y + 99, 25, 1);
+            return new Rectangle((int)location.X - (int)game.currentLevel.offset.X, (int)location.Y + 99, 25, 1);
         }
     }
 }

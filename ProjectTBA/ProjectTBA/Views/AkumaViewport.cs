@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectTBA.Tests;
+using ProjectTBA.Levels;
 
 namespace ProjectTBA.Views
 {
@@ -15,12 +16,12 @@ namespace ProjectTBA.Views
         public Background bg { get; set; }
         public Vector2 screenSize { get; set; }
 
-        public AkumaViewport()
+        public AkumaViewport(Level level)
         {
             game = Game1.GetInstance();
             bg = new Background(Background.BGType.Forest);
 
-            game.offset = new Vector2(0, 0);
+            level.offset = new Vector2(0, 0);
             screenSize = new Vector2(800, 480);
         }
 

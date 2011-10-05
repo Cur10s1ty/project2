@@ -49,17 +49,17 @@ namespace ProjectTBA.Views
 
         public Rectangle GetFrontDrawRectangle()
         {
-            return new Rectangle((int)Game1.GetInstance().offset.X, 0, 800, 480);
+            return new Rectangle((int)Game1.GetInstance().currentLevel.offset.X, 0, 800, 480);
         }
 
         public Rectangle GetMiddleDrawRectangle()
         {
-            return new Rectangle((int)((Game1.GetInstance().offset.X / 800f) * 500f), 0, 1100, 480);
+            return new Rectangle((int)((Game1.GetInstance().currentLevel.offset.X / 800f) * 500f), 0, 1100, 480);
         }
 
         public Rectangle GetBackDrawRectangle()
         {
-            return new Rectangle((int)((Game1.GetInstance().offset.X / 800f) * 200f), 0, 1400, 480);
+            return new Rectangle((int)((Game1.GetInstance().currentLevel.offset.X / 800f) * 200f), 0, 1400, 480);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace ProjectTBA.Misc
         // Misc
         public static Texture2D solidTex { get; set; }
         public static SpriteFont testFont { get; set; }
+        public static Texture2D shurikenTex { get; set; }
 
         // Controls
         public static Texture2D dPadTex { get; set; }
@@ -32,6 +33,12 @@ namespace ProjectTBA.Misc
         public static Texture2D forestPlatformLeaf2Tex { get; set; }
         public static Texture2D forestPlatformLeaf3Tex { get; set; }
 
+        // Baddies
+        public static Texture2D baddieVillagerTex { get; set; }
+
+        // Boss
+        public static Texture2D samuraiTempTex { get; set; }
+
         // Test
         public static Texture2D testPlayerTex { get; set; }
         public static Texture2D testPlatfromTex { get; set; }
@@ -47,6 +54,7 @@ namespace ProjectTBA.Misc
             // Misc
             solidTex = content.Load<Texture2D>("Misc/Solid");
             testFont = content.Load<SpriteFont>("Misc/TestFont");
+            shurikenTex = content.Load<Texture2D>("Misc/weapon");
 
             // Controls
             dPadTex = content.Load<Texture2D>("Controls/DPad");
@@ -58,10 +66,16 @@ namespace ProjectTBA.Misc
             forestBGBackTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_3");
 
             // Platforms
-            forestPlatformTrunkTex = content.Load<Texture2D>("Platforms/Forest/Trunk");
+            forestPlatformTrunkTex = content.Load<Texture2D>("Platforms/Forest/trunk");
             forestPlatformLeaf1Tex = content.Load<Texture2D>("Platforms/Forest/Leaf1");
             forestPlatformLeaf2Tex = content.Load<Texture2D>("Platforms/Forest/Leaf2");
             forestPlatformLeaf3Tex = content.Load<Texture2D>("Platforms/Forest/Leaf3");
+
+            // Baddies
+            baddieVillagerTex = content.Load<Texture2D>("Baddies/civilian");
+
+            // Boss
+            samuraiTempTex = content.Load<Texture2D>("Baddies/ninjaWalking");
 
             // Test
             testPlayerTex = content.Load<Texture2D>("Test/TestPlayer");

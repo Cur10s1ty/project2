@@ -20,11 +20,14 @@ namespace ProjectTBA.Units
         protected Boolean jumping;
         protected Boolean jumpUp;
         protected Boolean falling;
+        protected Boolean isDead = false;
 
         protected int stopJumpOn;
         protected int floorHeight;
 
         public Texture2D texture { get; set; }
+
+        public SpriteEffects spriteEffect = SpriteEffects.None;
 
         public Unit(float x, float y)
         {
@@ -32,12 +35,6 @@ namespace ProjectTBA.Units
 
             this.location = new Vector2(x, y);
             this.movementSpeed = 4f;
-        }
-
-        public Rectangle GetRectangle()
-        {
-            return new Rectangle((int)location.X - (int)Game1.GetInstance().offset.X,
-                (int)location.Y, texture.Width, texture.Height);
         }
 
         public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
@@ -56,7 +53,7 @@ namespace ProjectTBA.Units
 
             if (!jumpUp)
             {
-                foreach (Obstacle o in game.obstacles)
+                foreach (Obstacle o in game.currentLevel.obstacles)
                 {
                     if (o is Platform)
                     {

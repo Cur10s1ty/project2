@@ -33,7 +33,7 @@ namespace ProjectTBA.Obstacles
 
         public Rectangle GetTopHitbox()
         {
-            return new Rectangle(bounds.X - (int)Game1.GetInstance().offset.X, bounds.Y, bounds.Width, 1);
+            return new Rectangle(bounds.X + (int)Game1.GetInstance().currentLevel.offset.X, bounds.Y, bounds.Width, 1);
         }
 
         /// <summary>

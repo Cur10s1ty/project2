@@ -16,6 +16,8 @@ using ProjectTBA.Tests;
 using ProjectTBA.Obstacles;
 using ProjectTBA.Views;
 using ProjectTBA.Units.Baddies;
+using Projectiles;
+using ProjectTBA.Levels;
 
 namespace ProjectTBA
 {
@@ -28,21 +30,20 @@ namespace ProjectTBA
         public SpriteBatch spriteBatch;
 
         public Controller controller;
-        public LinkedList<Unit> baddies;
         /// <summary>
         /// De demon =D
         /// </summary>
         public Demon player;
 
-        // Viewport + Background
-        public AkumaViewport viewport;
-        public Vector2 offset;
-
         // Test Player
         public TestPlayer testPlayer;
-        public LinkedList<Obstacle> obstacles;
+        public GameTime lastGameTime;
 
-        public Random random;
+        public int screenWidth = 800;
+        public int screenHeight = 480;
+
+        private LinkedList<Level> levelList;
+        public Level currentLevel;
 
         private static Game1 instance;
         public static Game1 GetInstance()
@@ -66,8 +67,8 @@ namespace ProjectTBA
             InactiveSleepTime = TimeSpan.FromSeconds(1);
 
             // Set default orientation to landscape
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 480;
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight;
 
             instance = this;
         }
@@ -81,10 +82,6 @@ namespace ProjectTBA
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            baddies = new LinkedList<Unit>();
-            obstacles = new LinkedList<Obstacle>();
-
-            random = new Random();
             
             base.Initialize();
         }
@@ -99,17 +96,16 @@ namespace ProjectTBA
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
             AkumaContentManager.LoadContent();
-            viewport = new AkumaViewport();
 
             player = new Demon(370, 380);
             controller = new Controller();
 
-            obstacles.AddLast(new Platform(600, 400, AkumaContentManager.forestPlatformTrunkTex, false));
-            obstacles.AddLast(new Platform(480, 300, AkumaContentManager.forestPlatformLeaf1Tex, false));
-            obstacles.AddLast(new Platform(1200, 300, AkumaContentManager.forestPlatformLeaf2Tex, false));
-            obstacles.AddLast(new Platform(20, 400, AkumaContentManager.forestPlatformLeaf3Tex, false));
+            currentLevel = new Level(player);
 
-            //baddies.AddLast(new TestEnemy(100, 380));
+            currentLevel.obstacles.AddLast(new Platform(600, 400, AkumaContentManager.forestPlatformTrunkTex, false));
+            currentLevel.obstacles.AddLast(new Platform(480, 300, AkumaContentManager.forestPlatformLeaf1Tex, false));
+
+            currentLevel.baddies.AddLast(new TestEnemy(100, 380));
             //baddies.AddLast(new TestEnemy(200, 380));
             //baddies.AddLast(new TestEnemy(150, 380));
 
@@ -137,25 +133,10 @@ namespace ProjectTBA
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
-            // TODO: Add your update logic here
-            viewport.Update(gameTime);
+            this.lastGameTime = gameTime;
 
             controller.Update(gameTime);
-            player.Update(gameTime);
-
-            foreach (Unit baddie in baddies)
-            {
-                baddie.Update(gameTime);
-            }
-
-            // Test Player
-            //testPlayer.Update(gameTime);
-
-            foreach (Obstacle o in obstacles)
-            {
-                o.Update(gameTime);
-            }
+            currentLevel.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -171,22 +152,8 @@ namespace ProjectTBA
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
 
-            viewport.Draw(gameTime, spriteBatch);
-
-            foreach (Unit unit in baddies)
-            {
-                unit.Draw(gameTime, spriteBatch);
-            }
-
-            player.Draw(gameTime, spriteBatch);
-            // Test Player
-            //testPlayer.Draw(gameTime, spriteBatch);
-
-            foreach (Obstacle o in obstacles)
-            {
-                o.Draw(gameTime, spriteBatch);
-            }
-
+            currentLevel.Draw(gameTime, spriteBatch);
+            
             controller.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
@@ -199,7 +166,7 @@ namespace ProjectTBA
         /// <param name="unitToAdd">The unit to add to the baddieslist</param>
         public void AddUnit(Unit unitToAdd)
         {
-            this.baddies.AddLast(unitToAdd);
+            currentLevel.baddies.AddLast(unitToAdd);
         }
 
         /// <summary>
@@ -208,9 +175,9 @@ namespace ProjectTBA
         /// <param name="unitToRemove">The baddie that needs to be removed</param>
         public void RemoveUnit(Unit unitToRemove)
         {
-            if(baddies.Contains(unitToRemove)) 
+            if (currentLevel.baddies.Contains(unitToRemove))
             {
-                baddies.Remove(unitToRemove);
+                currentLevel.baddies.Remove(unitToRemove);
             }
         }
     }

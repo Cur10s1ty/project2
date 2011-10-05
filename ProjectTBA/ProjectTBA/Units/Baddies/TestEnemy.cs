@@ -9,7 +9,7 @@ namespace ProjectTBA.Units.Baddies
     public class TestEnemy : DefaultEnemy
     {
         public TestEnemy(float x, float y)
-            : base(x, y, AkumaContentManager.testEnemyTex)
+            : base(x, y, AkumaContentManager.baddieVillagerTex)
         {
         }
     }

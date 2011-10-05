@@ -83,16 +83,16 @@ namespace ProjectTBA.Tests
                         location.X = 1600 - texture.Width;
                     }
 
-                    if (game.offset.X + movementSpeed < 800)
+                    if (game.currentLevel.offset.X + movementSpeed < 800)
                     {
-                        if (location.X + game.offset.X + texture.Width > 600)
+                        if (location.X + game.currentLevel.offset.X + texture.Width > 600)
                         {
-                            game.offset.X += movementSpeed;
+                            game.currentLevel.offset.X += movementSpeed;
                         }
                     }
                     else
                     {
-                        game.offset.X = 800;
+                        game.currentLevel.offset.X = 800;
                     }
                 }
                 if (ControllerState.IsButtonPressed(ControllerState.Buttons.LEFT))
@@ -106,16 +106,16 @@ namespace ProjectTBA.Tests
                         location.X = 0;
                     }
 
-                    if (game.offset.X - movementSpeed > 0)
+                    if (game.currentLevel.offset.X - movementSpeed > 0)
                     {
-                        if (location.X - game.offset.X < 200)
+                        if (location.X - game.currentLevel.offset.X < 200)
                         {
-                            game.offset.X -= movementSpeed;
+                            game.currentLevel.offset.X -= movementSpeed;
                         }
                     }
                     else
                     {
-                        game.offset.X = 0;
+                        game.currentLevel.offset.X = 0;
                     }
                 }
 
@@ -183,7 +183,7 @@ namespace ProjectTBA.Tests
 
         public Rectangle GetRectangle()
         {
-            return new Rectangle((int)location.X - (int)game.offset.X, (int)location.Y, texture.Width, texture.Height);
+            return new Rectangle((int)location.X - (int)game.currentLevel.offset.X, (int)location.Y, texture.Width, texture.Height);
         }
 
         public Rectangle GetFeetHitbox()
@@ -197,7 +197,7 @@ namespace ProjectTBA.Tests
 
             if (!jumpUp)
             {
-                foreach (Obstacle o in game.obstacles)
+                foreach (Obstacle o in game.currentLevel.obstacles)
                 {
                     if (o is Platform)
                     {

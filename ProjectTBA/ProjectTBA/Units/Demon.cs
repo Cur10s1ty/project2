@@ -8,18 +8,17 @@ using ProjectTBA.Controls;
 using ProjectTBA.Misc;
 using ProjectTBA.Obstacles;
 using System.Diagnostics;
+using Projectiles;
 
 namespace ProjectTBA.Units
 {
     public class Demon : Unit
     {
-        public Boolean isJumping = false;
         public Boolean isAttacking = false;
         public Boolean isWalking = false;
 
         public Vector2 speed;
 
-        public SpriteEffects spriteEffect = SpriteEffects.None;
         public int jumpSpeed = 8;
         public int textureWidth = 86;
         public double walkFrames = 0;
@@ -27,11 +26,23 @@ namespace ProjectTBA.Units
 
         public int maxJumpHeight;
 
+        private enum HitState
+        {
+            hitLeft, hitRight
+        }
+
+        public Boolean isHit = false;
+        private Boolean isInvunerable = false;
+        private HitState currentHitState;
+        private int hitHeight = 9;
+        private int hitTimestamp;
+        private int health = 5;
+
         /// <summary>
         /// The player =D
         /// </summary>
         public Demon(float x, float y)
-            : base(x,y)
+            : base(x, y)
         {
             this.texture = AkumaContentManager.playerTex;
             this.jumping = false;
@@ -44,7 +55,7 @@ namespace ProjectTBA.Units
 
         public override void Attack()
         {
-            isAttacking = true;
+
         }
 
         public override void Die()
@@ -57,7 +68,23 @@ namespace ProjectTBA.Units
 
         public override void Update(GameTime gt)
         {
+
             SetCollisionHeight();
+
+            if (isHit)
+            {
+                UpdateHit();
+                //isHit = false;
+                return;
+            }
+
+            if (isInvunerable)
+            {
+                UpdateInvunerableState();
+                return;
+            }
+
+            speed.X = 0;
 
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
             {
@@ -70,18 +97,19 @@ namespace ProjectTBA.Units
                     speed.X = 1600 - textureWidth - location.X;
                 }
 
-                if (game.offset.X + movementSpeed < 800)
+                if (game.currentLevel.offset.X + movementSpeed < 800)
                 {
-                    if (location.X + game.offset.X + textureWidth > 600)
+                    if (location.X + game.currentLevel.offset.X + textureWidth > 600)
                     {
-                        game.offset.X += movementSpeed;
+                        game.currentLevel.offset.X += movementSpeed;
                     }
                 }
                 else
                 {
-                    game.offset.X = 800;
+                    game.currentLevel.offset.X = 800;
                 }
             }
+
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.LEFT))
             {
                 if (location.X - movementSpeed > 0)
@@ -93,18 +121,20 @@ namespace ProjectTBA.Units
                     speed.X = -location.X;
                 }
 
-                if (game.offset.X - movementSpeed > 0)
+                if (game.currentLevel.offset.X - movementSpeed > 0)
                 {
-                    if (location.X - game.offset.X < 200)
+                    if (location.X - game.currentLevel.offset.X < 200)
                     {
-                        game.offset.X -= movementSpeed;
+                        game.currentLevel.offset.X -= movementSpeed;
                     }
                 }
                 else
                 {
-                    game.offset.X = 0;
+                    game.currentLevel.offset.X = 0;
                 }
             }
+
+            ApplySpeed();
 
             if (jumping && !falling)
             {
@@ -117,8 +147,6 @@ namespace ProjectTBA.Units
                 CalculateFall();
                 fallCount += 1;
             }
-
-            ApplySpeed();
 
             if (!jumping && !falling)
             {
@@ -171,12 +199,18 @@ namespace ProjectTBA.Units
 
         public Vector2 GetDrawLocation()
         {
-            return new Vector2(location.X - game.offset.X, location.Y - game.offset.Y);
+            return new Vector2(location.X - game.currentLevel.offset.X, location.Y - game.currentLevel.offset.Y);
         }
 
         public Rectangle GetSourceRectangle(int frame)
         {
             return new Rectangle((textureWidth * frame), 0, textureWidth, 100);
+        }
+
+        public Rectangle GetRectangle()
+        {
+            return new Rectangle((int)location.X - (int)Game1.GetInstance().currentLevel.offset.X,
+                (int)location.Y, 86, texture.Height);
         }
 
         public void CalculateJump()
@@ -239,6 +273,92 @@ namespace ProjectTBA.Units
             {
                 isWalking = false;
             }
+        }
+
+        public void Hit(Object from)
+        {
+            if (isHit || isInvunerable)
+            {
+                return;
+            }
+
+            isHit = true;
+            jumping = false;
+            falling = false;
+            fallCount = 0.0;
+            jumpCount = 0.0;
+
+            if (from is Projectile)
+            {
+                Projectile source = (Projectile)from;
+                if (source.location.X > this.location.X)
+                {
+                    //hit left
+                    this.currentHitState = HitState.hitLeft;
+                }
+                else
+                {
+                    //hit right
+                    this.currentHitState = HitState.hitRight;
+                }
+            }
+            else if (from is Unit)
+            {
+                Unit source = (Unit)from;
+                if (source.location.X > this.location.X)
+                {
+                    //hit left
+                    this.currentHitState = HitState.hitLeft;
+                }
+                else
+                {
+                    //hit right
+                    this.currentHitState = HitState.hitRight;
+                }
+            }
+        }
+
+        private void UpdateHit()
+        {
+            switch (this.currentHitState)
+            {
+                case HitState.hitLeft:
+                    if (this.location.X > 5)
+                    {
+                        this.location.X -= 5;
+                    }
+                    break;
+                case HitState.hitRight:
+                    if (this.location.X < game.currentLevel.levelWidth)
+                    {
+                        this.location.X += 5;
+                    }
+                    break;
+                default: break;
+            }
+
+
+            if (this.location.Y - hitHeight - 1 > 380)
+            {
+                this.location.Y -= 380 - this.location.Y;
+                hitHeight = 8;
+                isHit = false;
+                isInvunerable = true;
+                hitTimestamp = (int)game.lastGameTime.TotalGameTime.TotalMilliseconds;
+            }
+            else
+            {
+                this.location.Y -= hitHeight;
+                hitHeight--;
+            }
+        }
+
+        private void UpdateInvunerableState()
+        {
+            if (game.lastGameTime.TotalGameTime.TotalMilliseconds - this.hitTimestamp > 300)
+            {
+                isInvunerable = false;
+            }
 
             speed = new Vector2(0, 0);
         }
@@ -250,38 +370,38 @@ namespace ProjectTBA.Units
                 case SpriteEffects.None:
                     if (!jumping && !isWalking && !isAttacking)
                     {
-                        return new Rectangle((int)location.X + 37 - (int)game.offset.X, (int)location.Y + 99, 35, 1);
+                        return new Rectangle((int)location.X + 37 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 35, 1);
                     }
                     else if (!jumping && isWalking)
                     {
-                        return new Rectangle((int)location.X + 28 - (int)game.offset.X, (int)location.Y + 99, 37, 1);
+                        return new Rectangle((int)location.X + 28 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 37, 1);
                     }
                     else if (!jumping && !falling && isAttacking)
                     {
-                        return new Rectangle((int)location.X + 32 - (int)game.offset.X, (int)location.Y + 99, 33, 1);
+                        return new Rectangle((int)location.X + 32 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 33, 1);
                     }
                     else if (jumping)
                     {
-                        return new Rectangle((int)location.X + 30 - (int)game.offset.X, (int)location.Y + 99, 29, 1);
+                        return new Rectangle((int)location.X + 30 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 29, 1);
                     }
                     break;
 
                 case SpriteEffects.FlipHorizontally:
                     if (!jumping && !isWalking && !isAttacking)
                     {
-                        return new Rectangle((int)location.X + 14 - (int)game.offset.X, (int)location.Y + 99, 35, 1);
+                        return new Rectangle((int)location.X + 14 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 35, 1);
                     }
                     else if (!jumping && isWalking)
                     {
-                        return new Rectangle((int)location.X + 21 - (int)game.offset.X, (int)location.Y + 99, 37, 1);
+                        return new Rectangle((int)location.X + 21 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 37, 1);
                     }
                     else if (!jumping && !falling && isAttacking)
                     {
-                        return new Rectangle((int)location.X + 21 - (int)game.offset.X, (int)location.Y + 99, 33, 1);
+                        return new Rectangle((int)location.X + 21 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 33, 1);
                     }
                     else if (jumping)
                     {
-                        return new Rectangle((int)location.X + 27 - (int)game.offset.X, (int)location.Y + 99, 33, 1);
+                        return new Rectangle((int)location.X + 27 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 33, 1);
                     }
                     break;
             }
