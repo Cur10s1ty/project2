@@ -20,6 +20,8 @@ namespace WindowsPhoneParticleEngine
         public float particleMovementSpeed { get; set; }
         public Color color;
         public float defaultScale = 1f;
+        public Random random = new Random();
+
 
         public ParticleEmitter(LinkedList<Texture2D> textures)
         {

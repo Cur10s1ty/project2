@@ -26,7 +26,7 @@ namespace WindowsPhoneParticleEngine.Particles
 
         public Particle(ParticleEmitter emitter)
         {
-            this.random = new Random();
+            this.random = emitter.random;
 
             this.emitter = emitter;
             this.texture = emitter.textures.ElementAt(random.Next(emitter.textures.Count));

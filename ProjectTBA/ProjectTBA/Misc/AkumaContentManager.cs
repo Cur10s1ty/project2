@@ -11,7 +11,9 @@ namespace ProjectTBA.Misc
     {
 
         // Player
-        public static Texture2D playerTex { get; set; }
+        public static Texture2D demonJumpTex { get; set; }
+        public static Texture2D demonWalkTex { get; set; }
+        public static Texture2D demonTongueTex { get; set; }
 
         // Misc
         public static Texture2D solidTex { get; set; }
@@ -57,7 +59,9 @@ namespace ProjectTBA.Misc
             ContentManager content = Game1.GetInstance().Content;
 
             // Player
-            playerTex = content.Load<Texture2D>("Player/Demon");
+            demonJumpTex = content.Load<Texture2D>("Player/DemonJump");
+            demonWalkTex = content.Load<Texture2D>("Player/DemonWalk");
+            demonTongueTex = content.Load<Texture2D>("Player/DemonTongue");
 
             // Misc
             solidTex = content.Load<Texture2D>("Misc/Solid");

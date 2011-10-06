@@ -35,7 +35,7 @@ namespace ProjectTBA.Tests
         public TestPlayer(float x, float y)
         {
             this.game = Game1.GetInstance();
-            this.texture = AkumaContentManager.playerTex;
+            this.texture = AkumaContentManager.demonWalkTex;
             this.location = new Vector2(x, y);
             this.movementSpeed = 8f;
 

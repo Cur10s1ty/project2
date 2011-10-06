@@ -56,7 +56,7 @@ namespace ProjectTBA.Units
 
         public abstract Rectangle GetFeetHitbox();
 
-        public void SetCollisionHeight()
+        public virtual void SetCollisionHeight()
         {
             Boolean abovePlatform = false;
 

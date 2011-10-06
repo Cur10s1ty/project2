@@ -19,6 +19,7 @@ using ProjectTBA.Units.Baddies;
 using Projectiles;
 using WindowsPhoneParticleEngine;
 using ProjectTBA.Levels;
+using ProjectTBA.Creatures;
 
 namespace ProjectTBA
 {
@@ -50,8 +51,6 @@ namespace ProjectTBA
 
         private LinkedList<Level> levelList;
         public Level currentLevel;
-
-        public static TimeSpan TIMESTEP = TimeSpan.FromTicks(333333);
 
         private static Game1 instance;
         public static Game1 GetInstance()
@@ -107,7 +106,7 @@ namespace ProjectTBA
             AkumaContentManager.LoadContent();
             particleEmitterManager = ParticleEmitterManager.GetInstance();
 
-            player = new Demon(357, 380);
+            player = new Demon(357, 371);
             controller = new Controller();
 
             currentLevel = new Level(player);
@@ -115,7 +114,10 @@ namespace ProjectTBA
             currentLevel.obstacles.AddLast(new Platform(600, 400, AkumaContentManager.forestPlatformTrunkTex, false));
             currentLevel.obstacles.AddLast(new Platform(480, 300, AkumaContentManager.forestPlatformLeaf1Tex, false));
 
-            currentLevel.baddies.AddLast(new TestEnemy(100, 380));
+
+            currentLevel.creatures.AddLast(new Deer(new Vector2(100, 380)));
+
+            //currentLevel.baddies.AddLast(new TestEnemy(100, 380));
             //baddies.AddLast(new TestEnemy(200, 380));
             //baddies.AddLast(new TestEnemy(150, 380));
 
@@ -154,8 +156,6 @@ namespace ProjectTBA
 
             particleEmitterManager.Update(gameTime, currentLevel.offset);
 
-            particleEmitterManager.Update(gameTime, offset);
-
             base.Update(gameTime);
         }
 
@@ -173,8 +173,6 @@ namespace ProjectTBA
             currentLevel.Draw(gameTime, spriteBatch);
             
             controller.Draw(gameTime, spriteBatch);
-
-            particleEmitterManager.Draw(gameTime, spriteBatch);
 
             particleEmitterManager.Draw(gameTime, spriteBatch);
 

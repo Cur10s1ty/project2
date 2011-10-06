@@ -10,20 +10,22 @@ using ProjectTBA.Obstacles;
 using System.Diagnostics;
 using Projectiles;
 using WindowsPhoneParticleEngine;
+using ProjectTBA.Projectiles;
 
 namespace ProjectTBA.Units
 {
     public class Demon : Unit
     {
+
+        public Texture2D jumpTex;
+        public Texture2D walkTex;
+
         public Boolean isAttacking = false;
         public Boolean isWalking = false;
-
-        private ParticleEmitter emitter = null;
 
         public Vector2 speed;
 
         public int jumpSpeed = 8;
-        public int textureWidth = 86;
         public double walkFrames = 0;
         public double attackFrames = 0;
 
@@ -44,18 +46,22 @@ namespace ProjectTBA.Units
         public LinkedList<Projectile> fireballs;
         public LinkedList<Projectile> fireballsToRemove;
 
+        public int textureWidth = 86;
+        public int textureHeight = 109;
+
         /// <summary>
         /// The player =D
         /// </summary>
         public Demon(float x, float y)
             : base(x, y)
         {
-            this.texture = AkumaContentManager.playerTex;
+            this.jumpTex = AkumaContentManager.demonJumpTex;
+            this.walkTex = AkumaContentManager.demonWalkTex;
             this.jumping = false;
             this.falling = false;
             this.maxJumpHeight = 40;
             this.stopJumpOn = (int)y;
-            this.floorHeight = 380;
+            this.floorHeight = (int)y;
             this.speed = new Vector2(0, 0);
             this.fireballs = new LinkedList<Projectile>();
             this.fireballsToRemove = new LinkedList<Projectile>();
@@ -64,38 +70,6 @@ namespace ProjectTBA.Units
         public override void Attack()
         {
             SpawnFireball();
-            {
-                emitter.Dispose();
-            }
-
-            LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
-            textures.AddLast(AkumaContentManager.circleParticle);
-
-            Vector3 emitterLocation = new Vector3();
-            Vector3 emitterSpeed = new Vector3();
-
-            if (spriteEffect == SpriteEffects.None)
-            {
-                emitterLocation.X = location.X + 86;
-                emitterLocation.Y = location.Y + 50;
-                emitterLocation.Z = 0.002f;
-
-                emitterSpeed.X = 5f;
-                emitterSpeed.Y = 0f;
-                emitterSpeed.Z = 0f;
-            }
-            else if (spriteEffect == SpriteEffects.FlipHorizontally)
-            {
-                emitterLocation.X = location.X;
-                emitterLocation.Y = location.Y + 50;
-                emitterLocation.Z = 0.002f;
-
-                emitterSpeed.X = -5f;
-                emitterSpeed.Y = 0f;
-                emitterSpeed.Z = 0f;
-            }
-
-            this.emitter = game.particleEmitterManager.AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, emitterLocation, emitterSpeed, 1, 2f, 0.5f, Color.White);
         }
 
         public override void Die()
@@ -200,7 +174,7 @@ namespace ProjectTBA.Units
         {
             if (!jumping && !isWalking && !isAttacking)
             {
-                spriteBatch.Draw(texture, GetDrawLocation(), GetSourceRectangle(0), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                spriteBatch.Draw(walkTex, GetDrawLocation(), GetSourceRectangle(0), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
             }
             else if (!jumping && isWalking)
             {
@@ -209,7 +183,7 @@ namespace ProjectTBA.Units
                     walkFrames = 0;
                 }
 
-                spriteBatch.Draw(texture, GetDrawLocation(), GetSourceRectangle(1 + (int)Math.Floor(walkFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                spriteBatch.Draw(walkTex, GetDrawLocation(), GetSourceRectangle(1 + (int)Math.Floor(walkFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
                 walkFrames += 0.2;
             }
             else if (!jumping && !falling && isAttacking)
@@ -225,7 +199,7 @@ namespace ProjectTBA.Units
             }
             else if (jumping)
             {
-                spriteBatch.Draw(texture, GetDrawLocation(), GetSourceRectangle(3), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                spriteBatch.Draw(jumpTex, GetDrawLocation(), GetSourceRectangle(1), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
             }
 
             foreach (Projectile fireball in fireballs)
@@ -243,7 +217,7 @@ namespace ProjectTBA.Units
 
         public Rectangle GetSourceRectangle(int frame)
         {
-            return new Rectangle((textureWidth * frame), 0, textureWidth, 100);
+            return new Rectangle((textureWidth * frame), 0, textureWidth, textureHeight);
         }
 
         public override Rectangle GetRectangle()
@@ -469,11 +443,11 @@ namespace ProjectTBA.Units
                 case SpriteEffects.None:
                     if (!jumping && !isWalking && !isAttacking)
                     {
-                        return new Rectangle((int)location.X + 37 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 35, 1);
+                        return new Rectangle((int)location.X + 41 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 38, 1);
                     }
                     else if (!jumping && isWalking)
                     {
-                        return new Rectangle((int)location.X + 28 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 37, 1);
+                        return new Rectangle((int)location.X + 41 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 38, 1);
                     }
                     else if (!jumping && !falling && isAttacking)
                     {
@@ -481,26 +455,26 @@ namespace ProjectTBA.Units
                     }
                     else if (jumping)
                     {
-                        return new Rectangle((int)location.X + 30 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 29, 1);
+                        return new Rectangle((int)location.X + 34 - (int)game.currentLevel.offset.X, (int)location.Y + 103, 36, 1);
                     }
                     break;
 
                 case SpriteEffects.FlipHorizontally:
                     if (!jumping && !isWalking && !isAttacking)
                     {
-                        return new Rectangle((int)location.X + 14 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 35, 1);
+                        return new Rectangle((int)location.X + 10 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 38, 1);
                     }
                     else if (!jumping && isWalking)
                     {
-                        return new Rectangle((int)location.X + 21 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 37, 1);
+                        return new Rectangle((int)location.X + 10 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 38, 1);
                     }
                     else if (!jumping && !falling && isAttacking)
                     {
-                        return new Rectangle((int)location.X + 21 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 33, 1);
+                        return new Rectangle((int)location.X + 12 - (int)game.currentLevel.offset.X, (int)location.Y + 103, 36, 1);
                     }
                     else if (jumping)
                     {
-                        return new Rectangle((int)location.X + 27 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 33, 1);
+                        return new Rectangle((int)location.X + 12 - (int)game.currentLevel.offset.X, (int)location.Y + 103, 36, 1);
                     }
                     break;
             }
@@ -510,13 +484,53 @@ namespace ProjectTBA.Units
 
         public void SpawnFireball()
         {
-            this.fireballs.AddLast(new Fireball(location.X - game.currentLevel.offset.X, location.Y + texture.Height / 2, (spriteEffect == SpriteEffects.None) ? false : true, 1f));
+            this.fireballs.AddLast(new Fireball(location.X, location.Y + textureHeight / 2, (spriteEffect == SpriteEffects.None) ? false : true, 1f));
         }
 
         public void SpawnHugeFireball()
         {
-            this.fireballs.AddLast(new Fireball(location.X - game.currentLevel.offset.X, location.Y + texture.Height / 2, (spriteEffect == SpriteEffects.None) ? false : true, 4f));
+            this.fireballs.AddLast(new Fireball(location.X, location.Y + textureHeight / 2, (spriteEffect == SpriteEffects.None) ? false : true, 4f));
             this.Hit(fireballs.ElementAt(fireballs.Count - 1));
+        }
+
+        public override void SetCollisionHeight()
+        {
+            Boolean abovePlatform = false;
+
+            if (!jumpUp)
+            {
+                foreach (Obstacle o in game.currentLevel.obstacles)
+                {
+                    if (o is Platform)
+                    {
+                        Platform p = (Platform)o;
+
+                        if (GetFeetHitbox().X + GetFeetHitbox().Width > p.GetTopHitbox().X && GetFeetHitbox().X < p.GetTopHitbox().X + p.GetTopHitbox().Width)
+                        {
+                            if (GetFeetHitbox().Y <= p.GetTopHitbox().Y)
+                            {
+                                abovePlatform = true;
+
+                                if (jumping && !falling)
+                                {
+                                    stopJumpOn = p.GetTopHitbox().Y - textureHeight;
+                                }
+                                else if (!jumping)
+                                {
+                                    stopJumpOn = p.GetTopHitbox().Y - textureHeight;
+                                    falling = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!jumping && !abovePlatform && location.Y != floorHeight)
+            {
+                stopJumpOn = floorHeight;
+                falling = true;
+            }
         }
     }
 }
