@@ -22,6 +22,10 @@ namespace ProjectTBA.Misc
         public static Texture2D dPadTex { get; set; }
         public static Texture2D buttonTex { get; set; }
 
+        // Creatures
+        public static Texture2D deerWalkTex { get; set; }
+        public static Texture2D deerJumpTex { get; set; }
+
         // Backgrounds
         public static Texture2D forestBGFrontTex { get; set; }
         public static Texture2D forestBGMiddleTex { get; set; }
@@ -35,11 +39,12 @@ namespace ProjectTBA.Misc
 
         // Baddies
         public static Texture2D baddieVillagerTex { get; set; }
-        // Particles
-        public static Texture2D circleParticle { get; set; }
 
         // Boss
         public static Texture2D samuraiTempTex { get; set; }
+
+        // Particles
+        public static Texture2D circleParticle { get; set; }
 
         // Test
         public static Texture2D testPlayerTex { get; set; }
@@ -62,6 +67,10 @@ namespace ProjectTBA.Misc
             dPadTex = content.Load<Texture2D>("Controls/DPad");
             buttonTex = content.Load<Texture2D>("Controls/ActionButtons");
 
+            // Creatures
+            deerWalkTex = content.Load<Texture2D>("Creatures/DeerWalk");
+            deerJumpTex = content.Load<Texture2D>("Creatures/DeerJump");
+
             // Backgrounds
             forestBGFrontTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_1");
             forestBGMiddleTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_2");
@@ -75,11 +84,12 @@ namespace ProjectTBA.Misc
 
             // Baddies
             baddieVillagerTex = content.Load<Texture2D>("Baddies/civilian");
-            // Particles
-            circleParticle = content.Load<Texture2D>("Particles/CircleParticle");
 
             // Boss
             samuraiTempTex = content.Load<Texture2D>("Baddies/ninjaWalking");
+
+            // Particles
+            circleParticle = content.Load<Texture2D>("Particles/CircleParticle");
 
             // Test
             testPlayerTex = content.Load<Texture2D>("Test/TestPlayer");

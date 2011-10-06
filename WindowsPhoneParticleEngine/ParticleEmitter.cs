@@ -16,8 +16,10 @@ namespace WindowsPhoneParticleEngine
         public LinkedList<Particle> removeParticles = new LinkedList<Particle>();
         public LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
         public Vector3 location { get; set; }
+        public Vector3 speed { get; set; }
         public float particleMovementSpeed { get; set; }
         public Color color;
+        public float defaultScale = 1f;
 
         public ParticleEmitter(LinkedList<Texture2D> textures)
         {
@@ -31,5 +33,7 @@ namespace WindowsPhoneParticleEngine
         public abstract void Update(GameTime gt, Vector2 offset);
 
         internal abstract void Draw(GameTime gt, SpriteBatch sb);
+
+        public abstract void Dispose();
     }
 }

@@ -9,6 +9,7 @@ using ProjectTBA.Misc;
 using ProjectTBA.Obstacles;
 using System.Diagnostics;
 using Projectiles;
+using WindowsPhoneParticleEngine;
 
 namespace ProjectTBA.Units
 {
@@ -16,6 +17,8 @@ namespace ProjectTBA.Units
     {
         public Boolean isAttacking = false;
         public Boolean isWalking = false;
+
+        private ParticleEmitter emitter = null;
 
         public Vector2 speed;
 
@@ -55,7 +58,40 @@ namespace ProjectTBA.Units
 
         public override void Attack()
         {
+            if (emitter != null)
+            {
+                emitter.Dispose();
+            }
 
+            LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
+            textures.AddLast(AkumaContentManager.circleParticle);
+
+            Vector3 emitterLocation = new Vector3();
+            Vector3 emitterSpeed = new Vector3();
+
+            if (spriteEffect == SpriteEffects.None)
+            {
+                emitterLocation.X = location.X + 86;
+                emitterLocation.Y = location.Y + 50;
+                emitterLocation.Z = 0.002f;
+
+                emitterSpeed.X = 5f;
+                emitterSpeed.Y = 0f;
+                emitterSpeed.Z = 0f;
+            }
+            else if (spriteEffect == SpriteEffects.FlipHorizontally)
+            {
+                emitterLocation.X = location.X;
+                emitterLocation.Y = location.Y + 50;
+                emitterLocation.Z = 0.002f;
+
+                emitterSpeed.X = -5f;
+                emitterSpeed.Y = 0f;
+                emitterSpeed.Z = 0f;
+            }
+
+
+            this.emitter = game.particleEmitterManager.AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, emitterLocation, emitterSpeed, 1, 2f, 0.5f, Color.White);
         }
 
         public override void Die()
@@ -84,8 +120,6 @@ namespace ProjectTBA.Units
                 return;
             }
 
-            speed.X = 0;
-
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
             {
                 if (location.X + textureWidth + movementSpeed < 1600)
@@ -95,18 +129,6 @@ namespace ProjectTBA.Units
                 else
                 {
                     speed.X = 1600 - textureWidth - location.X;
-                }
-
-                if (game.currentLevel.offset.X + movementSpeed < 800)
-                {
-                    if (location.X - game.currentLevel.offset.X + textureWidth > 600f)
-                    {
-                        game.currentLevel.offset.X += movementSpeed;
-                    }
-                }
-                else
-                {
-                    game.currentLevel.offset.X = 800;
                 }
             }
 
@@ -119,18 +141,6 @@ namespace ProjectTBA.Units
                 else
                 {
                     speed.X = -location.X;
-                }
-
-                if (game.currentLevel.offset.X - movementSpeed > 0)
-                {
-                    if (location.X - game.currentLevel.offset.X < 200f)
-                    {
-                        game.currentLevel.offset.X -= movementSpeed;
-                    }
-                }
-                else
-                {
-                    game.currentLevel.offset.X = 0;
                 }
             }
 
@@ -273,6 +283,37 @@ namespace ProjectTBA.Units
             {
                 isWalking = false;
             }
+
+            if (speed.X > 0)
+            {
+                if (game.currentLevel.offset.X + movementSpeed < 800)
+                {
+                    if (location.X - game.currentLevel.offset.X + textureWidth > 600f)
+                    {
+                        game.currentLevel.offset.X += movementSpeed;
+                    }
+                }
+                else
+                {
+                    game.currentLevel.offset.X = 800;
+                }
+            }
+            else if (speed.X < 0)
+            {
+                if (game.currentLevel.offset.X - movementSpeed > 0)
+                {
+                    if (location.X - game.currentLevel.offset.X < 200f)
+                    {
+                        game.currentLevel.offset.X -= movementSpeed;
+                    }
+                }
+                else
+                {
+                    game.currentLevel.offset.X = 0;
+                }
+            }
+
+            speed = new Vector2(0, 0);
         }
 
         public void Hit(Object from)
@@ -326,12 +367,36 @@ namespace ProjectTBA.Units
                     if (this.location.X > 5)
                     {
                         this.location.X -= 5;
+
+                        if (game.currentLevel.offset.X - 5 > 0)
+                        {
+                            if (location.X - game.currentLevel.offset.X < 200f)
+                            {
+                                game.currentLevel.offset.X -= 5;
+                            }
+                        }
+                        else
+                        {
+                            game.currentLevel.offset.X = 0;
+                        }
                     }
                     break;
                 case HitState.hitRight:
                     if (this.location.X < game.currentLevel.levelWidth)
                     {
                         this.location.X += 5;
+
+                        if (game.currentLevel.offset.X + 5 < 800)
+                        {
+                            if (location.X - game.currentLevel.offset.X + textureWidth > 600f)
+                            {
+                                game.currentLevel.offset.X += 5;
+                            }
+                        }
+                        else
+                        {
+                            game.currentLevel.offset.X = 800;
+                        }
                     }
                     break;
                 default: break;
@@ -359,8 +424,6 @@ namespace ProjectTBA.Units
             {
                 isInvunerable = false;
             }
-
-            speed = new Vector2(0, 0);
         }
 
         public override Rectangle GetFeetHitbox()

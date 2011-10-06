@@ -17,6 +17,7 @@ namespace WindowsPhoneParticleEngine
     {
 
         public LinkedList<ParticleEmitter> emitters = new LinkedList<ParticleEmitter>();
+        public LinkedList<ParticleEmitter> removeEmitters = new LinkedList<ParticleEmitter>();
 
         public enum EmitterType
         {
@@ -40,6 +41,13 @@ namespace WindowsPhoneParticleEngine
             {
                 pe.Update(gt, offset);
             }
+
+            foreach (ParticleEmitter pe in removeEmitters)
+            {
+                emitters.Remove(pe);
+            }
+
+            removeEmitters.Clear();
         }
 
         public void Draw(GameTime gt, SpriteBatch sb)
@@ -50,17 +58,22 @@ namespace WindowsPhoneParticleEngine
             }
         }
 
-        public void AddEmitter(EmitterType type, LinkedList<Texture2D> textures, Vector3 location, int particlesPerFrame, float particleMovementSpeed, Color color)
+        public ParticleEmitter AddEmitter(EmitterType type, LinkedList<Texture2D> textures, Vector3 location, Vector3 speed, int particlesPerFrame, float particleMovementSpeed, float defaultScale, Color color)
         {
+            ParticleEmitter emitter = null;
+
             switch (type)
             {
                 case EmitterType.Point:
-                    emitters.AddLast(new PointEmitter(textures, location, particlesPerFrame, particleMovementSpeed, color));
+                    emitter = new PointEmitter(textures, location, speed, particlesPerFrame, particleMovementSpeed, defaultScale, color);
+                    emitters.AddLast(emitter);
                     break;
 
                 default:
                     break;
             }
+
+            return emitter;
         }
     }
 }

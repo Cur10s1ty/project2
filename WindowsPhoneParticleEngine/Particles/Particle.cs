@@ -39,9 +39,9 @@ namespace WindowsPhoneParticleEngine.Particles
             this.rotationSpeed = 0.1f * (float)(random.NextDouble() * 2 - 1);
 
             this.color = emitter.color;
-            this.scale = (float)random.NextDouble();
+            this.scale = (float)random.NextDouble() * emitter.defaultScale;
             this.scaleDecreaseStep = scale / 10f;
-            this.lifetime = 40 + random.Next(80);
+            this.lifetime = 20 + random.Next(40);
         }
 
         public void Update(GameTime gt, Vector2 offset)

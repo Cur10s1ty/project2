@@ -11,12 +11,14 @@ namespace WindowsPhoneParticleEngine.Emitters
     public class PointEmitter : ParticleEmitter
     {
         
-        public PointEmitter(LinkedList<Texture2D> textures, Vector3 location, int particlesPerFrame, float particleMovementSpeed, Color color) :
+        public PointEmitter(LinkedList<Texture2D> textures, Vector3 location, Vector3 speed, int particlesPerFrame, float particleMovementSpeed, float defaultScale, Color color) :
             base(textures)
         {
             this.location = location;
+            this.speed = speed;
             this.total = particlesPerFrame;
             this.particleMovementSpeed = particleMovementSpeed;
+            this.defaultScale = defaultScale;
             this.color = color;
         }
 
@@ -32,6 +34,8 @@ namespace WindowsPhoneParticleEngine.Emitters
                 SpawnParticle();
             }
 
+            location += speed;
+
             foreach (Particle p in particles)
             {
                 p.Update(gt, offset);
@@ -43,6 +47,11 @@ namespace WindowsPhoneParticleEngine.Emitters
             }
 
             removeParticles.Clear();
+
+            if (total == 0 && particles.Count == 0)
+            {
+                ParticleEmitterManager.GetInstance().removeEmitters.AddLast(this);
+            }
         }
 
         internal override void Draw(GameTime gt, SpriteBatch sb)
@@ -51,6 +60,11 @@ namespace WindowsPhoneParticleEngine.Emitters
             {
                 p.Draw(gt, sb);
             }
+        }
+
+        public override void Dispose()
+        {
+            this.total = 0;
         }
     }
 }

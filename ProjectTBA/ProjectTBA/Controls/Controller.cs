@@ -34,14 +34,6 @@ namespace ProjectTBA.Controls
             {
                 foreach (TouchLocation tl in touchCollection)
                 {
-                    if (GetButtonUpRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
-                    {
-                        ControllerState.pressedButtons.AddLast(ControllerState.Buttons.UP);
-                    }
-                    if (GetButtonDownRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
-                    {
-                        ControllerState.pressedButtons.AddLast(ControllerState.Buttons.DOWN);
-                    }
                     if (GetButtonLeftRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
                     {
                         ControllerState.pressedButtons.AddLast(ControllerState.Buttons.LEFT);
@@ -78,40 +70,28 @@ namespace ProjectTBA.Controls
             return new Rectangle(game.graphics.PreferredBackBufferWidth - buttonTex.Width, game.graphics.PreferredBackBufferHeight - buttonTex.Height, buttonTex.Width, buttonTex.Height);
         }
 
-        public Rectangle GetButtonUpRectangle()
-        {
-            Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 85, dPad.Y + 5, 70, 70);
-        }
-
-        public Rectangle GetButtonDownRectangle()
-        {
-            Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 85, dPad.Y + 165, 70, 70);
-        }
-
         public Rectangle GetButtonLeftRectangle()
         {
             Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 5, dPad.Y + 85, 70, 70);
+            return new Rectangle(dPad.X + 5, dPad.Y + 5, 70, 70);
         }
 
         public Rectangle GetButtonRightRectangle()
         {
             Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 165, dPad.Y + 85, 70, 70);
+            return new Rectangle(dPad.X + 100, dPad.Y + 5, 70, 70);
         }
 
         public Rectangle GetButtonARectangle()
         {
             Rectangle buttons = GetActionButtonRectangle();
-            return new Rectangle(buttons.X + 154, buttons.Y + 65, 70, 70);
+            return new Rectangle(buttons.X + 100, buttons.Y + 5, 70, 70);
         }
 
         public Rectangle GetButtonBRectangle()
         {
             Rectangle buttons = GetActionButtonRectangle();
-            return new Rectangle(buttons.X + 16, buttons.Y + 105, 70, 70);
+            return new Rectangle(buttons.X + 5, buttons.Y + 5, 70, 70);
         }
     }
 }

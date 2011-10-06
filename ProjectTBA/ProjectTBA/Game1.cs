@@ -22,6 +22,7 @@ using ProjectTBA.Levels;
 
 namespace ProjectTBA
 {
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -42,13 +43,13 @@ namespace ProjectTBA
 
         public int screenWidth = 800;
         public int screenHeight = 480;
+
         // Particles
         public ParticleEmitterManager particleEmitterManager;
+        public ParticleEmitter testEmitter;
 
         private LinkedList<Level> levelList;
         public Level currentLevel;
-
-        public static TimeSpan TIMESTEP = TimeSpan.FromTicks(333333);
 
         private static Game1 instance;
         public static Game1 GetInstance()
@@ -104,7 +105,7 @@ namespace ProjectTBA
             AkumaContentManager.LoadContent();
             particleEmitterManager = ParticleEmitterManager.GetInstance();
 
-            player = new Demon(370, 380);
+            player = new Demon(357, 380);
             controller = new Controller();
 
             currentLevel = new Level(player);
@@ -120,9 +121,9 @@ namespace ProjectTBA
             //baddies.AddLast(new TestEnemy(25, 380));
             //baddies.AddLast(new TestEnemy(225, 380));
 
-            LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
-            textures.AddLast(AkumaContentManager.circleParticle);
-            particleEmitterManager.AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(400f, 240f, 0.002f), 1, 2f, Color.Red);
+            //LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
+            //textures.AddLast(AkumaContentManager.circleParticle);
+            //this.testEmitter = particleEmitterManager.AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(400f, 240f, 0.002f), new Vector3(0, 0, 0), 1, 2f, Color.Red);
         }
 
         /// <summary>
