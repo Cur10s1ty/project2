@@ -12,12 +12,13 @@ namespace Projectiles
     {
         public Vector2 location;
         public Texture2D texture;
-        protected int frameAmount;
+        protected int frameAmount = 1;
         private int atFrame = 0;
         public Boolean isDead = false;
         public float xSpeed = 0;
         public float ySpeed = 0;
-        private Game1 game;
+        protected Game1 game;
+        public int damage;
 
         public Projectile(float x, float y)
         {
@@ -25,7 +26,7 @@ namespace Projectiles
             this.game = Game1.GetInstance();
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             if (this.location.X - game.player.location.X > -50 && this.location.X - game.player.location.X < 50)
             {
@@ -48,7 +49,7 @@ namespace Projectiles
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (atFrame == frameAmount - 1)
             {
@@ -66,6 +67,11 @@ namespace Projectiles
         {
             return new Rectangle((int)location.X - (int)Game1.GetInstance().currentLevel.offset.X,
                 (int)location.Y, texture.Width, texture.Height);
+        }
+
+        public override string ToString()
+        {
+            return "Default Projectile";
         }
     }
 }

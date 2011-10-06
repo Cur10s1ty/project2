@@ -16,6 +16,7 @@ namespace ProjectTBA.Levels
     {
         private Demon player;
         public LinkedList<Unit> baddies;
+        public LinkedList<Unit> baddiesToRemove;
         public LinkedList<Obstacle> obstacles;
         public LinkedList<Projectile> projectiles;
         private LinkedList<Projectile> deadProjectiles;
@@ -33,6 +34,7 @@ namespace ProjectTBA.Levels
             this.player = player;
 
             baddies = new LinkedList<Unit>();
+            baddiesToRemove = new LinkedList<Unit>();
             obstacles = new LinkedList<Obstacle>();
             viewport = new AkumaViewport(this);
             projectiles = new LinkedList<Projectile>();
@@ -49,6 +51,14 @@ namespace ProjectTBA.Levels
             foreach (Unit baddie in baddies)
             {
                 baddie.Update(gameTime);
+            }
+
+            if (baddiesToRemove.Count > 0)
+            {
+                foreach (Unit baddie in baddiesToRemove)
+                {
+                    baddies.Remove(baddie);
+                }
             }
 
             player.Update(gameTime);

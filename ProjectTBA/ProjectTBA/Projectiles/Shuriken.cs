@@ -18,5 +18,10 @@ namespace ProjectTBA.Projectiles
             frameAmount = 2;
             this.texture = AkumaContentManager.shurikenTex;
         }
+
+        public override string ToString()
+        {
+            return "Shuriken";
+        }
     }
 }

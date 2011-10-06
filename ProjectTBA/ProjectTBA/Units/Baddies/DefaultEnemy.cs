@@ -201,6 +201,7 @@ namespace ProjectTBA.Units.Baddies
         public override void Die()
         {
             this.isDead = true;
+            game.currentLevel.baddiesToRemove.AddLast(this);
         }
 
         public void Hit()
@@ -208,7 +209,7 @@ namespace ProjectTBA.Units.Baddies
             this.health--;
         }
 
-        public Rectangle GetRectangle()
+        public override Rectangle GetRectangle()
         {
             return new Rectangle((int)location.X - (int)Game1.GetInstance().currentLevel.offset.X,
                 (int)location.Y, texture.Width, texture.Height);

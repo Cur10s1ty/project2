@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectTBA.Obstacles;
 using System.Diagnostics;
+using Projectiles;
 
 namespace ProjectTBA.Units
 {
@@ -44,6 +45,14 @@ namespace ProjectTBA.Units
         public abstract void Attack();
 
         public abstract void Die();
+
+        public virtual void Hit(Object from)
+        {
+            if (from is Projectile)
+            {
+                Die();
+            }
+        }
 
         public abstract Rectangle GetFeetHitbox();
 
@@ -85,6 +94,12 @@ namespace ProjectTBA.Units
                 stopJumpOn = floorHeight;
                 falling = true;
             }
+        }
+
+        public virtual Rectangle GetRectangle()
+        {
+            return new Rectangle((int)location.X - (int)Game1.GetInstance().currentLevel.offset.X,
+                (int)location.Y, texture.Width, texture.Height);
         }
     }
 }

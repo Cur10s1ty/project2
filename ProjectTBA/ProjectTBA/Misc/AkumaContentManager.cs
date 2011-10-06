@@ -17,6 +17,7 @@ namespace ProjectTBA.Misc
         public static Texture2D solidTex { get; set; }
         public static SpriteFont testFont { get; set; }
         public static Texture2D shurikenTex { get; set; }
+        public static Texture2D fireballTex { get; set; }
 
         // Controls
         public static Texture2D dPadTex { get; set; }
@@ -62,6 +63,7 @@ namespace ProjectTBA.Misc
             solidTex = content.Load<Texture2D>("Misc/Solid");
             testFont = content.Load<SpriteFont>("Misc/TestFont");
             shurikenTex = content.Load<Texture2D>("Misc/weapon");
+            fireballTex = content.Load<Texture2D>("Misc/vuurbal4");
 
             // Controls
             dPadTex = content.Load<Texture2D>("Controls/DPad");

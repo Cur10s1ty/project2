@@ -41,6 +41,9 @@ namespace ProjectTBA.Units
         private int hitTimestamp;
         private int health = 5;
 
+        public LinkedList<Projectile> fireballs;
+        public LinkedList<Projectile> fireballsToRemove;
+
         /// <summary>
         /// The player =D
         /// </summary>
@@ -54,11 +57,13 @@ namespace ProjectTBA.Units
             this.stopJumpOn = (int)y;
             this.floorHeight = 380;
             this.speed = new Vector2(0, 0);
+            this.fireballs = new LinkedList<Projectile>();
+            this.fireballsToRemove = new LinkedList<Projectile>();
         }
 
         public override void Attack()
         {
-            if (emitter != null)
+            SpawnFireball();
             {
                 emitter.Dispose();
             }
@@ -90,7 +95,6 @@ namespace ProjectTBA.Units
                 emitterSpeed.Z = 0f;
             }
 
-
             this.emitter = game.particleEmitterManager.AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, emitterLocation, emitterSpeed, 1, 2f, 0.5f, Color.White);
         }
 
@@ -102,10 +106,30 @@ namespace ProjectTBA.Units
         {
         }
 
-        public override void Update(GameTime gt)
+        public override void Update(GameTime gameTime)
         {
 
             SetCollisionHeight();
+
+            foreach (Projectile fireball in fireballs)
+            {
+                if (fireball.isDead)
+                {
+                    fireballsToRemove.AddLast(fireball);
+                }
+                else
+                {
+                    fireball.Update(gameTime);
+                }
+            }
+
+            if (fireballsToRemove.Count > 0)
+            {
+                foreach (Projectile fireballToRemove in fireballsToRemove)
+                {
+                    this.fireballs.Remove(fireballToRemove);
+                }
+            }
 
             if (isHit)
             {
@@ -172,11 +196,11 @@ namespace ProjectTBA.Units
             }
         }
 
-        public override void Draw(GameTime gt, SpriteBatch sb)
+        public override void Draw(GameTime gt, SpriteBatch spriteBatch)
         {
             if (!jumping && !isWalking && !isAttacking)
             {
-                sb.Draw(texture, GetDrawLocation(), GetSourceRectangle(0), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                spriteBatch.Draw(texture, GetDrawLocation(), GetSourceRectangle(0), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
             }
             else if (!jumping && isWalking)
             {
@@ -185,7 +209,7 @@ namespace ProjectTBA.Units
                     walkFrames = 0;
                 }
 
-                sb.Draw(texture, GetDrawLocation(), GetSourceRectangle(1 + (int)Math.Floor(walkFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                spriteBatch.Draw(texture, GetDrawLocation(), GetSourceRectangle(1 + (int)Math.Floor(walkFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
                 walkFrames += 0.2;
             }
             else if (!jumping && !falling && isAttacking)
@@ -196,15 +220,20 @@ namespace ProjectTBA.Units
                     attackFrames = 0;
                 }
 
-                sb.Draw(texture, GetDrawLocation(), GetSourceRectangle(4 + (int)Math.Floor(attackFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                spriteBatch.Draw(texture, GetDrawLocation(), GetSourceRectangle(4 + (int)Math.Floor(attackFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
                 attackFrames += 0.2;
             }
             else if (jumping)
             {
-                sb.Draw(texture, GetDrawLocation(), GetSourceRectangle(3), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                spriteBatch.Draw(texture, GetDrawLocation(), GetSourceRectangle(3), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
             }
 
-            sb.Draw(AkumaContentManager.solidTex, GetFeetHitbox(), null, Color.CornflowerBlue, 0f, Vector2.Zero, SpriteEffects.None, 0.05f);
+            foreach (Projectile fireball in fireballs)
+            {
+                fireball.Draw(spriteBatch);
+            }
+
+            spriteBatch.Draw(AkumaContentManager.solidTex, GetFeetHitbox(), null, Color.CornflowerBlue, 0f, Vector2.Zero, SpriteEffects.None, 0.05f);
         }
 
         public Vector2 GetDrawLocation()
@@ -217,7 +246,7 @@ namespace ProjectTBA.Units
             return new Rectangle((textureWidth * frame), 0, textureWidth, 100);
         }
 
-        public Rectangle GetRectangle()
+        public override Rectangle GetRectangle()
         {
             return new Rectangle((int)location.X - (int)Game1.GetInstance().currentLevel.offset.X,
                 (int)location.Y, 86, texture.Height);
@@ -316,7 +345,7 @@ namespace ProjectTBA.Units
             speed = new Vector2(0, 0);
         }
 
-        public void Hit(Object from)
+        public void Hit(Projectile source)
         {
             if (isHit || isInvunerable)
             {
@@ -329,33 +358,40 @@ namespace ProjectTBA.Units
             fallCount = 0.0;
             jumpCount = 0.0;
 
-            if (from is Projectile)
+            if (source.location.X > this.location.X)
             {
-                Projectile source = (Projectile)from;
-                if (source.location.X > this.location.X)
-                {
-                    //hit left
-                    this.currentHitState = HitState.hitLeft;
-                }
-                else
-                {
-                    //hit right
-                    this.currentHitState = HitState.hitRight;
-                }
+                //hit left
+                this.currentHitState = HitState.hitLeft;
             }
-            else if (from is Unit)
+            else
             {
-                Unit source = (Unit)from;
-                if (source.location.X > this.location.X)
-                {
-                    //hit left
-                    this.currentHitState = HitState.hitLeft;
-                }
-                else
-                {
-                    //hit right
-                    this.currentHitState = HitState.hitRight;
-                }
+                //hit right
+                this.currentHitState = HitState.hitRight;
+            }
+        }
+
+        public void Hit(Unit source)
+        {
+            if (isHit || isInvunerable)
+            {
+                return;
+            }
+
+            isHit = true;
+            jumping = false;
+            falling = false;
+            fallCount = 0.0;
+            jumpCount = 0.0;
+
+            if (source.location.X > this.location.X)
+            {
+                //hit left
+                this.currentHitState = HitState.hitLeft;
+            }
+            else
+            {
+                //hit right
+                this.currentHitState = HitState.hitRight;
             }
         }
 
@@ -470,6 +506,17 @@ namespace ProjectTBA.Units
             }
 
             return new Rectangle();
+        }
+
+        public void SpawnFireball()
+        {
+            this.fireballs.AddLast(new Fireball(location.X - game.currentLevel.offset.X, location.Y + texture.Height / 2, (spriteEffect == SpriteEffects.None) ? false : true, 1f));
+        }
+
+        public void SpawnHugeFireball()
+        {
+            this.fireballs.AddLast(new Fireball(location.X - game.currentLevel.offset.X, location.Y + texture.Height / 2, (spriteEffect == SpriteEffects.None) ? false : true, 4f));
+            this.Hit(fireballs.ElementAt(fireballs.Count - 1));
         }
     }
 }
