@@ -10,6 +10,7 @@ using ProjectTBA.Misc;
 using Projectiles;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectTBA.Units.Baddies;
+using ProjectTBA.Creatures;
 
 namespace ProjectTBA.Levels
 {
@@ -18,6 +19,9 @@ namespace ProjectTBA.Levels
         private Demon player;
         public LinkedList<Unit> baddies;
         public LinkedList<Unit> baddiesToRemove;
+        public LinkedList<Creature> creatures;
+        public LinkedList<Creature> creaturesToRemove;
+
         public LinkedList<Obstacle> obstacles;
         public LinkedList<Projectile> projectiles;
         private LinkedList<Projectile> deadProjectiles;
@@ -37,6 +41,9 @@ namespace ProjectTBA.Levels
 
             baddies = new LinkedList<Unit>();
             baddiesToRemove = new LinkedList<Unit>();
+            creatures = new LinkedList<Creature>();
+            creaturesToRemove = new LinkedList<Creature>();
+
             obstacles = new LinkedList<Obstacle>();
             viewport = new AkumaViewport(this);
             projectiles = new LinkedList<Projectile>();
@@ -62,6 +69,22 @@ namespace ProjectTBA.Levels
                     baddies.Remove(baddie);
                 }
             }
+
+            foreach (Creature c in creatures)
+            {
+                c.Update(gameTime);
+            }
+
+            if (creaturesToRemove.Count > 0)
+            {
+                foreach (Creature c in creaturesToRemove)
+                {
+                    creatures.Remove(c);
+                }
+
+                creaturesToRemove.Clear();
+            }
+
 
             player.Update(gameTime);
 
@@ -100,6 +123,11 @@ namespace ProjectTBA.Levels
             foreach (Unit unit in baddies)
             {
                 unit.Draw(gameTime, spriteBatch);
+            }
+
+            foreach (Creature c in creatures)
+            {
+                c.Draw(gameTime, spriteBatch);
             }
 
             player.Draw(gameTime, spriteBatch);
