@@ -21,6 +21,7 @@ using WindowsPhoneParticleEngine;
 using ProjectTBA.Levels;
 using ProjectTBA.Creatures;
 using ProjectTBA.PowerUps;
+using ProjectTBA.Menus;
 
 namespace ProjectTBA
 {
@@ -52,6 +53,16 @@ namespace ProjectTBA
 
         private LinkedList<Level> levelList;
         public Level currentLevel;
+
+        public MainMenu mainMenu;
+
+        public enum GameState
+        {
+            MainMenu,
+            Ingame
+        }
+
+        public GameState gameState;
 
         private static Game1 instance;
         public static Game1 GetInstance()
@@ -92,7 +103,8 @@ namespace ProjectTBA
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+            gameState = GameState.MainMenu;
+
             base.Initialize();
         }
 
@@ -108,7 +120,11 @@ namespace ProjectTBA
             // TODO: use this.Content to load your game content here
             AkumaContentManager.LoadContent();
             particleEmitterManager = ParticleEmitterManager.GetInstance();
+            mainMenu = new MainMenu();
+        }
 
+        public void LoadIngameContent()
+        {
             player = new Demon(0, 291);
             controller = new Controller();
 
@@ -137,10 +153,19 @@ namespace ProjectTBA
                 this.Exit();
             this.lastGameTime = gameTime;
 
-            controller.Update(gameTime);
-            currentLevel.Update(gameTime);
+            switch (gameState)
+            {
+                case GameState.MainMenu:
+                    mainMenu.Update(gameTime);
+                    break;
 
-            particleEmitterManager.Update(gameTime, currentLevel.offset);
+                case GameState.Ingame:
+                    controller.Update(gameTime);
+                    currentLevel.Update(gameTime);
+
+                    particleEmitterManager.Update(gameTime, currentLevel.offset);
+                    break;
+            }
 
             base.Update(gameTime);
         }
@@ -156,11 +181,20 @@ namespace ProjectTBA
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
 
-            currentLevel.Draw(gameTime, spriteBatch);
-            
-            controller.Draw(gameTime, spriteBatch);
+            switch (gameState)
+            {
+                case GameState.MainMenu:
+                    mainMenu.Draw(gameTime, spriteBatch);
+                    break;
 
-            particleEmitterManager.Draw(gameTime, spriteBatch);
+                case GameState.Ingame:
+                    currentLevel.Draw(gameTime, spriteBatch);
+
+                    controller.Draw(gameTime, spriteBatch);
+
+                    particleEmitterManager.Draw(gameTime, spriteBatch);
+                    break;
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);

@@ -14,8 +14,10 @@ namespace ProjectTBA.Controls
     {
 
         public Game1 game { get; set; }
-        public Texture2D dPadTex { get; set; }
-        public Texture2D buttonTex { get; set; }
+        public Texture2D buttonLeftTex { get; set; }
+        public Texture2D buttonRightTex { get; set; }
+        public Texture2D buttonATex { get; set; }
+        public Texture2D buttonBTex { get; set; }
         public Boolean hasSwiped { get; set; }
 
         public Controller()
@@ -23,8 +25,10 @@ namespace ProjectTBA.Controls
             ControllerState.Initialize();
 
             this.game = Game1.GetInstance();
-            this.dPadTex = AkumaContentManager.dPadTex;
-            this.buttonTex = AkumaContentManager.buttonTex;
+            this.buttonLeftTex = AkumaContentManager.buttonLeftTex;
+            this.buttonRightTex = AkumaContentManager.buttonRightTex;
+            this.buttonATex = AkumaContentManager.buttonATex;
+            this.buttonBTex = AkumaContentManager.buttonBTex;
         }
 
         public void Update(GameTime gt)
@@ -76,42 +80,30 @@ namespace ProjectTBA.Controls
 
         internal void Draw(GameTime gt, SpriteBatch sb)
         {
-            sb.Draw(dPadTex, GetDPadRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-            sb.Draw(buttonTex, GetActionButtonRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-        }
-
-        public Rectangle GetDPadRectangle()
-        {
-            return new Rectangle(0, game.graphics.PreferredBackBufferHeight - dPadTex.Height, dPadTex.Width, dPadTex.Height);
-        }
-
-        public Rectangle GetActionButtonRectangle()
-        {
-            return new Rectangle(game.graphics.PreferredBackBufferWidth - buttonTex.Width, game.graphics.PreferredBackBufferHeight - buttonTex.Height, buttonTex.Width, buttonTex.Height);
+            sb.Draw(buttonLeftTex, GetButtonLeftRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+            sb.Draw(buttonRightTex, GetButtonRightRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f); 
+            sb.Draw(buttonATex, GetButtonARectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+            sb.Draw(buttonBTex, GetButtonBRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
         }
 
         public Rectangle GetButtonLeftRectangle()
         {
-            Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 5, dPad.Y + 5, 70, 70);
+            return new Rectangle(5, 200, 80, 80);
         }
 
         public Rectangle GetButtonRightRectangle()
         {
-            Rectangle dPad = GetDPadRectangle();
-            return new Rectangle(dPad.X + 100, dPad.Y + 5, 70, 70);
-        }
-
-        public Rectangle GetButtonARectangle()
-        {
-            Rectangle buttons = GetActionButtonRectangle();
-            return new Rectangle(buttons.X + 100, buttons.Y + 5, 70, 70);
+            return new Rectangle(715, 200, 80, 80);
         }
 
         public Rectangle GetButtonBRectangle()
         {
-            Rectangle buttons = GetActionButtonRectangle();
-            return new Rectangle(buttons.X + 5, buttons.Y + 5, 70, 70);
+            return new Rectangle(305, 395, 80, 80);
+        }
+
+        public Rectangle GetButtonARectangle()
+        {
+            return new Rectangle(415, 395, 80, 80);
         }
     }
 }

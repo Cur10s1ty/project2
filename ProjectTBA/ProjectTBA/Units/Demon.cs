@@ -140,31 +140,64 @@ namespace ProjectTBA.Units
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
             {
                 ResetTongue();
-                foreach (Wall w in game.currentLevel.obstacles)
+                float stopRightMoveOn = 1600;
+                foreach (Obstacle o in game.currentLevel.obstacles)
                 {
-                    
+                    if (o is Wall)
+                    {
+                        Wall w = (Wall)o;
+                        if (location.Y + textureHeight >= w.GetHitbox().Y)
+                        {
+                            if (w.GetHitbox().X >= location.X + textureWidth)
+                            {
+                                if (location.X + textureWidth + movementSpeed >= w.GetHitbox().X)
+                                {
+                                    stopRightMoveOn = w.GetHitbox().X;
+                                }
+                            }
+                        }
+                    }
                 }
 
-                if (location.X + textureWidth + movementSpeed < 1600)
+                if (location.X + textureWidth + movementSpeed < stopRightMoveOn)
                 {
                     speed.X = movementSpeed;
                 }
                 else
                 {
-                    speed.X = 1600 - textureWidth - location.X;
+                    speed.X = stopRightMoveOn - textureWidth - location.X;
                 }
             }
 
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.LEFT))
             {
                 ResetTongue();
-                if (location.X - movementSpeed > 0)
+                float stopLeftMoveOn = 0;
+                foreach (Obstacle o in game.currentLevel.obstacles)
+                {
+                    if (o is Wall)
+                    {
+                        Wall w = (Wall)o;
+                        if (location.Y + textureHeight >= w.GetHitbox().Y)
+                        {
+                            if (w.GetHitbox().X + w.GetHitbox().Width <= location.X)
+                            {
+                                if (location.X - movementSpeed <= w.GetHitbox().X + w.GetHitbox().Width)
+                                {
+                                    stopLeftMoveOn = w.GetHitbox().X + w.GetHitbox().Width;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (location.X - movementSpeed > stopLeftMoveOn)
                 {
                     speed.X = -movementSpeed;
                 }
                 else
                 {
-                    speed.X = -location.X;
+                    speed.X = stopLeftMoveOn - location.X;
                 }
             }
 
@@ -548,6 +581,28 @@ namespace ProjectTBA.Units
                                 else if (!jumping)
                                 {
                                     stopJumpOn = p.GetTopHitbox().Y - textureHeight;
+                                    falling = true;
+                                }
+                            }
+                        }
+                    }
+                    if (o is Wall)
+                    {
+                        Wall w = (Wall)o;
+
+                        if (GetFeetHitbox().X + GetFeetHitbox().Width > w.GetHitbox().X - game.currentLevel.offset.X && GetFeetHitbox().X < w.GetHitbox().X + w.GetHitbox().Width - game.currentLevel.offset.X)
+                        {
+                            if (GetFeetHitbox().Y <= w.GetHitbox().Y)
+                            {
+                                abovePlatform = true;
+
+                                if (jumping && !falling)
+                                {
+                                    stopJumpOn = w.GetHitbox().Y - textureHeight;
+                                }
+                                else if (!jumping)
+                                {
+                                    stopJumpOn = w.GetHitbox().Y - textureHeight;
                                     falling = true;
                                 }
                             }

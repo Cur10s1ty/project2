@@ -67,7 +67,6 @@ namespace ProjectTBA.Levels
             {
                 case 1:
                     viewport = new AkumaViewport(this);
-                    obstacles.AddLast(new Wall(300, 300, AkumaContentManager.testPlayerTex));
                     baddies.AddLast(new PeasantEnemy(200, 300));
                     break;
 

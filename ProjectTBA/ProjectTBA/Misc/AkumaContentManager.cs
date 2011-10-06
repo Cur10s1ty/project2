@@ -20,6 +20,9 @@ namespace ProjectTBA.Misc
         // Power-Up
         public static Texture2D fireBallPowerUpTex { get; set; }
 
+        // Menus
+        public static Texture2D mainMenuTex { get; set; }
+
         // Misc
         public static Texture2D solidTex { get; set; }
         public static SpriteFont testFont { get; set; }
@@ -28,8 +31,10 @@ namespace ProjectTBA.Misc
         public static Texture2D fireball2Tex { get; set; }
 
         // Controls
-        public static Texture2D dPadTex { get; set; }
-        public static Texture2D buttonTex { get; set; }
+        public static Texture2D buttonLeftTex { get; set; }
+        public static Texture2D buttonRightTex { get; set; }
+        public static Texture2D buttonATex { get; set; }
+        public static Texture2D buttonBTex { get; set; }
 
         // Creatures
         public static Texture2D deerWalkTex { get; set; }
@@ -85,6 +90,9 @@ namespace ProjectTBA.Misc
             // Power-Up
             fireBallPowerUpTex = content.Load<Texture2D>("Misc/scroll_vuur");
 
+            // Menus
+            mainMenuTex = content.Load<Texture2D>("Menus/beginscherm");
+
             // Misc
             solidTex = content.Load<Texture2D>("Misc/Solid");
             testFont = content.Load<SpriteFont>("Misc/TestFont");
@@ -93,8 +101,10 @@ namespace ProjectTBA.Misc
             fireball2Tex = content.Load<Texture2D>("Misc/vuurbal5");
 
             // Controls
-            dPadTex = content.Load<Texture2D>("Controls/DPad");
-            buttonTex = content.Load<Texture2D>("Controls/ActionButtons");
+            buttonLeftTex = content.Load<Texture2D>("Controls/ButtonLeft");
+            buttonRightTex = content.Load<Texture2D>("Controls/ButtonRight");
+            buttonATex = content.Load<Texture2D>("Controls/ButtonA");
+            buttonBTex = content.Load<Texture2D>("Controls/ButtonB");
 
             // Creatures
             deerWalkTex = content.Load<Texture2D>("Creatures/DeerWalk");
