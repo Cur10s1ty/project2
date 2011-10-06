@@ -67,7 +67,8 @@ namespace ProjectTBA.Levels
             {
                 case 1:
                     viewport = new AkumaViewport(this);
-                    baddies.AddLast(new PeasantEnemy(200, 300));
+                    //baddies.AddLast(new PeasantEnemy(200, 300));
+                    creatures.AddLast(new Deer(new Vector2(300, 300)));
                     break;
 
                 case 2:

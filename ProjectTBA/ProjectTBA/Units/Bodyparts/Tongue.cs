@@ -12,12 +12,12 @@ namespace ProjectTBA.Units.Bodyparts
 {
     public class Tongue
     {
-        private Demon source;
+        public Demon source;
         private Vector2 location;
         private int maxRange = 250;
         private int speed = 7;
         private int distanceTravelled = 0;
-        private Boolean retracting = false;
+        public Boolean retracting = false;
         private LinkedList<Texture2D> tongueTextures;
         private Texture2D pieceTex;
         private Texture2D sourceTex;
@@ -43,7 +43,8 @@ namespace ProjectTBA.Units.Bodyparts
                 {
                     enemy.movementSpeed = 1f;
                     source.ResetTongue();
-                    return;
+                    retracting = true;
+                    break;
                 }
             }
 
@@ -51,8 +52,9 @@ namespace ProjectTBA.Units.Bodyparts
             {
                 if (creature.GetRectangle().Intersects(this.GetRectangle()))
                 {
-                    source.ResetTongue();
-                    return;
+                    creature.Stick(this);
+                    retracting = true;
+                    break;
                 }
             }
 
@@ -137,6 +139,7 @@ namespace ProjectTBA.Units.Bodyparts
             retracting = false;
             source.isTongueActive = false;
             tongueTextures.Clear();
+            tongueTextures.AddLast(sourceTex);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -164,13 +167,19 @@ namespace ProjectTBA.Units.Bodyparts
                 int i = 0;
                 foreach (Texture2D tex in tongueTextures)
                 {
-                    if (i == 0)
+                    if (i != 0)
                     {
-                        spriteBatch.Draw(tex, new Rectangle((int)location.X + (i * 7), (int)location.Y + 3, tex.Width, tex.Height), Color.White);
+                        spriteBatch.Draw(tex,
+                            new Vector2((int)location.X + (i * 7), (int)location.Y + 3),
+                            new Rectangle(0, 0, tex.Width, tex.Height),
+                            Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0.1f);
                     }
                     else
                     {
-                        spriteBatch.Draw(tex, new Rectangle((int)location.X + (i * 7), (int)location.Y, tex.Width, tex.Height), Color.White);
+                        spriteBatch.Draw(tex, 
+                            new Vector2((int)location.X + (i * 7), (int)location.Y), 
+                            new Rectangle(0,0,tex.Width, tex.Height),
+                            Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.FlipHorizontally, 0.1f);
                     }
                     i++;
                 }

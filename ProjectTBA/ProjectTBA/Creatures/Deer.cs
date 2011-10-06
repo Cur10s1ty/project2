@@ -19,7 +19,6 @@ namespace ProjectTBA.Creatures
         public Random random { get; set; }
         public int textureWidth = 120;
         public int textureHeight = 100;
-        public Vector2 speed;
         public SpriteEffects effects = SpriteEffects.None;
         public int directionCooldown = 100;
         public int directionChanged = 0;
@@ -44,6 +43,18 @@ namespace ProjectTBA.Creatures
 
         public override void Update(GameTime gt)
         {
+            if (stuck)
+            {
+                location += speed;
+                if (this.GetRectangle().Intersects(tongue.source.GetRectangle()))
+                {
+                    Game1.GetInstance().currentLevel.creaturesToRemove.AddLast(this);
+                    Game1.GetInstance().currentLevel.AddTombstone(this);
+                    Game1.GetInstance().currentLevel.powerUps.AddLast(new BigFireball(new Vector2(this.location.X + 50, 330)));
+                }
+                return;
+            }
+
             if (!jumping && random.Next(100) < 5)
             {
                 jumping = true;

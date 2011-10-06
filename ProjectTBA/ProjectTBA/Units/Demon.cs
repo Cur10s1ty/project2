@@ -122,6 +122,7 @@ namespace ProjectTBA.Units
                 {
                     Attack();
                     fireballCooldown = 30;
+                    ResetTongue();
                 }
             }
 
@@ -227,6 +228,7 @@ namespace ProjectTBA.Units
                 {
                     jumping = true;
                     jumpUp = true;
+                    ResetTongue();
                 }
             }
         }
@@ -240,9 +242,18 @@ namespace ProjectTBA.Units
 
             if (isTongueActive)
             {
-                spriteBatch.Draw(tongueStanceTex, 
-                    new Vector2(location.X - game.currentLevel.offset.X, location.Y - game.currentLevel.offset.Y + 19),
-                    new Rectangle(112, 21, 98, 89), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                if (spriteEffect == SpriteEffects.None)
+                {
+                    spriteBatch.Draw(tongueStanceTex,
+                        new Vector2(location.X - game.currentLevel.offset.X, location.Y - game.currentLevel.offset.Y + 19),
+                        new Rectangle(112, 21, 98, 89), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                }
+                else
+                {
+                    spriteBatch.Draw(tongueStanceTex,
+                        new Vector2(location.X - game.currentLevel.offset.X, location.Y - game.currentLevel.offset.Y + 19),
+                        new Rectangle(112, 21, 98, 89), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+                }
             }
             else if (!jumping && !isWalking)
             {
@@ -302,6 +313,7 @@ namespace ProjectTBA.Units
                 jumping = false;
                 jumpSpeed = 8;
                 jumpCount = 0.0;
+                Debug.WriteLine("Jump Finished");
             }
             else
             {
