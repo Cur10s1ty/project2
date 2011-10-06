@@ -51,6 +51,8 @@ namespace ProjectTBA
         private LinkedList<Level> levelList;
         public Level currentLevel;
 
+        public static TimeSpan TIMESTEP = TimeSpan.FromTicks(333333);
+
         private static Game1 instance;
         public static Game1 GetInstance()
         {
@@ -152,6 +154,8 @@ namespace ProjectTBA
 
             particleEmitterManager.Update(gameTime, currentLevel.offset);
 
+            particleEmitterManager.Update(gameTime, offset);
+
             base.Update(gameTime);
         }
 
@@ -169,6 +173,8 @@ namespace ProjectTBA
             currentLevel.Draw(gameTime, spriteBatch);
             
             controller.Draw(gameTime, spriteBatch);
+
+            particleEmitterManager.Draw(gameTime, spriteBatch);
 
             particleEmitterManager.Draw(gameTime, spriteBatch);
 
