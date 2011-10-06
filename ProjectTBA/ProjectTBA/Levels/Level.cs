@@ -73,9 +73,21 @@ namespace ProjectTBA.Levels
 
                 case 2:
                     viewport = new AkumaViewport(this);
+                    obstacles.AddLast(new Platform(107, 335, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(265, 296, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(326, 265, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(451, 207, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(570, 277, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(912, 337, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(1041, 294, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(1279, 342, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(1371, 268, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(1443, 230, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(1503, 178, AkumaContentManager.forestPlatformTrunkTex, false));
                     break;
 
                 case 3:
+                    this.levelWidth = 800;
                     viewport = new AkumaViewport(this);
                     break;
             }

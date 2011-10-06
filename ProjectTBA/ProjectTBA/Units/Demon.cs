@@ -47,6 +47,8 @@ namespace ProjectTBA.Units
         private int fireballCooldown = 0;
         private Tongue tongue;
 
+        public int bigFireballs = 0;
+
         public LinkedList<Projectile> fireballs;
         public LinkedList<Projectile> fireballsToRemove;
 
@@ -141,7 +143,7 @@ namespace ProjectTBA.Units
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
             {
                 ResetTongue();
-                float stopRightMoveOn = 1600;
+                float stopRightMoveOn = game.currentLevel.levelWidth;
                 foreach (Obstacle o in game.currentLevel.obstacles)
                 {
                     if (o is Wall)
@@ -362,7 +364,7 @@ namespace ProjectTBA.Units
 
             if (speed.X > 0)
             {
-                if (game.currentLevel.offset.X + movementSpeed < 800)
+                if (game.currentLevel.offset.X + movementSpeed < game.currentLevel.levelWidth - 800)
                 {
                     if (location.X - game.currentLevel.offset.X + textureWidth > 600f)
                     {
@@ -371,7 +373,7 @@ namespace ProjectTBA.Units
                 }
                 else
                 {
-                    game.currentLevel.offset.X = 800;
+                    game.currentLevel.offset.X = game.currentLevel.levelWidth - 800;
                 }
             }
             else if (speed.X < 0)
@@ -471,7 +473,7 @@ namespace ProjectTBA.Units
                     {
                         this.location.X += 5;
 
-                        if (game.currentLevel.offset.X + 5 < 800)
+                        if (game.currentLevel.offset.X + 5 < game.currentLevel.levelWidth - 800)
                         {
                             if (location.X - game.currentLevel.offset.X + textureWidth > 600f)
                             {
@@ -480,7 +482,7 @@ namespace ProjectTBA.Units
                         }
                         else
                         {
-                            game.currentLevel.offset.X = 800;
+                            game.currentLevel.offset.X = game.currentLevel.levelWidth - 800;
                         }
                     }
                     break;
@@ -488,9 +490,9 @@ namespace ProjectTBA.Units
             }
 
 
-            if (this.location.Y - hitHeight - 1 > 380)
+            if (this.location.Y - hitHeight - 1 > floorHeight)
             {
-                this.location.Y -= 380 - this.location.Y;
+                this.location.Y -= floorHeight - this.location.Y;
                 hitHeight = 8;
                 isHit = false;
                 isInvunerable = true;
@@ -564,6 +566,7 @@ namespace ProjectTBA.Units
 
         public void SpawnHugeFireball()
         {
+            this.bigFireballs--;
             this.fireballs.AddLast(new Fireball(location.X, location.Y + textureHeight / 2, (spriteEffect == SpriteEffects.None) ? false : true, 4f));
             this.Hit(fireballs.ElementAt(fireballs.Count - 1));
         }

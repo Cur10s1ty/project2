@@ -42,11 +42,22 @@ namespace ProjectTBA.PowerUps
 
                 location.Y += 0.2f;
             }
+
+            if (GetRectangle().Intersects(Game1.GetInstance().player.GetRectangle()))
+            {
+                Game1.GetInstance().player.bigFireballs++;
+                this.Dispose();
+            }
         }
 
         public override void Draw(GameTime gt, SpriteBatch sb)
         {
             sb.Draw(texture, GetDrawRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.1001f);
+        }
+
+        public void Dispose()
+        {
+            Game1.GetInstance().currentLevel.powerUpsToRemove.AddLast(this);
         }
     }
 }

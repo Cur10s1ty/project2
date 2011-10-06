@@ -18,6 +18,8 @@ namespace ProjectTBA.Controls
         public Texture2D buttonRightTex { get; set; }
         public Texture2D buttonATex { get; set; }
         public Texture2D buttonBTex { get; set; }
+        public Texture2D buttonBigFireball { get; set; }
+        public SpriteFont spriteFont { get; set; }
         public Boolean hasSwiped { get; set; }
 
         public Controller()
@@ -29,6 +31,8 @@ namespace ProjectTBA.Controls
             this.buttonRightTex = AkumaContentManager.buttonRightTex;
             this.buttonATex = AkumaContentManager.buttonATex;
             this.buttonBTex = AkumaContentManager.buttonBTex;
+            this.buttonBigFireball = AkumaContentManager.fireBallPowerUpTex;
+            this.spriteFont = AkumaContentManager.testFont;
         }
 
         public void Update(GameTime gt)
@@ -54,6 +58,13 @@ namespace ProjectTBA.Controls
                     if (GetButtonBRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed || tl.State == TouchLocationState.Moved))
                     {
                         ControllerState.pressedButtons.AddLast(ControllerState.Buttons.B);
+                    }
+                    if (GetButtonBigFireballRectangle().Contains((int)tl.Position.X, (int)tl.Position.Y) && (tl.State == TouchLocationState.Pressed))
+                    {
+                        if (game.player.bigFireballs > 0)
+                        {
+                            game.player.SpawnHugeFireball();
+                        }
                     }
                 }
             }
@@ -84,6 +95,8 @@ namespace ProjectTBA.Controls
             sb.Draw(buttonRightTex, GetButtonRightRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f); 
             sb.Draw(buttonATex, GetButtonARectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
             sb.Draw(buttonBTex, GetButtonBRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+            sb.Draw(buttonBigFireball, GetButtonBigFireballRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+            sb.DrawString(spriteFont, "x " + game.player.bigFireballs, GetFireballTextPosition(), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
         public Rectangle GetButtonLeftRectangle()
@@ -104,6 +117,16 @@ namespace ProjectTBA.Controls
         public Rectangle GetButtonARectangle()
         {
             return new Rectangle(415, 395, 80, 80);
+        }
+
+        public Rectangle GetButtonBigFireballRectangle()
+        {
+            return new Rectangle(25, 415, 64, 50);
+        }
+
+        public Vector2 GetFireballTextPosition()
+        {
+            return new Vector2(98, 427);
         }
     }
 }

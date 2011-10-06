@@ -23,7 +23,7 @@ namespace ProjectTBA.Views
             switch (level.level)
             {
                 case 1:
-                    bg = new Background(Background.BGType.Forest);
+                    bg = new Background(Background.BGType.ForestTutorial);
                     break;
 
                 case 2:
@@ -31,6 +31,7 @@ namespace ProjectTBA.Views
                     break;
 
                 case 3:
+                    bg = new Background(Background.BGType.ForestArena);
                     break;
             }
 

@@ -51,6 +51,7 @@ namespace ProjectTBA.Misc
         public static Texture2D forestBGMiddleTex { get; set; }
         public static Texture2D forestBGBackTex { get; set; }
         public static Texture2D forestGroundTex { get; set; }
+        public static Texture2D forestBGArenaTex { get; set; }
 
         // Platforms
         public static Texture2D forestPlatformTrunkTex { get; set; }
@@ -121,6 +122,7 @@ namespace ProjectTBA.Misc
             forestBGMiddleTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_2");
             forestBGBackTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_3");
             forestGroundTex = content.Load<Texture2D>("Backgrounds/Forest/ground");
+            forestBGArenaTex = content.Load<Texture2D>("Backgrounds/Forest/Battlefieldcollor");
 
             // Platforms
             forestPlatformTrunkTex = content.Load<Texture2D>("Platforms/Forest/trunk");

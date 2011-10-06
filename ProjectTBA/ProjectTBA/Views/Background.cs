@@ -15,33 +15,55 @@ namespace ProjectTBA.Views
         public Texture2D middle { get; set; }
         public Texture2D back { get; set; }
         public Texture2D ground { get; set; }
+        public BGType type { get; set; }
 
         public enum BGType
         {
-            Forest
+            ForestTutorial,
+            Forest,
+            ForestArena
         }
 
         public Background(BGType type)
         {
-            SetBackground(type);
+            this.type = type;
+            SetBackground();
         }
 
         internal void Draw(GameTime gt, SpriteBatch sb)
         {
-            sb.Draw(AkumaContentManager.forestBGBackTex, new Rectangle(0, 0, 800, 400), GetBackDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
-            sb.Draw(AkumaContentManager.forestBGMiddleTex, new Rectangle(0, 0, 800, 400), GetMiddleDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9999f);
-            sb.Draw(AkumaContentManager.forestBGFrontTex, new Rectangle(0, 0, 800, 400), GetFrontDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9998f);
-            sb.Draw(AkumaContentManager.forestGroundTex, new Rectangle(0, 380, 800, 100), GetGroundDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9997f);
+            switch (type)
+            {
+                case BGType.ForestTutorial:
+                case BGType.Forest:
+                    sb.Draw(back, new Rectangle(0, 0, 800, 400), GetBackDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+                    sb.Draw(middle, new Rectangle(0, 0, 800, 400), GetMiddleDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9999f);
+                    sb.Draw(front, new Rectangle(0, 0, 800, 400), GetFrontDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9998f);
+                    sb.Draw(ground, new Rectangle(0, 380, 800, 100), GetGroundDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9997f);
+                    break;
+
+                case BGType.ForestArena:
+                    sb.Draw(front, new Rectangle(0, 0, 800, 400), GetFrontDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9998f);
+                    sb.Draw(ground, new Rectangle(0, 380, 800, 100), GetGroundDrawRectangle(), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.9997f);
+                    break;
+            }
         }
 
-        public void SetBackground(BGType type)
+        public void SetBackground()
         {
             switch (type)
             {
+                case BGType.ForestTutorial:
                 case BGType.Forest:
                     front = AkumaContentManager.forestBGFrontTex;
                     middle = AkumaContentManager.forestBGMiddleTex;
                     back = AkumaContentManager.forestBGBackTex;
+                    ground = AkumaContentManager.forestGroundTex;
+                    break;
+
+                case BGType.ForestArena:
+                    front = AkumaContentManager.forestBGArenaTex;
+                    ground = AkumaContentManager.forestGroundTex;
                     break;
 
                 default:
