@@ -15,7 +15,7 @@ namespace WindowsPhoneParticleEngine
         public LinkedList<Particle> particles = new LinkedList<Particle>();
         public LinkedList<Particle> removeParticles = new LinkedList<Particle>();
         public LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
-        public Vector3 location { get; set; }
+        public Vector3 location;
         public Vector3 speed { get; set; }
         public float particleMovementSpeed { get; set; }
         public Color color;

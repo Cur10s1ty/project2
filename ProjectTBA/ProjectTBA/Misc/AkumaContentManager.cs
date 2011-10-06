@@ -15,11 +15,15 @@ namespace ProjectTBA.Misc
         public static Texture2D demonWalkTex { get; set; }
         public static Texture2D demonTongueTex { get; set; }
 
+        // Power-Up
+        public static Texture2D fireBallPowerUpTex { get; set; }
+
         // Misc
         public static Texture2D solidTex { get; set; }
         public static SpriteFont testFont { get; set; }
         public static Texture2D shurikenTex { get; set; }
         public static Texture2D fireballTex { get; set; }
+        public static Texture2D fireball2Tex { get; set; }
 
         // Controls
         public static Texture2D dPadTex { get; set; }
@@ -39,6 +43,7 @@ namespace ProjectTBA.Misc
         public static Texture2D forestBGFrontTex { get; set; }
         public static Texture2D forestBGMiddleTex { get; set; }
         public static Texture2D forestBGBackTex { get; set; }
+        public static Texture2D forestGroundTex { get; set; }
 
         // Platforms
         public static Texture2D forestPlatformTrunkTex { get; set; }
@@ -73,11 +78,15 @@ namespace ProjectTBA.Misc
             demonWalkTex = content.Load<Texture2D>("Player/DemonWalk");
             demonTongueTex = content.Load<Texture2D>("Player/DemonTongue");
 
+            // Power-Up
+            fireBallPowerUpTex = content.Load<Texture2D>("Misc/scroll_vuur");
+
             // Misc
             solidTex = content.Load<Texture2D>("Misc/Solid");
             testFont = content.Load<SpriteFont>("Misc/TestFont");
             shurikenTex = content.Load<Texture2D>("Misc/weapon");
             fireballTex = content.Load<Texture2D>("Misc/vuurbal4");
+            fireball2Tex = content.Load<Texture2D>("Misc/vuurbal5");
 
             // Controls
             dPadTex = content.Load<Texture2D>("Controls/DPad");
@@ -97,6 +106,7 @@ namespace ProjectTBA.Misc
             forestBGFrontTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_1");
             forestBGMiddleTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_2");
             forestBGBackTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_3");
+            forestGroundTex = content.Load<Texture2D>("Backgrounds/Forest/ground");
 
             // Platforms
             forestPlatformTrunkTex = content.Load<Texture2D>("Platforms/Forest/trunk");

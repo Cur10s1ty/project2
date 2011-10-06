@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectTBA.Misc;
 using ProjectTBA.Levels;
+using ProjectTBA.Creatures;
 
 namespace ProjectTBA.Units.Baddies
 {
@@ -23,16 +24,16 @@ namespace ProjectTBA.Units.Baddies
 
             switch (chance)
             {
-                case 0: 
+                case 0:
                     this.texture = AkumaContentManager.stoneTex;
                     break;
-                case 1: 
+                case 1:
                     this.texture = AkumaContentManager.stoneTex2;
                     break;
-                case 2: 
+                case 2:
                     this.texture = AkumaContentManager.stoneTex3;
                     break;
-                case 3: 
+                case 3:
                     this.texture = AkumaContentManager.stoneTex4;
                     break;
                 default:
@@ -56,16 +57,48 @@ namespace ProjectTBA.Units.Baddies
             }
         }
 
+        public Tombstone(Creature source)
+        {
+            currentLevel = Game1.GetInstance().currentLevel;
+            int chance = currentLevel.random.Next(4);
+
+            switch (chance)
+            {
+                case 0:
+                    this.texture = AkumaContentManager.stoneTex;
+                    break;
+                case 1:
+                    this.texture = AkumaContentManager.stoneTex2;
+                    break;
+                case 2:
+                    this.texture = AkumaContentManager.stoneTex3;
+                    break;
+                case 3:
+                    this.texture = AkumaContentManager.stoneTex4;
+                    break;
+                default:
+                    this.texture = AkumaContentManager.stoneTex;
+                    break;
+            }
+
+            if (source is Deer)
+            {
+                Deer deer = (Deer)source;
+                location.X = deer.location.X;
+                location.Y = currentLevel.levelHeight - texture.Height * scale;
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture,
                 new Vector2((int)location.X - currentLevel.offset.X, (int)location.Y),
-                new Rectangle(0, 0, texture.Width, texture.Height), 
-                Color.White, 
-                0f, 
+                new Rectangle(0, 0, texture.Width, texture.Height),
+                Color.White,
+                0f,
                 Vector2.Zero,
-                scale, 
-                SpriteEffects.None, 
+                scale,
+                SpriteEffects.None,
                 0.1f);
         }
     }

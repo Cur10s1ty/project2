@@ -20,6 +20,7 @@ using Projectiles;
 using WindowsPhoneParticleEngine;
 using ProjectTBA.Levels;
 using ProjectTBA.Creatures;
+using ProjectTBA.PowerUps;
 
 namespace ProjectTBA
 {
@@ -108,21 +109,11 @@ namespace ProjectTBA
             AkumaContentManager.LoadContent();
             particleEmitterManager = ParticleEmitterManager.GetInstance();
 
-            player = new Demon(357, 371);
+            player = new Demon(0, 291);
             controller = new Controller();
 
-            currentLevel = new Level(player);
-
-            currentLevel.obstacles.AddLast(new Platform(600, 400, AkumaContentManager.forestPlatformTrunkTex, false));
-            currentLevel.obstacles.AddLast(new Platform(480, 300, AkumaContentManager.forestPlatformLeaf1Tex, false));
-
-
-            currentLevel.creatures.AddLast(new Deer(new Vector2(100, 380)));
-
-            //currentLevel.baddies.AddLast(new TestEnemy(100, 380));
-            currentLevel.baddies.AddLast(new PeasantEnemy(240, 380));
-            currentLevel.baddies.AddLast(new PeasantEnemy(270, 380));
-            //currentLevel.baddies.AddLast(new Samurai(300, 380));
+            currentLevel = new Level(player, 1);
+            currentLevel.GenerateLevel(currentLevel.level);
         }
 
         /// <summary>

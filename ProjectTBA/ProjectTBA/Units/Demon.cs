@@ -73,7 +73,6 @@ namespace ProjectTBA.Units
 
         public override void Attack()
         {
-            
             SpawnFireball();
         }
 
@@ -139,6 +138,11 @@ namespace ProjectTBA.Units
 
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
             {
+                foreach (Wall w in game.currentLevel.obstacles)
+                {
+                    
+                }
+
                 if (location.X + textureWidth + movementSpeed < 1600)
                 {
                     speed.X = movementSpeed;
@@ -243,7 +247,7 @@ namespace ProjectTBA.Units
         public override Rectangle GetRectangle()
         {
             return new Rectangle((int)location.X - (int)Game1.GetInstance().currentLevel.offset.X,
-                (int)location.Y, 86, texture.Height);
+                (int)location.Y, 86, textureHeight);
         }
 
         public void CalculateJump()

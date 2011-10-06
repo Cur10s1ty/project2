@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using ProjectTBA.Units;
 using Microsoft.Xna.Framework.Graphics;
 using WindowsPhoneParticleEngine;
+using ProjectTBA.Creatures;
 
 namespace ProjectTBA.Projectiles
 {
@@ -27,6 +28,7 @@ namespace ProjectTBA.Projectiles
         public Fireball(float x, float y, Boolean moveLeft, float scale)
             : base(x, y)
         {
+            hitBaddies = new LinkedList<Unit>();
             this.scale = scale;
             this.moveLeft = moveLeft;
             if (moveLeft)
@@ -73,9 +75,23 @@ namespace ProjectTBA.Projectiles
                     if (hitCount >= maxHitCount)
                     {
                         this.isDead = true;
-                    this.emitter.Dispose();
-                    this.emitter2.Dispose();
-                    return;
+                        this.emitter.Dispose();
+                        this.emitter2.Dispose();
+                        return;
+                    }
+                }
+            }
+
+            foreach (Creature c in game.currentLevel.creatures)
+            {
+                if (c is Deer)
+                {
+                    Deer d = (Deer)c;
+
+                    if (this.GetRectangle().Intersects(d.GetRectangle()))
+                    {
+                        d.onFire = true;
+                    }
                 }
             }
 

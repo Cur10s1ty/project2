@@ -5,6 +5,9 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ProjectTBA.Misc;
+using WindowsPhoneParticleEngine;
+using WindowsPhoneParticleEngine.Emitters;
+using ProjectTBA.PowerUps;
 
 namespace ProjectTBA.Creatures
 {
@@ -15,6 +18,7 @@ namespace ProjectTBA.Creatures
         public Texture2D jumpTex { get; set; }
         public Random random { get; set; }
         public int textureWidth = 120;
+        public int textureHeight = 100;
         public Vector2 speed;
         public SpriteEffects effects = SpriteEffects.None;
         public int directionCooldown = 100;
@@ -23,6 +27,11 @@ namespace ProjectTBA.Creatures
         public Boolean jumping = false;
         public double jumpCount = 0;
         public double walkCount = 0;
+
+        public int life = 80;
+
+        public Boolean onFire = false;
+        public ParticleEmitter fireEmitter = null;
 
         public Deer(Vector2 location)
             : base(location)
@@ -76,6 +85,32 @@ namespace ProjectTBA.Creatures
             {
                 directionChanged--;
             }
+
+            if (onFire && fireEmitter == null)
+            {
+                LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
+                textures.AddLast(AkumaContentManager.fireball2Tex);
+                fireEmitter = ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X + 60, location.Y + 50, 0.12f), new Vector3(0f, 0f, 0f), 3, 2f, 0.2f, Color.White);
+            }
+
+            if (fireEmitter != null)
+            {
+                fireEmitter.location.X = location.X + 60;
+                fireEmitter.location.Y = location.Y + 50;
+                life--;
+            }
+
+            if (life <= 0)
+            {
+                fireEmitter.Dispose();
+                Game1.GetInstance().currentLevel.creaturesToRemove.AddLast(this);
+                Game1.GetInstance().currentLevel.AddTombstone(this);
+
+                if (random.Next(500) < 2)
+                {
+                    Game1.GetInstance().currentLevel.powerUps.AddLast(new BigFireball(new Vector2(this.location.X + 50, 330)));
+                }
+            }
         }
 
         public override void Draw(GameTime gt, SpriteBatch sb)
@@ -116,6 +151,12 @@ namespace ProjectTBA.Creatures
                     speed.X *= -1;
                     break;
             }
+        }
+
+        public Rectangle GetRectangle()
+        {
+            return new Rectangle((int)location.X - (int)Game1.GetInstance().currentLevel.offset.X,
+                (int)location.Y, textureWidth, textureHeight);
         }
     }
 }

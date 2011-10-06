@@ -11,6 +11,7 @@ using Projectiles;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectTBA.Units.Baddies;
 using ProjectTBA.Creatures;
+using ProjectTBA.PowerUps;
 
 namespace ProjectTBA.Levels
 {
@@ -27,17 +28,24 @@ namespace ProjectTBA.Levels
         private LinkedList<Projectile> deadProjectiles;
         private LinkedList<Tombstone> tombstones;
 
+        public LinkedList<PowerUp> powerUps;
+        public LinkedList<PowerUp> powerUpsToRemove;
+
         // Viewport + Background
         public AkumaViewport viewport;
         public Vector2 offset;
         public Random random;
 
+        public int level;
         public int levelWidth = 1600;
-        public int levelHeight = 480;
+        public int levelHeight = 400;
 
-        public Level(Demon player)
+        public Level(Demon player, int level)
         {
+            random = new Random();
+
             this.player = player;
+            this.level = level;
 
             baddies = new LinkedList<Unit>();
             baddiesToRemove = new LinkedList<Unit>();
@@ -45,11 +53,31 @@ namespace ProjectTBA.Levels
             creaturesToRemove = new LinkedList<Creature>();
 
             obstacles = new LinkedList<Obstacle>();
-            viewport = new AkumaViewport(this);
             projectiles = new LinkedList<Projectile>();
             deadProjectiles = new LinkedList<Projectile>();
             tombstones = new LinkedList<Tombstone>();
-            random = new Random();
+
+            powerUps = new LinkedList<PowerUp>();
+            powerUpsToRemove = new LinkedList<PowerUp>();
+        }
+
+        public void GenerateLevel(int level)
+        {
+            switch (level)
+            {
+                case 1:
+                    viewport = new AkumaViewport(this);
+                    obstacles.AddLast(new Wall(300, 300, AkumaContentManager.testPlayerTex));
+                    break;
+
+                case 2:
+                    viewport = new AkumaViewport(this);
+                    break;
+
+                case 3:
+                    viewport = new AkumaViewport(this);
+                    break;
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -113,6 +141,21 @@ namespace ProjectTBA.Levels
             {
                 o.Update(gameTime);
             }
+
+            foreach (PowerUp pu in powerUps)
+            {
+                pu.Update(gameTime);
+            }
+
+            if (powerUpsToRemove.Count > 0)
+            {
+                foreach (PowerUp pu in powerUpsToRemove)
+                {
+                    powerUps.Remove(pu);
+                }
+
+                powerUpsToRemove.Clear();
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -145,6 +188,11 @@ namespace ProjectTBA.Levels
                 }
             }
 
+            foreach (PowerUp pu in powerUps)
+            {
+                pu.Draw(gameTime, spriteBatch);
+            }
+
             foreach (Tombstone tombstone in tombstones)
             {
                 tombstone.Draw(spriteBatch);
@@ -154,6 +202,11 @@ namespace ProjectTBA.Levels
         public void AddTombstone(Unit enemy)
         {
             this.tombstones.AddLast(new Tombstone(enemy));
+        }
+
+        public void AddTombstone(Creature creature)
+        {
+            this.tombstones.AddLast(new Tombstone(creature));
         }
     }
 }

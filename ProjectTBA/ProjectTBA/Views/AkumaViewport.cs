@@ -19,7 +19,20 @@ namespace ProjectTBA.Views
         public AkumaViewport(Level level)
         {
             game = Game1.GetInstance();
-            bg = new Background(Background.BGType.Forest);
+
+            switch (level.level)
+            {
+                case 1:
+                    bg = new Background(Background.BGType.Forest);
+                    break;
+
+                case 2:
+                    bg = new Background(Background.BGType.Forest);
+                    break;
+
+                case 3:
+                    break;
+            }
 
             level.offset = new Vector2(0, 0);
             screenSize = new Vector2(800, 480);
