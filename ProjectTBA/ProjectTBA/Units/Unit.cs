@@ -15,7 +15,7 @@ namespace ProjectTBA.Units
         public Game1 game;
 
         public Vector2 location;
-        protected float movementSpeed;
+        public float movementSpeed;
         protected double jumpCount = 0;
         protected double fallCount = 0;
         public Boolean jumping;

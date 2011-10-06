@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using ProjectTBA.Misc;
+using System.Diagnostics;
+using ProjectTBA.Creatures;
 
 namespace ProjectTBA.Units.Bodyparts
 {
@@ -11,47 +14,172 @@ namespace ProjectTBA.Units.Bodyparts
     {
         private Demon source;
         private Vector2 location;
-        private int maxRange = 100;
-        private int speed = 10; 
+        private int maxRange = 250;
+        private int speed = 7;
+        private int distanceTravelled = 0;
         private Boolean retracting = false;
         private LinkedList<Texture2D> tongueTextures;
-
+        private Texture2D pieceTex;
+        private Texture2D sourceTex;
+        private Game1 game;
+        
         public Tongue(Demon source)
         {
+            tongueTextures = new LinkedList<Texture2D>();
+            pieceTex = AkumaContentManager.tonguePieceTex;
+            sourceTex = AkumaContentManager.tongueSourceTex;
+            tongueTextures.AddFirst(sourceTex);
             this.source = source;
             location = source.location;
+            location.Y = source.location.Y + source.walkTex.Height - 34;
+            game = source.game;
         }
 
         public void Update()
         {
+            foreach (Unit enemy in game.currentLevel.baddies)
+            {
+                if (enemy.GetRectangle().Intersects(this.GetRectangle()))
+                {
+                    enemy.movementSpeed = 1f;
+                    source.ResetTongue();
+                    return;
+                }
+            }
+
+            foreach (Creature creature in game.currentLevel.creatures)
+            {
+                if (creature.GetRectangle().Intersects(this.GetRectangle()))
+                {
+                    source.ResetTongue();
+                    return;
+                }
+            }
+
+
             if (source.spriteEffect == SpriteEffects.None)
             {
                 if (retracting)
                 {
-                    this.location.X -= speed;
+                    if (distanceTravelled == 0)
+                    {
+                        Game1.GetInstance().controller.hasSwiped = false;
+                        retracting = false;
+                        source.isTongueActive = false;
+                    }
+                    else
+                    {
+                        this.location.X -= speed;
+                        distanceTravelled -= speed;
+                        tongueTextures.RemoveLast();
+                    }
                 }
                 else
                 {
-                    this.location.X += speed;
+                    if (distanceTravelled >= maxRange)
+                    {
+                        retracting = true;
+                    }
+                    else
+                    {
+                        this.location.X += speed;
+                        distanceTravelled += speed;
+                        NewTonguePiece();
+                    }
                 }
+
             }
             else
             {
                 if (retracting)
                 {
-                    this.location.X += speed;
+                    if (distanceTravelled == 0)
+                    {
+                        Game1.GetInstance().controller.hasSwiped = false;
+                        retracting = false;
+                        source.isTongueActive = false;
+                    }
+                    else
+                    {
+                        this.location.X += speed;
+                        distanceTravelled -= speed;
+                        tongueTextures.RemoveLast();
+                    }
                 }
                 else
                 {
-                    this.location.X -= speed;
+                    if (distanceTravelled >= maxRange)
+                    {
+                        retracting = true;
+                    }
+                    else
+                    {
+                        this.location.X -= speed;
+                        distanceTravelled += speed;
+                        NewTonguePiece();
+                    }
                 }
             }
-            Game1.GetInstance().controller.hasSwiped = false;
+        }
+
+        private void NewTonguePiece()
+        {
+            Texture2D tempTex;
+            tempTex = AkumaContentManager.tonguePieceTex;
+            tongueTextures.AddLast(tempTex);
+        }
+
+        public void Reset()
+        {
+            this.location = source.location + Game1.GetInstance().currentLevel.offset;
+            location.Y = source.location.Y + source.walkTex.Height - 34;
+            distanceTravelled = 0;
+            retracting = false;
+            source.isTongueActive = false;
+            tongueTextures.Clear();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (source.spriteEffect == SpriteEffects.None)
+            {
 
+                int i = 0;
+                foreach (Texture2D tex in tongueTextures)
+                {
+                    if (i != 0)
+                    {
+                        spriteBatch.Draw(tex, new Rectangle((int)location.X + 86 - (i * 7), (int)location.Y + 3, tex.Width, tex.Height), Color.White);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(tex, new Rectangle((int)location.X + 86 - (i * 7), (int)location.Y, tex.Width, tex.Height), Color.White);
+                    }
+                    i++;
+                }
+            }
+            else
+            {
+
+                int i = 0;
+                foreach (Texture2D tex in tongueTextures)
+                {
+                    if (i == 0)
+                    {
+                        spriteBatch.Draw(tex, new Rectangle((int)location.X + (i * 7), (int)location.Y + 3, tex.Width, tex.Height), Color.White);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(tex, new Rectangle((int)location.X + (i * 7), (int)location.Y, tex.Width, tex.Height), Color.White);
+                    }
+                    i++;
+                }
+            }
+        }
+
+        private Rectangle GetRectangle()
+        {
+            return new Rectangle((int) location.X + 14, (int) location.Y, 13, 8);
         }
     }
 }

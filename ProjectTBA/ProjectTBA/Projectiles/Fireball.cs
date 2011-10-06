@@ -34,7 +34,7 @@ namespace ProjectTBA.Projectiles
             if (moveLeft)
             {
                 this.xSpeed = -5;
-                spriteEffect = SpriteEffects.FlipHorizontally;                
+                spriteEffect = SpriteEffects.FlipHorizontally;
             }
             else
             {
@@ -45,6 +45,7 @@ namespace ProjectTBA.Projectiles
             this.texture = AkumaContentManager.fireballTex;
 
             LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
+            hitBaddies = new LinkedList<Unit>();
             textures.AddLast(AkumaContentManager.circleParticle);
             this.emitter = ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X, location.Y, 0.11f), new Vector3(xSpeed, 0f, 0f), 1 * (int)scale, 3f, scale, Color.Red);
             this.emitter2 = ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X, location.Y, 0.11f), new Vector3(xSpeed, 0f, 0f), 2 * (int)scale, 3f, scale, Color.Orange);
@@ -75,12 +76,13 @@ namespace ProjectTBA.Projectiles
                     if (hitCount >= maxHitCount)
                     {
                         this.isDead = true;
-                        this.emitter.Dispose();
-                        this.emitter2.Dispose();
-                        return;
                     }
+                    this.emitter.Dispose();
+                    this.emitter2.Dispose();
+                    return;
                 }
             }
+
 
             foreach (Creature c in game.currentLevel.creatures)
             {
@@ -102,7 +104,7 @@ namespace ProjectTBA.Projectiles
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-                spriteBatch.Draw(texture, GetDrawLocation(), new Rectangle(0, 0, 100, 100), Color.White, 0f, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffect, 0.1f);
+            spriteBatch.Draw(texture, GetDrawLocation(), new Rectangle(0, 0, 100, 100), Color.White, 0f, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffect, 0.1f);
         }
 
         public Vector2 GetDrawLocation()

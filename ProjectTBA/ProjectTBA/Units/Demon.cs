@@ -20,9 +20,10 @@ namespace ProjectTBA.Units
 
         public Texture2D jumpTex;
         public Texture2D walkTex;
+        public Texture2D tongueStanceTex;
 
-        public Boolean isAttacking = false;
         public Boolean isWalking = false;
+        public Boolean isTongueActive = false;
 
         public Vector2 speed;
 
@@ -60,6 +61,7 @@ namespace ProjectTBA.Units
         {
             this.jumpTex = AkumaContentManager.demonJumpTex;
             this.walkTex = AkumaContentManager.demonWalkTex;
+            this.tongueStanceTex = AkumaContentManager.demonTongueTex;
             this.jumping = false;
             this.falling = false;
             this.maxJumpHeight = 40;
@@ -126,7 +128,6 @@ namespace ProjectTBA.Units
             if (isHit)
             {
                 UpdateHit();
-                //isHit = false;
                 return;
             }
 
@@ -138,6 +139,7 @@ namespace ProjectTBA.Units
 
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.RIGHT))
             {
+                ResetTongue();
                 foreach (Wall w in game.currentLevel.obstacles)
                 {
                     
@@ -155,6 +157,7 @@ namespace ProjectTBA.Units
 
             if (ControllerState.IsButtonPressed(ControllerState.Buttons.LEFT))
             {
+                ResetTongue();
                 if (location.X - movementSpeed > 0)
                 {
                     speed.X = -movementSpeed;
@@ -167,6 +170,7 @@ namespace ProjectTBA.Units
 
             if (game.controller.hasSwiped)
             {
+                isTongueActive = true;
                 tongue.Update();
             }
 
@@ -194,9 +198,20 @@ namespace ProjectTBA.Units
             }
         }
 
-        public override void Draw(GameTime gt, SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (!jumping && !isWalking && !isAttacking)
+            if (game.controller.hasSwiped)
+            {
+                tongue.Draw(spriteBatch);
+            }
+
+            if (isTongueActive)
+            {
+                spriteBatch.Draw(tongueStanceTex, 
+                    new Vector2(location.X - game.currentLevel.offset.X, location.Y - game.currentLevel.offset.Y + 19),
+                    new Rectangle(112, 21, 98, 89), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
+            }
+            else if (!jumping && !isWalking)
             {
                 spriteBatch.Draw(walkTex, GetDrawLocation(), GetSourceRectangle(0), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
             }
@@ -209,17 +224,6 @@ namespace ProjectTBA.Units
 
                 spriteBatch.Draw(walkTex, GetDrawLocation(), GetSourceRectangle(1 + (int)Math.Floor(walkFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
                 walkFrames += 0.2;
-            }
-            else if (!jumping && !falling && isAttacking)
-            {
-                if (attackFrames > 2)
-                {
-                    isAttacking = false;
-                    attackFrames = 0;
-                }
-
-                spriteBatch.Draw(texture, GetDrawLocation(), GetSourceRectangle(4 + (int)Math.Floor(attackFrames)), Color.White, 0f, Vector2.Zero, 1f, spriteEffect, 0.1f);
-                attackFrames += 0.2;
             }
             else if (jumping)
             {
@@ -350,6 +354,7 @@ namespace ProjectTBA.Units
                 return;
             }
 
+            ResetTongue();
             isHit = true;
             jumping = false;
             falling = false;
@@ -375,6 +380,7 @@ namespace ProjectTBA.Units
                 return;
             }
 
+            ResetTongue();
             isHit = true;
             jumping = false;
             falling = false;
@@ -465,7 +471,7 @@ namespace ProjectTBA.Units
             switch (spriteEffect)
             {
                 case SpriteEffects.None:
-                    if (!jumping && !isWalking && !isAttacking)
+                    if (!jumping && !isWalking)
                     {
                         return new Rectangle((int)location.X + 41 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 38, 1);
                     }
@@ -473,7 +479,7 @@ namespace ProjectTBA.Units
                     {
                         return new Rectangle((int)location.X + 41 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 38, 1);
                     }
-                    else if (!jumping && !falling && isAttacking)
+                    else if (!jumping && !falling)
                     {
                         return new Rectangle((int)location.X + 32 - (int)game.currentLevel.offset.X, (int)location.Y + 99, 33, 1);
                     }
@@ -484,7 +490,7 @@ namespace ProjectTBA.Units
                     break;
 
                 case SpriteEffects.FlipHorizontally:
-                    if (!jumping && !isWalking && !isAttacking)
+                    if (!jumping && !isWalking)
                     {
                         return new Rectangle((int)location.X + 10 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 38, 1);
                     }
@@ -492,7 +498,7 @@ namespace ProjectTBA.Units
                     {
                         return new Rectangle((int)location.X + 10 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 38, 1);
                     }
-                    else if (!jumping && !falling && isAttacking)
+                    else if (!jumping && !falling)
                     {
                         return new Rectangle((int)location.X + 12 - (int)game.currentLevel.offset.X, (int)location.Y + 103, 36, 1);
                     }
@@ -555,6 +561,13 @@ namespace ProjectTBA.Units
                 stopJumpOn = floorHeight;
                 falling = true;
             }
+        }
+
+        public void ResetTongue()
+        {
+            isTongueActive = false;
+            game.controller.hasSwiped = false;
+            tongue.Reset();
         }
     }
 }

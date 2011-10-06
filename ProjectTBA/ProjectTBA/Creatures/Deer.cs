@@ -153,7 +153,7 @@ namespace ProjectTBA.Creatures
             }
         }
 
-        public Rectangle GetRectangle()
+        public override Rectangle GetRectangle()
         {
             return new Rectangle((int)location.X - (int)Game1.GetInstance().currentLevel.offset.X,
                 (int)location.Y, textureWidth, textureHeight);

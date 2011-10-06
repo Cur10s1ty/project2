@@ -20,5 +20,7 @@ namespace ProjectTBA.Creatures
         public abstract void Update(GameTime gt);
 
         public abstract void Draw(GameTime gt, SpriteBatch sb);
+
+        public abstract Rectangle GetRectangle();
     }
 }

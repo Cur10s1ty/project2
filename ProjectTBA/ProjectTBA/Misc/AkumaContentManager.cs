@@ -14,6 +14,8 @@ namespace ProjectTBA.Misc
         public static Texture2D demonJumpTex { get; set; }
         public static Texture2D demonWalkTex { get; set; }
         public static Texture2D demonTongueTex { get; set; }
+        public static Texture2D tongueSourceTex { get; set; }
+        public static Texture2D tonguePieceTex { get; set; }
 
         // Power-Up
         public static Texture2D fireBallPowerUpTex { get; set; }
@@ -76,7 +78,9 @@ namespace ProjectTBA.Misc
             // Player
             demonJumpTex = content.Load<Texture2D>("Player/DemonJump");
             demonWalkTex = content.Load<Texture2D>("Player/DemonWalk");
-            demonTongueTex = content.Load<Texture2D>("Player/DemonTongue");
+            demonTongueTex = content.Load<Texture2D>("Player/tongMove");
+            tongueSourceTex = content.Load<Texture2D>("Player/tongBack");
+            tonguePieceTex = content.Load<Texture2D>("Player/tongFrontPart");
 
             // Power-Up
             fireBallPowerUpTex = content.Load<Texture2D>("Misc/scroll_vuur");
