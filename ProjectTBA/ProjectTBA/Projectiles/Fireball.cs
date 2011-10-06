@@ -17,6 +17,9 @@ namespace ProjectTBA.Projectiles
         private SpriteEffects spriteEffect;
         private float scale = 1f;
         private Boolean moveLeft;
+        private int maxHitCount = 5;
+        private int hitCount = 0;
+        private LinkedList<Unit> hitBaddies;
 
         private ParticleEmitter emitter = null;
         private ParticleEmitter emitter2 = null;
@@ -57,14 +60,22 @@ namespace ProjectTBA.Projectiles
 
             foreach (Unit baddie in game.currentLevel.baddies)
             {
+                if (hitBaddies.Contains(baddie))
+                {
+                    continue;
+                }
                 //todo current dirty check on ALL the baddies
                 if (this.GetRectangle().Intersects(baddie.GetRectangle()))
                 {
                     baddie.Hit(this);
-                    //TODO lol instakill
-                    this.isDead = true;
+                    hitBaddies.AddLast(baddie);
+                    hitCount++;
+                    if (hitCount >= maxHitCount)
+                    {
+                        this.isDead = true;
                     this.emitter.Dispose();
                     this.emitter2.Dispose();
+                    return;
                 }
             }
 

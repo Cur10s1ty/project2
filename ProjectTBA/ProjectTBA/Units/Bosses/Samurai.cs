@@ -10,7 +10,7 @@ using ProjectTBA.Projectiles;
 
 namespace ProjectTBA.Units
 {
-    class Samurai : Unit
+    public class Samurai : Unit
     {
 
         private enum MovementState
@@ -41,6 +41,7 @@ namespace ProjectTBA.Units
         public Samurai(float x, float y)
             : base(x, y)
         {
+            this.health = 150;
             game.AddUnit(this);
             target = game.player;
             this.texture = AkumaContentManager.samuraiTempTex;

@@ -29,6 +29,12 @@ namespace ProjectTBA.Misc
         public static Texture2D deerWalkTex { get; set; }
         public static Texture2D deerJumpTex { get; set; }
 
+        // Stones
+        public static Texture2D stoneTex { get; set; }
+        public static Texture2D stoneTex2 { get; set; }
+        public static Texture2D stoneTex3 { get; set; }
+        public static Texture2D stoneTex4 { get; set; }
+
         // Backgrounds
         public static Texture2D forestBGFrontTex { get; set; }
         public static Texture2D forestBGMiddleTex { get; set; }
@@ -42,6 +48,10 @@ namespace ProjectTBA.Misc
 
         // Baddies
         public static Texture2D baddieVillagerTex { get; set; }
+        public static Texture2D baddieVillagerTex2 { get; set; }
+        public static Texture2D baddieVillagerTex3 { get; set; }
+        public static Texture2D baddieVillagerTex4 { get; set; }
+        public static Texture2D baddieVillagerTex5 { get; set; }
 
         // Boss
         public static Texture2D samuraiTempTex { get; set; }
@@ -77,6 +87,12 @@ namespace ProjectTBA.Misc
             deerWalkTex = content.Load<Texture2D>("Creatures/DeerWalk");
             deerJumpTex = content.Load<Texture2D>("Creatures/DeerJump");
 
+            // Stones
+            stoneTex = content.Load<Texture2D>("Baddies/Stones/stone1");
+            stoneTex2 = content.Load<Texture2D>("Baddies/Stones/stone2");
+            stoneTex3 = content.Load<Texture2D>("Baddies/Stones/stone3");
+            stoneTex4 = content.Load<Texture2D>("Baddies/Stones/stone4");
+
             // Backgrounds
             forestBGFrontTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_1");
             forestBGMiddleTex = content.Load<Texture2D>("Backgrounds/Forest/Level_1_2");
@@ -90,6 +106,10 @@ namespace ProjectTBA.Misc
 
             // Baddies
             baddieVillagerTex = content.Load<Texture2D>("Baddies/civilian");
+            baddieVillagerTex2 = content.Load<Texture2D>("Baddies/civilian2");
+            baddieVillagerTex3 = content.Load<Texture2D>("Baddies/civilian3");
+            baddieVillagerTex4 = content.Load<Texture2D>("Baddies/civilian4");
+            baddieVillagerTex5 = content.Load<Texture2D>("Baddies/civilian5");
 
             // Boss
             samuraiTempTex = content.Load<Texture2D>("Baddies/ninjaWalking");

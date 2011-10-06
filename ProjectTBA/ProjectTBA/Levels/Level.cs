@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using ProjectTBA.Misc;
 using Projectiles;
 using Microsoft.Xna.Framework.Graphics;
+using ProjectTBA.Units.Baddies;
 
 namespace ProjectTBA.Levels
 {
@@ -20,6 +21,7 @@ namespace ProjectTBA.Levels
         public LinkedList<Obstacle> obstacles;
         public LinkedList<Projectile> projectiles;
         private LinkedList<Projectile> deadProjectiles;
+        private LinkedList<Tombstone> tombstones;
 
         // Viewport + Background
         public AkumaViewport viewport;
@@ -39,7 +41,7 @@ namespace ProjectTBA.Levels
             viewport = new AkumaViewport(this);
             projectiles = new LinkedList<Projectile>();
             deadProjectiles = new LinkedList<Projectile>();
-
+            tombstones = new LinkedList<Tombstone>();
             random = new Random();
         }
 
@@ -101,8 +103,6 @@ namespace ProjectTBA.Levels
             }
 
             player.Draw(gameTime, spriteBatch);
-            // Test Player
-            //testPlayer.Draw(gameTime, spriteBatch);
 
             foreach (Obstacle o in obstacles)
             {
@@ -116,6 +116,16 @@ namespace ProjectTBA.Levels
                     projectile.Draw(spriteBatch);
                 }
             }
+
+            foreach (Tombstone tombstone in tombstones)
+            {
+                tombstone.Draw(spriteBatch);
+            }
+        }
+
+        public void AddTombstone(Unit enemy)
+        {
+            this.tombstones.AddLast(new Tombstone(enemy));
         }
     }
 }

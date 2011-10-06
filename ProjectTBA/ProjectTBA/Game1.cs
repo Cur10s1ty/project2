@@ -78,6 +78,8 @@ namespace ProjectTBA
             graphics.PreferredBackBufferHeight = screenHeight;
 
             instance = this;
+
+            TouchPanel.EnabledGestures = GestureType.HorizontalDrag;
         }
 
         /// <summary>
@@ -118,16 +120,9 @@ namespace ProjectTBA
             currentLevel.creatures.AddLast(new Deer(new Vector2(100, 380)));
 
             //currentLevel.baddies.AddLast(new TestEnemy(100, 380));
-            //baddies.AddLast(new TestEnemy(200, 380));
-            //baddies.AddLast(new TestEnemy(150, 380));
-
-            //baddies.AddLast(new TestEnemy(50, 380));
-            //baddies.AddLast(new TestEnemy(25, 380));
-            //baddies.AddLast(new TestEnemy(225, 380));
-
-            //LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
-            //textures.AddLast(AkumaContentManager.circleParticle);
-            //this.testEmitter = particleEmitterManager.AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(400f, 240f, 0.002f), new Vector3(0, 0, 0), 1, 2f, Color.Red);
+            currentLevel.baddies.AddLast(new PeasantEnemy(240, 380));
+            currentLevel.baddies.AddLast(new PeasantEnemy(270, 380));
+            //currentLevel.baddies.AddLast(new Samurai(300, 380));
         }
 
         /// <summary>

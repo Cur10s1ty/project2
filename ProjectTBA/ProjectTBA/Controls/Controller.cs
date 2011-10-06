@@ -16,6 +16,7 @@ namespace ProjectTBA.Controls
         public Game1 game { get; set; }
         public Texture2D dPadTex { get; set; }
         public Texture2D buttonTex { get; set; }
+        public Boolean hasSwiped { get; set; }
 
         public Controller()
         {
@@ -50,6 +51,24 @@ namespace ProjectTBA.Controls
                     {
                         ControllerState.pressedButtons.AddLast(ControllerState.Buttons.B);
                     }
+                }
+            }
+
+            if (TouchPanel.IsGestureAvailable)
+            {
+                GestureSample gesture = TouchPanel.ReadGesture();
+
+                switch (gesture.GestureType)
+                {
+                    case GestureType.HorizontalDrag:
+                        if (gesture.Position.X - gesture.Position2.X > 100)
+                        {
+                            Debug.WriteLine("DRAG");
+                            hasSwiped = true;
+                        }
+                        break;
+                    default: 
+                        break;
                 }
             }
         }

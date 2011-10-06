@@ -11,6 +11,7 @@ using System.Diagnostics;
 using Projectiles;
 using WindowsPhoneParticleEngine;
 using ProjectTBA.Projectiles;
+using ProjectTBA.Units.Bodyparts;
 
 namespace ProjectTBA.Units
 {
@@ -42,6 +43,8 @@ namespace ProjectTBA.Units
         private int hitHeight = 9;
         private int hitTimestamp;
         private int health = 5;
+        private int fireballCooldown = 0;
+        private Tongue tongue;
 
         public LinkedList<Projectile> fireballs;
         public LinkedList<Projectile> fireballsToRemove;
@@ -65,10 +68,12 @@ namespace ProjectTBA.Units
             this.speed = new Vector2(0, 0);
             this.fireballs = new LinkedList<Projectile>();
             this.fireballsToRemove = new LinkedList<Projectile>();
+            this.tongue = new Tongue(this);
         }
 
         public override void Attack()
         {
+            
             SpawnFireball();
         }
 
@@ -78,10 +83,15 @@ namespace ProjectTBA.Units
 
         private void PerformSpecialAttack()
         {
+            SpawnHugeFireball();
         }
 
         public override void Update(GameTime gameTime)
         {
+            if (fireballCooldown > 0)
+            {
+                fireballCooldown--;
+            }
 
             SetCollisionHeight();
 
@@ -102,6 +112,15 @@ namespace ProjectTBA.Units
                 foreach (Projectile fireballToRemove in fireballsToRemove)
                 {
                     this.fireballs.Remove(fireballToRemove);
+                }
+            }
+
+            if (ControllerState.IsButtonPressed(ControllerState.Buttons.B))
+            {
+                if (fireballCooldown < 1)
+                {
+                    Attack();
+                    fireballCooldown = 30;
                 }
             }
 
@@ -142,6 +161,11 @@ namespace ProjectTBA.Units
                 }
             }
 
+            if (game.controller.hasSwiped)
+            {
+                tongue.Update();
+            }
+
             ApplySpeed();
 
             if (jumping && !falling)
@@ -162,10 +186,6 @@ namespace ProjectTBA.Units
                 {
                     jumping = true;
                     jumpUp = true;
-                }
-                if (ControllerState.IsButtonPressed(ControllerState.Buttons.B))
-                {
-                    Attack();
                 }
             }
         }

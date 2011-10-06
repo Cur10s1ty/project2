@@ -18,12 +18,13 @@ namespace ProjectTBA.Units
         protected float movementSpeed;
         protected double jumpCount = 0;
         protected double fallCount = 0;
-        protected Boolean jumping;
+        public Boolean jumping;
         protected Boolean jumpUp;
-        protected Boolean falling;
+        public Boolean falling;
         protected Boolean isDead = false;
+        protected int health = 50;
 
-        protected int stopJumpOn;
+        public int stopJumpOn;
         protected int floorHeight;
 
         public Texture2D texture { get; set; }
@@ -48,9 +49,13 @@ namespace ProjectTBA.Units
 
         public virtual void Hit(Object from)
         {
-            if (from is Projectile)
+            if (from is Projectile && !isDead)
             {
-                Die();
+                this.health -= ((Projectile)from).damage;
+                if (health < 0)
+                {
+                    Die();
+                }
             }
         }
 

@@ -202,6 +202,7 @@ namespace ProjectTBA.Units.Baddies
         {
             this.isDead = true;
             game.currentLevel.baddiesToRemove.AddLast(this);
+            game.currentLevel.AddTombstone(this);
         }
 
         public void Hit()
