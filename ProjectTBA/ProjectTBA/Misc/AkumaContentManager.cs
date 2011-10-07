@@ -78,6 +78,7 @@ namespace ProjectTBA.Misc
         public static Texture2D signRightTex { get; set; }
         public static Texture2D signJumpATex { get; set; }
         public static Texture2D signEndTex { get; set; }
+        public static Texture2D signBTex { get; set; }
 
         // Test
         public static Texture2D testPlayerTex { get; set; }
@@ -156,6 +157,7 @@ namespace ProjectTBA.Misc
             signRightTex = content.Load<Texture2D>("Signs/rechtsbord");
             signJumpATex = content.Load<Texture2D>("Signs/spring_a_bord");
             signEndTex = content.Load<Texture2D>("Signs/eindebord");
+            signBTex = content.Load<Texture2D>("Signs/bbord");
 
             // Test
             testPlayerTex = content.Load<Texture2D>("Test/TestPlayer");

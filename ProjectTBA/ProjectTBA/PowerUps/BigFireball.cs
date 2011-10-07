@@ -43,7 +43,7 @@ namespace ProjectTBA.PowerUps
                 location.Y += 0.2f;
             }
 
-            if (GetRectangle().Intersects(Game1.GetInstance().player.GetRectangle()))
+            if (GetDrawRectangle().Intersects(Game1.GetInstance().player.GetRectangle()))
             {
                 Game1.GetInstance().player.bigFireballs++;
                 this.Dispose();

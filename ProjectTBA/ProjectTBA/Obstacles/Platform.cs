@@ -14,11 +14,22 @@ namespace ProjectTBA.Obstacles
     {
 
         public Boolean bottomCollision;
+        public Type type;
 
-        public Platform(int x, int y, Texture2D texture, Boolean bottomCollision) :
+        public enum Type
+        {
+            Trunk,
+            Leaf1,
+            Leaf2,
+            Leaf3
+        }
+
+        public Platform(int x, int y, Type type, Texture2D texture, Boolean bottomCollision) :
             base(x, y, texture)
         {
             this.bottomCollision = bottomCollision;
+
+            this.type = type;
         }
 
         public override void Update(GameTime gt)
@@ -28,11 +39,25 @@ namespace ProjectTBA.Obstacles
         internal override void Draw(GameTime gt, SpriteBatch sb)
         {
             sb.Draw(texture, GetRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.2f);
-            sb.Draw(AkumaContentManager.solidTex, GetTopHitbox(), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
         }
 
         public Rectangle GetTopHitbox()
         {
+            switch (type)
+            {
+                case Type.Trunk:
+                    return new Rectangle(bounds.X + 4 - (int)Game1.GetInstance().currentLevel.offset.X, bounds.Y + 7, 91, 1);
+
+                case Type.Leaf1:
+                    return new Rectangle(bounds.X + 13 - (int)Game1.GetInstance().currentLevel.offset.X, bounds.Y + 7, 81, 1);
+
+                case Type.Leaf2:
+                    return new Rectangle(bounds.X + 24 - (int)Game1.GetInstance().currentLevel.offset.X, bounds.Y + 5, 64, 1);
+
+                case Type.Leaf3:
+                    return new Rectangle(bounds.X + 25 - (int)Game1.GetInstance().currentLevel.offset.X, bounds.Y + 6, 59, 1);
+            }
+
             return new Rectangle(bounds.X - (int)Game1.GetInstance().currentLevel.offset.X, bounds.Y, bounds.Width, 1);
         }
 

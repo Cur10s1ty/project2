@@ -36,7 +36,7 @@ namespace WindowsPhoneParticleEngine.Particles
             this.speed = new Vector3(emitter.particleMovementSpeed.X * (float)(random.NextDouble() * 2 - 1),
                                     emitter.particleMovementSpeed.X * (float)(random.NextDouble() * 2 - 1), 0f);
 
-            this.gravity = emitter.particleMovementSpeed.Y / 10;
+            this.gravity = emitter.particleMovementSpeed.Y / 20;
             this.rotation = 0f;
             this.rotationSpeed = 0.1f * (float)(random.NextDouble() * 2 - 1);
 

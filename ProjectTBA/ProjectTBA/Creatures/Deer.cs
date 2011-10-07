@@ -53,7 +53,7 @@ namespace ProjectTBA.Creatures
                     Game1.GetInstance().currentLevel.powerUps.AddLast(new BigFireball(new Vector2(this.location.X + 50, 330)));
                     LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
                     textures.AddLast(AkumaContentManager.circleParticle);
-                    ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X + 60, location.Y + 50, 0.12f), new Vector3(0f, 0f, 0f), 3, new Vector2(2f, 0.2f), 0.2f, 5, Color.Red);
+                    ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X + 60, location.Y + 50, 0.009f), new Vector3(0f, 0f, 0f), 50, new Vector2(4f, 2f), 1f, 5, Color.Red);
                 }
                 return;
             }

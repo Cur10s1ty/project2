@@ -77,20 +77,21 @@ namespace ProjectTBA.Levels
                     obstacles.AddLast(new Sign(55, 300, AkumaContentManager.signRightTex));
                     obstacles.AddLast(new Sign(1267, 300, AkumaContentManager.signJumpATex));
                     obstacles.AddLast(new Sign(1483, 300, AkumaContentManager.signLeftTex));
+                    obstacles.AddLast(new Sign(583, 300, AkumaContentManager.signBTex));
 
-                    obstacles.AddLast(new Platform(46, 106, AkumaContentManager.forestPlatformTrunkTex, false));
-                    obstacles.AddLast(new Platform(487, 174, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(46, 106, Platform.Type.Trunk, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(487, 174, Platform.Type.Trunk, AkumaContentManager.forestPlatformTrunkTex, false));
 
-                    obstacles.AddLast(new Platform(1008, 238, AkumaContentManager.forestPlatformLeaf1Tex, false));
-                    obstacles.AddLast(new Platform(1294, 286, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(1008, 238, Platform.Type.Leaf1, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(1294, 286, Platform.Type.Leaf1, AkumaContentManager.forestPlatformLeaf1Tex, false));
 
-                    obstacles.AddLast(new Platform(170, 182, AkumaContentManager.forestPlatformLeaf2Tex, false));
-                    obstacles.AddLast(new Platform(674, 194, AkumaContentManager.forestPlatformLeaf2Tex, false));
-                    obstacles.AddLast(new Platform(821, 245, AkumaContentManager.forestPlatformLeaf2Tex, false));
-                    obstacles.AddLast(new Platform(1233, 101, AkumaContentManager.forestPlatformLeaf2Tex, false));
-                    obstacles.AddLast(new Platform(1398, 189, AkumaContentManager.forestPlatformLeaf2Tex, false));
+                    obstacles.AddLast(new Platform(170, 182, Platform.Type.Leaf2, AkumaContentManager.forestPlatformLeaf2Tex, false));
+                    obstacles.AddLast(new Platform(674, 194, Platform.Type.Leaf2, AkumaContentManager.forestPlatformLeaf2Tex, false));
+                    obstacles.AddLast(new Platform(821, 245, Platform.Type.Leaf2, AkumaContentManager.forestPlatformLeaf2Tex, false));
+                    obstacles.AddLast(new Platform(1233, 101, Platform.Type.Leaf2, AkumaContentManager.forestPlatformLeaf2Tex, false));
+                    obstacles.AddLast(new Platform(1398, 189, Platform.Type.Leaf2, AkumaContentManager.forestPlatformLeaf2Tex, false));
 
-                    obstacles.AddLast(new Platform(311, 121, AkumaContentManager.forestPlatformLeaf3Tex, false));
+                    obstacles.AddLast(new Platform(311, 121, Platform.Type.Leaf3, AkumaContentManager.forestPlatformLeaf3Tex, false));
 
                     creatures.AddLast(new Deer(new Vector2(500, 300)));
                     creatures.AddLast(new Deer(new Vector2(1300, 300)));
@@ -102,17 +103,17 @@ namespace ProjectTBA.Levels
                     this.levelWidth = 1600;
                     viewport = new AkumaViewport(this);
 
-                    obstacles.AddLast(new Platform(107, 335, AkumaContentManager.forestPlatformTrunkTex, false));
-                    obstacles.AddLast(new Platform(265, 296, AkumaContentManager.forestPlatformTrunkTex, false));
-                    obstacles.AddLast(new Platform(912, 337, AkumaContentManager.forestPlatformTrunkTex, false));
-                    obstacles.AddLast(new Platform(1041, 294, AkumaContentManager.forestPlatformTrunkTex, false));
-                    obstacles.AddLast(new Platform(1279, 342, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(107, 335, Platform.Type.Trunk, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(265, 296, Platform.Type.Trunk, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(912, 337, Platform.Type.Trunk, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(1041, 294, Platform.Type.Trunk, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(1279, 342, Platform.Type.Trunk, AkumaContentManager.forestPlatformTrunkTex, false));
 
-                    obstacles.AddLast(new Platform(326, 265, AkumaContentManager.forestPlatformLeaf1Tex, false));
-                    obstacles.AddLast(new Platform(451, 207, AkumaContentManager.forestPlatformLeaf1Tex, false));
-                    obstacles.AddLast(new Platform(570, 277, AkumaContentManager.forestPlatformLeaf1Tex, false));
-                    obstacles.AddLast(new Platform(1371, 268, AkumaContentManager.forestPlatformLeaf1Tex, false));
-                    obstacles.AddLast(new Platform(1443, 230, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(326, 265, Platform.Type.Leaf1, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(451, 207, Platform.Type.Leaf1, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(570, 277, Platform.Type.Leaf1, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(1371, 268, Platform.Type.Leaf1, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(1443, 230, Platform.Type.Leaf1, AkumaContentManager.forestPlatformLeaf1Tex, false));
 
                     obstacles.AddLast(new Wall(341, 298, AkumaContentManager.forestWallTex));
                     obstacles.AddLast(new Wall(578, 298, AkumaContentManager.forestWallTex));
