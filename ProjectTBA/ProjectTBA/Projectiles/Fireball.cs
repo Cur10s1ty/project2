@@ -31,6 +31,11 @@ namespace ProjectTBA.Projectiles
         {
             hitBaddies = new LinkedList<Unit>();
             this.scale = scale;
+            if (scale > 1)
+            {
+                this.damage = 100;
+            }
+
             this.moveLeft = moveLeft;
             if (moveLeft)
             {

@@ -42,7 +42,7 @@ namespace ProjectTBA.Units
         public Samurai(float x, float y)
             : base(x, y)
         {
-            this.health = 150;
+            this.health = 500;
             game.AddUnit(this);
             target = game.player;
             this.texture = AkumaContentManager.samuraiTempTex;

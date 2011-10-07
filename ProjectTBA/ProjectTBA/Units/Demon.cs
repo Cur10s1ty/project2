@@ -44,7 +44,7 @@ namespace ProjectTBA.Units
         private HitState currentHitState;
         private int hitHeight = 9;
         private int hitTimestamp;
-        private int health = 300;
+        private int health = 8;
         private int fireballCooldown = 0;
         private Tongue tongue;
 
