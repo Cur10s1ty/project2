@@ -13,7 +13,7 @@ namespace WindowsPhoneParticleEngine.Particles
         public ParticleEmitter emitter { get; set; }
         public Texture2D texture { get; set; }
         public Vector3 position { get; set; }
-        public Vector3 speed { get; set; }
+        public Vector3 speed;
         public float rotation { get; set; }
         public float rotationSpeed { get; set; }
         public Color color { get; set; }
@@ -21,6 +21,7 @@ namespace WindowsPhoneParticleEngine.Particles
         public float scaleDecreaseStep { get; set; }
         public int lifetime { get; set; }
         private Vector2 offset { get; set; }
+        public float gravity = 0f;
 
         public Random random { get; set; }
 
@@ -32,9 +33,10 @@ namespace WindowsPhoneParticleEngine.Particles
             this.texture = emitter.textures.ElementAt(random.Next(emitter.textures.Count));
             this.position = emitter.location;
 
-            this.speed = new Vector3(emitter.particleMovementSpeed * (float)(random.NextDouble() * 2 - 1),
-                                    emitter.particleMovementSpeed * (float)(random.NextDouble() * 2 - 1), 0f);
+            this.speed = new Vector3(emitter.particleMovementSpeed.X * (float)(random.NextDouble() * 2 - 1),
+                                    emitter.particleMovementSpeed.X * (float)(random.NextDouble() * 2 - 1), 0f);
 
+            this.gravity = emitter.particleMovementSpeed.Y / 10;
             this.rotation = 0f;
             this.rotationSpeed = 0.1f * (float)(random.NextDouble() * 2 - 1);
 
@@ -60,6 +62,8 @@ namespace WindowsPhoneParticleEngine.Particles
             {
                 emitter.removeParticles.AddLast(this);
             }
+
+            speed.Y += gravity;
         }
 
         internal void Draw(GameTime gt, SpriteBatch sb)

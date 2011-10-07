@@ -11,7 +11,7 @@ namespace ProjectTBA.Creatures
     public abstract class Creature
     {
 
-        public Vector2 location { get; set; }
+        public Vector2 location;
         public Boolean stuck = false;
         public Tongue tongue;
         public Vector2 speed;

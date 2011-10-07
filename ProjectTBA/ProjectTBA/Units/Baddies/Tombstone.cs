@@ -52,7 +52,7 @@ namespace ProjectTBA.Units.Baddies
                 else
                 {
                     location.X = enemy.location.X;
-                    location.Y = currentLevel.levelHeight - texture.Height * scale;
+                    location.Y = currentLevel.levelHeight - texture.Height * scale - 2;
                 }
             }
         }
@@ -85,7 +85,7 @@ namespace ProjectTBA.Units.Baddies
             {
                 Deer deer = (Deer)source;
                 location.X = deer.location.X;
-                location.Y = currentLevel.levelHeight - texture.Height * scale;
+                location.Y = currentLevel.levelHeight - texture.Height * scale - 2;
             }
         }
 
@@ -99,7 +99,7 @@ namespace ProjectTBA.Units.Baddies
                 Vector2.Zero,
                 scale,
                 SpriteEffects.None,
-                0.1f);
+                0.1001f);
         }
     }
 }

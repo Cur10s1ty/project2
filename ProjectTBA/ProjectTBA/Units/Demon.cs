@@ -280,8 +280,6 @@ namespace ProjectTBA.Units
             {
                 fireball.Draw(spriteBatch);
             }
-
-            spriteBatch.Draw(AkumaContentManager.solidTex, GetFeetHitbox(), null, Color.CornflowerBlue, 0f, Vector2.Zero, SpriteEffects.None, 0.05f);
         }
 
         public Vector2 GetDrawLocation()
@@ -532,7 +530,7 @@ namespace ProjectTBA.Units
                     }
                     else if (jumping)
                     {
-                        return new Rectangle((int)location.X + 34 - (int)game.currentLevel.offset.X, (int)location.Y + 103, 36, 1);
+                        return new Rectangle((int)location.X + 34 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 36, 1);
                     }
                     break;
 
@@ -551,7 +549,7 @@ namespace ProjectTBA.Units
                     }
                     else if (jumping)
                     {
-                        return new Rectangle((int)location.X + 12 - (int)game.currentLevel.offset.X, (int)location.Y + 103, 36, 1);
+                        return new Rectangle((int)location.X + 12 - (int)game.currentLevel.offset.X, (int)location.Y + 105, 36, 1);
                     }
                     break;
             }

@@ -58,6 +58,7 @@ namespace ProjectTBA.Misc
         public static Texture2D forestPlatformLeaf1Tex { get; set; }
         public static Texture2D forestPlatformLeaf2Tex { get; set; }
         public static Texture2D forestPlatformLeaf3Tex { get; set; }
+        public static Texture2D forestWallTex { get; set; }
 
         // Baddies
         public static Texture2D baddieVillagerTex { get; set; }
@@ -71,6 +72,12 @@ namespace ProjectTBA.Misc
 
         // Particles
         public static Texture2D circleParticle { get; set; }
+
+        // Signs
+        public static Texture2D signLeftTex { get; set; }
+        public static Texture2D signRightTex { get; set; }
+        public static Texture2D signJumpATex { get; set; }
+        public static Texture2D signEndTex { get; set; }
 
         // Test
         public static Texture2D testPlayerTex { get; set; }
@@ -129,6 +136,7 @@ namespace ProjectTBA.Misc
             forestPlatformLeaf1Tex = content.Load<Texture2D>("Platforms/Forest/Leaf1");
             forestPlatformLeaf2Tex = content.Load<Texture2D>("Platforms/Forest/Leaf2");
             forestPlatformLeaf3Tex = content.Load<Texture2D>("Platforms/Forest/Leaf3");
+            forestWallTex = content.Load<Texture2D>("Platforms/Forest/barricade");
 
             // Baddies
             baddieVillagerTex = content.Load<Texture2D>("Baddies/civilian");
@@ -142,6 +150,12 @@ namespace ProjectTBA.Misc
 
             // Particles
             circleParticle = content.Load<Texture2D>("Particles/CircleParticle");
+
+            // Signs
+            signLeftTex = content.Load<Texture2D>("Signs/linksbord");
+            signRightTex = content.Load<Texture2D>("Signs/rechtsbord");
+            signJumpATex = content.Load<Texture2D>("Signs/spring_a_bord");
+            signEndTex = content.Load<Texture2D>("Signs/eindebord");
 
             // Test
             testPlayerTex = content.Load<Texture2D>("Test/TestPlayer");

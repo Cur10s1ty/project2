@@ -21,9 +21,10 @@ namespace ProjectTBA.Projectiles
         private int maxHitCount = 5;
         private int hitCount = 0;
         private LinkedList<Unit> hitBaddies;
-
+        private float fadeStep = 255f / 10f;
         private ParticleEmitter emitter = null;
         private ParticleEmitter emitter2 = null;
+        private Color color = Color.White;
 
         public Fireball(float x, float y, Boolean moveLeft, float scale)
             : base(x, y)
@@ -47,8 +48,8 @@ namespace ProjectTBA.Projectiles
             LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
             hitBaddies = new LinkedList<Unit>();
             textures.AddLast(AkumaContentManager.circleParticle);
-            this.emitter = ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X, location.Y, 0.11f), new Vector3(xSpeed, 0f, 0f), 1 * (int)scale, 3f, scale, Color.Red);
-            this.emitter2 = ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X, location.Y, 0.11f), new Vector3(xSpeed, 0f, 0f), 2 * (int)scale, 3f, scale, Color.Orange);
+            this.emitter = ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X, location.Y, 0.11f), new Vector3(xSpeed, 0f, 0f), 1 * (int)scale, new Vector2(3f, 0f), scale, -1, Color.Red);
+            this.emitter2 = ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X, location.Y, 0.11f), new Vector3(xSpeed, 0f, 0f), 2 * (int)scale, new Vector2(3f, 0f), scale, -1, Color.Orange);
         }
 
         public override void Update(GameTime gameTime)
@@ -104,7 +105,7 @@ namespace ProjectTBA.Projectiles
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, GetDrawLocation(), new Rectangle(0, 0, 100, 100), Color.White, 0f, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffect, 0.1f);
+            spriteBatch.Draw(texture, GetDrawLocation(), new Rectangle(0, 0, 100, 100), color, 0f, new Vector2(texture.Width / 2, texture.Height / 2), scale, spriteEffect, 0.1f);
         }
 
         public Vector2 GetDrawLocation()

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ProjectTBA.Units.Baddies;
 using ProjectTBA.Creatures;
 using ProjectTBA.PowerUps;
+using WindowsPhoneParticleEngine;
 
 namespace ProjectTBA.Levels
 {
@@ -45,6 +46,7 @@ namespace ProjectTBA.Levels
             random = new Random();
 
             this.player = player;
+            player.location = new Vector2(0, 291);
             this.level = level;
 
             baddies = new LinkedList<Unit>();
@@ -66,24 +68,55 @@ namespace ProjectTBA.Levels
             switch (level)
             {
                 case 1:
+                    this.levelWidth = 1600;
                     viewport = new AkumaViewport(this);
-                    //baddies.AddLast(new PeasantEnemy(200, 300));
-                    creatures.AddLast(new Deer(new Vector2(300, 300)));
+
+                    obstacles.AddLast(new Sign(37, 21, AkumaContentManager.signEndTex, true));
+                    obstacles.AddLast(new Sign(55, 300, AkumaContentManager.signRightTex));
+                    obstacles.AddLast(new Sign(1267, 300, AkumaContentManager.signJumpATex));
+                    obstacles.AddLast(new Sign(1483, 300, AkumaContentManager.signLeftTex));
+
+                    obstacles.AddLast(new Platform(46, 106, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(487, 174, AkumaContentManager.forestPlatformTrunkTex, false));
+
+                    obstacles.AddLast(new Platform(1008, 238, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(1294, 286, AkumaContentManager.forestPlatformLeaf1Tex, false));
+
+                    obstacles.AddLast(new Platform(170, 182, AkumaContentManager.forestPlatformLeaf2Tex, false));
+                    obstacles.AddLast(new Platform(674, 194, AkumaContentManager.forestPlatformLeaf2Tex, false));
+                    obstacles.AddLast(new Platform(821, 245, AkumaContentManager.forestPlatformLeaf2Tex, false));
+                    obstacles.AddLast(new Platform(1233, 101, AkumaContentManager.forestPlatformLeaf2Tex, false));
+                    obstacles.AddLast(new Platform(1398, 189, AkumaContentManager.forestPlatformLeaf2Tex, false));
+
+                    obstacles.AddLast(new Platform(311, 121, AkumaContentManager.forestPlatformLeaf3Tex, false));
+
+                    creatures.AddLast(new Deer(new Vector2(500, 300)));
+                    creatures.AddLast(new Deer(new Vector2(1300, 300)));
                     break;
 
                 case 2:
+                    this.levelWidth = 1600;
                     viewport = new AkumaViewport(this);
+
                     obstacles.AddLast(new Platform(107, 335, AkumaContentManager.forestPlatformTrunkTex, false));
                     obstacles.AddLast(new Platform(265, 296, AkumaContentManager.forestPlatformTrunkTex, false));
-                    obstacles.AddLast(new Platform(326, 265, AkumaContentManager.forestPlatformLeaf1Tex, false));
-                    obstacles.AddLast(new Platform(451, 207, AkumaContentManager.forestPlatformLeaf1Tex, false));
-                    obstacles.AddLast(new Platform(570, 277, AkumaContentManager.forestPlatformLeaf1Tex, false));
                     obstacles.AddLast(new Platform(912, 337, AkumaContentManager.forestPlatformTrunkTex, false));
                     obstacles.AddLast(new Platform(1041, 294, AkumaContentManager.forestPlatformTrunkTex, false));
                     obstacles.AddLast(new Platform(1279, 342, AkumaContentManager.forestPlatformTrunkTex, false));
+                    obstacles.AddLast(new Platform(1503, 178, AkumaContentManager.forestPlatformTrunkTex, false));
+
+                    obstacles.AddLast(new Platform(326, 265, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(451, 207, AkumaContentManager.forestPlatformLeaf1Tex, false));
+                    obstacles.AddLast(new Platform(570, 277, AkumaContentManager.forestPlatformLeaf1Tex, false));
                     obstacles.AddLast(new Platform(1371, 268, AkumaContentManager.forestPlatformLeaf1Tex, false));
                     obstacles.AddLast(new Platform(1443, 230, AkumaContentManager.forestPlatformLeaf1Tex, false));
-                    obstacles.AddLast(new Platform(1503, 178, AkumaContentManager.forestPlatformTrunkTex, false));
+
+                    obstacles.AddLast(new Wall(341, 298, AkumaContentManager.forestWallTex));
+                    obstacles.AddLast(new Wall(578, 298, AkumaContentManager.forestWallTex));
+                    obstacles.AddLast(new Wall(992, 298, AkumaContentManager.forestWallTex));
+
+                    creatures.AddLast(new Deer(new Vector2(500, 300)));
+                    creatures.AddLast(new Deer(new Vector2(1300, 300)));
                     break;
 
                 case 3:

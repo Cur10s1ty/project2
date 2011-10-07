@@ -11,7 +11,7 @@ namespace WindowsPhoneParticleEngine.Emitters
     public class PointEmitter : ParticleEmitter
     {
         
-        public PointEmitter(LinkedList<Texture2D> textures, Vector3 location, Vector3 speed, int particlesPerFrame, float particleMovementSpeed, float defaultScale, Color color) :
+        public PointEmitter(LinkedList<Texture2D> textures, Vector3 location, Vector3 speed, int particlesPerFrame, Vector2 particleMovementSpeed, float defaultScale, int lifetime, Color color) :
             base(textures)
         {
             this.location = location;
@@ -19,6 +19,7 @@ namespace WindowsPhoneParticleEngine.Emitters
             this.total = particlesPerFrame;
             this.particleMovementSpeed = particleMovementSpeed;
             this.defaultScale = defaultScale;
+            this.lifetime = lifetime;
             this.color = color;
         }
 
@@ -51,6 +52,16 @@ namespace WindowsPhoneParticleEngine.Emitters
             if (total == 0 && particles.Count == 0)
             {
                 ParticleEmitterManager.GetInstance().removeEmitters.AddLast(this);
+            }
+
+            if (lifetime == 0)
+            {
+                this.Dispose();
+            }
+
+            if (lifetime != -1)
+            {
+                lifetime--;
             }
         }
 

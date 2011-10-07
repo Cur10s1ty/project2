@@ -23,7 +23,6 @@ namespace ProjectTBA.Obstacles
         internal override void Draw(GameTime gt, SpriteBatch sb)
         {
             sb.Draw(texture, GetRectangle(), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.2f);
-            sb.Draw(AkumaContentManager.solidTex, GetRectangle(), null, Color.Red, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
         }
 
         public Rectangle GetHitbox()

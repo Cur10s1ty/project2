@@ -58,14 +58,14 @@ namespace WindowsPhoneParticleEngine
             }
         }
 
-        public ParticleEmitter AddEmitter(EmitterType type, LinkedList<Texture2D> textures, Vector3 location, Vector3 speed, int particlesPerFrame, float particleMovementSpeed, float defaultScale, Color color)
+        public ParticleEmitter AddEmitter(EmitterType type, LinkedList<Texture2D> textures, Vector3 location, Vector3 speed, int particlesPerFrame, Vector2 particleMovementSpeed, float defaultScale, int lifetime, Color color)
         {
             ParticleEmitter emitter = null;
 
             switch (type)
             {
                 case EmitterType.Point:
-                    emitter = new PointEmitter(textures, location, speed, particlesPerFrame, particleMovementSpeed, defaultScale, color);
+                    emitter = new PointEmitter(textures, location, speed, particlesPerFrame, particleMovementSpeed, defaultScale, lifetime, color);
                     emitters.AddLast(emitter);
                     break;
 

@@ -51,6 +51,9 @@ namespace ProjectTBA.Creatures
                     Game1.GetInstance().currentLevel.creaturesToRemove.AddLast(this);
                     Game1.GetInstance().currentLevel.AddTombstone(this);
                     Game1.GetInstance().currentLevel.powerUps.AddLast(new BigFireball(new Vector2(this.location.X + 50, 330)));
+                    LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
+                    textures.AddLast(AkumaContentManager.circleParticle);
+                    ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X + 60, location.Y + 50, 0.12f), new Vector3(0f, 0f, 0f), 3, new Vector2(2f, 0.2f), 0.2f, 5, Color.Red);
                 }
                 return;
             }
@@ -74,6 +77,8 @@ namespace ProjectTBA.Creatures
                     jumpCount = 0;
                     jumping = false;
                 }
+
+                location.X += speed.X * 2;
             }
             else
             {
@@ -83,9 +88,9 @@ namespace ProjectTBA.Creatures
                 {
                     walkCount = 0;
                 }
-            }
 
-            location += speed;
+                location.X += speed.X;
+            }
 
             if ((location.X <= 5 && effects == SpriteEffects.None) || (location.X + textureWidth >= 1595 && effects == SpriteEffects.FlipHorizontally))
             {
@@ -101,7 +106,7 @@ namespace ProjectTBA.Creatures
             {
                 LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
                 textures.AddLast(AkumaContentManager.fireball2Tex);
-                fireEmitter = ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X + 60, location.Y + 50, 0.12f), new Vector3(0f, 0f, 0f), 3, 2f, 0.2f, Color.White);
+                fireEmitter = ParticleEmitterManager.GetInstance().AddEmitter(ParticleEmitterManager.EmitterType.Point, textures, new Vector3(location.X + 60, location.Y + 50, 0.12f), new Vector3(0f, 0f, 0f), 3, new Vector2(2f, 0f), 0.2f, -1, Color.White);
             }
 
             if (fireEmitter != null)

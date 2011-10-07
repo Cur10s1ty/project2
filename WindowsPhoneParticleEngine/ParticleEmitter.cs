@@ -17,9 +17,10 @@ namespace WindowsPhoneParticleEngine
         public LinkedList<Texture2D> textures = new LinkedList<Texture2D>();
         public Vector3 location;
         public Vector3 speed { get; set; }
-        public float particleMovementSpeed { get; set; }
+        public Vector2 particleMovementSpeed { get; set; }
         public Color color;
         public float defaultScale = 1f;
+        public int lifetime;
         public Random random = new Random();
 
 
