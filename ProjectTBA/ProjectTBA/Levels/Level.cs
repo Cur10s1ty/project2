@@ -40,6 +40,7 @@ namespace ProjectTBA.Levels
         public int level;
         public int levelWidth = 1600;
         public int levelHeight = 400;
+        private int unitsToSpawn = 12;
 
         public Level(Demon player, int level)
         {
@@ -92,6 +93,8 @@ namespace ProjectTBA.Levels
 
                     creatures.AddLast(new Deer(new Vector2(500, 300)));
                     creatures.AddLast(new Deer(new Vector2(1300, 300)));
+
+                    baddies.AddLast(new PeasantEnemy(300, 300));
                     break;
 
                 case 2:
@@ -130,6 +133,18 @@ namespace ProjectTBA.Levels
         {
 
             viewport.Update(gameTime);
+            if (level == 3)
+            {
+                if (baddies.Count < 6 && unitsToSpawn > 0)
+                {
+                    baddies.AddLast(new PeasantEnemy(300, 300));
+                    unitsToSpawn--;
+                }
+                else if (baddies.Count == 0 && unitsToSpawn <= 0)
+                {
+                    baddies.AddLast(new Samurai(300, 300));
+                }
+            }
 
             foreach (Unit baddie in baddies)
             {

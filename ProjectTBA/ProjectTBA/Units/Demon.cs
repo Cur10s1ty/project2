@@ -12,6 +12,7 @@ using Projectiles;
 using WindowsPhoneParticleEngine;
 using ProjectTBA.Projectiles;
 using ProjectTBA.Units.Bodyparts;
+using ProjectTBA.Levels;
 
 namespace ProjectTBA.Units
 {
@@ -43,7 +44,7 @@ namespace ProjectTBA.Units
         private HitState currentHitState;
         private int hitHeight = 9;
         private int hitTimestamp;
-        private int health = 5;
+        private int health = 300;
         private int fireballCooldown = 0;
         private Tongue tongue;
 
@@ -82,6 +83,11 @@ namespace ProjectTBA.Units
 
         public override void Die()
         {
+            game.currentLevel = new Level(this, game.currentLevel.level);
+            game.currentLevel.GenerateLevel(game.currentLevel.level);
+            this.location = new Vector2(150, game.currentLevel.levelHeight);
+            this.health = 5;
+            this.stopJumpOn = game.currentLevel.levelHeight;
         }
 
         private void PerformSpecialAttack()
@@ -313,7 +319,6 @@ namespace ProjectTBA.Units
                 jumping = false;
                 jumpSpeed = 8;
                 jumpCount = 0.0;
-                Debug.WriteLine("Jump Finished");
             }
             else
             {
@@ -398,7 +403,15 @@ namespace ProjectTBA.Units
             {
                 return;
             }
-
+            if (source is Shuriken)
+            {
+                this.health--;
+                if (this.health < 0)
+                {
+                    this.Die();
+                    return;
+                }
+            }
             ResetTongue();
             isHit = true;
             jumping = false;
@@ -422,6 +435,13 @@ namespace ProjectTBA.Units
         {
             if (isHit || isInvunerable)
             {
+                return;
+            }
+
+            this.health--;
+            if (this.health < 0)
+            {
+                this.Die();
                 return;
             }
 

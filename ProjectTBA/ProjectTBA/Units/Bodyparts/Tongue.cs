@@ -133,7 +133,7 @@ namespace ProjectTBA.Units.Bodyparts
 
         public void Reset()
         {
-            this.location = source.location + Game1.GetInstance().currentLevel.offset;
+            this.location = source.GetDrawLocation();
             location.Y = source.location.Y + source.walkTex.Height - 34;
             distanceTravelled = 0;
             retracting = false;

@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ProjectTBA.Misc;
 using Projectiles;
 using ProjectTBA.Projectiles;
+using System.Diagnostics;
 
 namespace ProjectTBA.Units
 {
@@ -26,10 +27,10 @@ namespace ProjectTBA.Units
         private PatrolState patrolState = PatrolState.left;
 
         private int jumpSpeed = 4;
-        private int maxJumpHeight = 380;
+        private int maxJumpHeight;
         private int jumpedHeight = 0;
         private Boolean isChasing = true;
-        private int patrolJumpHeight = 150;
+        private int patrolJumpHeight = 200;
         private int patrolJumpSpeed = 8;
         private Demon target;
         /// <summary>
@@ -46,6 +47,7 @@ namespace ProjectTBA.Units
             target = game.player;
             this.texture = AkumaContentManager.samuraiTempTex;
             this.movementSpeed = 6f;
+            maxJumpHeight = game.currentLevel.levelHeight - texture.Height;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -85,7 +87,6 @@ namespace ProjectTBA.Units
                 this.currentState != MovementState.falling && 
                 this.currentState != MovementState.attacking)
             {
-                //TODO switch chasing and not chasing
                 int chance = game.currentLevel.random.Next(100);
 
                 if (chance < 2)
@@ -123,6 +124,7 @@ namespace ProjectTBA.Units
                     this.currentState = MovementState.moveLeft;
                     break;
                 case MovementState.moveLeft:
+                    
                     if (this.location.X < 10)
                     {
                         this.currentState = MovementState.jumping;
@@ -134,7 +136,7 @@ namespace ProjectTBA.Units
                     }
                     break;
                 case MovementState.moveRight:
-                    if (this.location.X > game.screenWidth - 60)
+                    if (this.location.X > game.currentLevel.levelWidth - 56)
                     {
                         this.currentState = MovementState.jumping;
                         spriteEffect = SpriteEffects.None;
@@ -170,13 +172,13 @@ namespace ProjectTBA.Units
                     }
                     break;
                 case MovementState.falling:
-                    if (jumpedHeight == 0)
+                    if (jumpedHeight <= 0)
                     {
                         if (this.location.X < 10)
                         {
                             this.currentState = MovementState.moveRight;
                         }
-                        else if (this.location.X > game.screenWidth - 60)
+                        else if (this.location.X > game.currentLevel.levelWidth - 56)
                         {
                             this.currentState = MovementState.moveLeft;
                         }
@@ -204,10 +206,10 @@ namespace ProjectTBA.Units
 
         private void Chase()
         {
-            patrolMovement(patrolState);
+            ChaseMovement(patrolState);
         }
 
-        private void patrolMovement(PatrolState patrolState)
+        private void ChaseMovement(PatrolState patrolState)
         {
             switch (patrolState)
             {
@@ -215,7 +217,7 @@ namespace ProjectTBA.Units
                     this.patrolState = PatrolState.right;
                     break;
                 case PatrolState.left:
-                    if (this.location.X < 5 && this.location.Y == 380)
+                    if (this.location.X < 10 && this.location.Y <= game.currentLevel.levelHeight)
                     {
                         spriteEffect = SpriteEffects.FlipHorizontally;
                         this.patrolState = PatrolState.right;
@@ -226,9 +228,8 @@ namespace ProjectTBA.Units
                         this.location.X -= movementSpeed;
                     }
 
-                    if (0 < this.location.X - target.location.X + 20 + game.currentLevel.offset.X &&
-                        this.location.X - target.location.X + 20 + game.currentLevel.offset.X < 120 &&
-                        this.location.Y == 380)
+                    if (target.location.X + target.textureWidth >= this.location.X - 10 &&
+                        this.location.Y == 300)
                     {
                         jumping = true;
                     }
@@ -237,7 +238,7 @@ namespace ProjectTBA.Units
                     break;
                 case PatrolState.right:
 
-                    if (this.location.X > 580 && this.location.Y == 380)
+                    if (this.location.X + texture.Width > game.currentLevel.levelWidth && this.location.Y >= 300)
                     {
                         spriteEffect = SpriteEffects.None;
                         this.patrolState = PatrolState.left;
@@ -248,9 +249,8 @@ namespace ProjectTBA.Units
                         this.location.X += movementSpeed;
                     }
 
-                    if (0 < target.location.X + 20 - this.location.X && 
-                        target.location.X + 20 - this.location.X < 120 && 
-                        this.location.Y == 380)
+                    if (this.location.X + this.texture.Width <= target.location.X - 10 &&
+                        this.location.Y == 300)
                     {
                         jumping = true;
                     }

@@ -18,7 +18,7 @@ namespace Projectiles
         public float xSpeed = 0;
         public float ySpeed = 0;
         protected Game1 game;
-        public int damage = 15;
+        public int damage = 30;
 
         public Projectile(float x, float y)
         {
