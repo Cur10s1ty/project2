@@ -40,7 +40,7 @@ namespace ProjectTBA.Levels
         public int level;
         public int levelWidth = 1600;
         public int levelHeight = 400;
-        private int unitsToSpawn = 0;
+        private int unitsToSpawn = 12;
         public Boolean finalBoss = false;
 
         public Level(Demon player, int level)
