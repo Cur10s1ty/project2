@@ -40,7 +40,8 @@ namespace ProjectTBA.Levels
         public int level;
         public int levelWidth = 1600;
         public int levelHeight = 400;
-        private int unitsToSpawn = 12;
+        private int unitsToSpawn = 0;
+        public Boolean finalBoss = false;
 
         public Level(Demon player, int level)
         {
@@ -106,7 +107,6 @@ namespace ProjectTBA.Levels
                     obstacles.AddLast(new Platform(912, 337, AkumaContentManager.forestPlatformTrunkTex, false));
                     obstacles.AddLast(new Platform(1041, 294, AkumaContentManager.forestPlatformTrunkTex, false));
                     obstacles.AddLast(new Platform(1279, 342, AkumaContentManager.forestPlatformTrunkTex, false));
-                    obstacles.AddLast(new Platform(1503, 178, AkumaContentManager.forestPlatformTrunkTex, false));
 
                     obstacles.AddLast(new Platform(326, 265, AkumaContentManager.forestPlatformLeaf1Tex, false));
                     obstacles.AddLast(new Platform(451, 207, AkumaContentManager.forestPlatformLeaf1Tex, false));
@@ -117,6 +117,7 @@ namespace ProjectTBA.Levels
                     obstacles.AddLast(new Wall(341, 298, AkumaContentManager.forestWallTex));
                     obstacles.AddLast(new Wall(578, 298, AkumaContentManager.forestWallTex));
                     obstacles.AddLast(new Wall(992, 298, AkumaContentManager.forestWallTex));
+                    obstacles.AddLast(new Sign(1443, 230 - AkumaContentManager.signEndTex.Height, AkumaContentManager.signEndTex, true));
 
                     creatures.AddLast(new Deer(new Vector2(500, 300)));
                     creatures.AddLast(new Deer(new Vector2(1300, 300)));
@@ -133,7 +134,7 @@ namespace ProjectTBA.Levels
         {
 
             viewport.Update(gameTime);
-            if (level == 3)
+            if (level == 3 && !finalBoss)
             {
                 if (baddies.Count < 6 && unitsToSpawn > 0)
                 {

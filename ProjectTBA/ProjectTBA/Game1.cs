@@ -220,5 +220,14 @@ namespace ProjectTBA
                 currentLevel.baddies.Remove(unitToRemove);
             }
         }
+
+        public void Reset()
+        {
+            mainMenu = new MainMenu();
+            gameState = GameState.MainMenu;
+            particleEmitterManager.Reset();
+            particleEmitterManager = null;
+            particleEmitterManager = ParticleEmitterManager.GetInstance();
+        }
     }
 }

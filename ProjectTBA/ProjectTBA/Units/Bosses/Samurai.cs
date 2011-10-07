@@ -296,6 +296,8 @@ namespace ProjectTBA.Units
         public override void Die()
         {
             game.RemoveUnit(this);
+            game.currentLevel.finalBoss = true;
+            game.Reset();
         }
 
         public override Rectangle GetRectangle()

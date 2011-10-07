@@ -36,6 +36,7 @@ namespace ProjectTBA.Obstacles
                         int currentLevel = Game1.GetInstance().currentLevel.level;
                         Game1.GetInstance().currentLevel = new Level(Game1.GetInstance().player, (currentLevel + 1));
                         Game1.GetInstance().currentLevel.GenerateLevel(Game1.GetInstance().currentLevel.level);
+                        Game1.GetInstance().player.stopJumpOn = Game1.GetInstance().currentLevel.levelHeight - 109;
                     }
                     nextLevelCounter++;
                 }

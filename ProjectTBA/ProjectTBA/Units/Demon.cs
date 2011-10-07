@@ -40,7 +40,7 @@ namespace ProjectTBA.Units
         }
 
         public Boolean isHit = false;
-        private Boolean isInvunerable = false;
+        public Boolean isInvunerable = false;
         private HitState currentHitState;
         private int hitHeight = 9;
         private int hitTimestamp;

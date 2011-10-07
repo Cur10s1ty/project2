@@ -75,5 +75,10 @@ namespace WindowsPhoneParticleEngine
 
             return emitter;
         }
+
+        public void Reset()
+        {
+            instance = null;
+        }
     }
 }

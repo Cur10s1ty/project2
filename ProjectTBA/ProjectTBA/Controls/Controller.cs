@@ -76,7 +76,8 @@ namespace ProjectTBA.Controls
                 switch (gesture.GestureType)
                 {
                     case GestureType.HorizontalDrag:
-                        if (gesture.Position.X - gesture.Position2.X > 400 && !hasSwiped && (!game.player.jumping && !game.player.isWalking))
+                        if (gesture.Position.X - gesture.Position2.X > 400 && !hasSwiped
+                            && (!game.player.jumping && !game.player.isWalking && !game.player.isHit && !game.player.isInvunerable))
                         {
                             game.player.ResetTongue();
                             hasSwiped = true;
